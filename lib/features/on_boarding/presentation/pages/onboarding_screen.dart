@@ -42,82 +42,84 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     return InfoWidget(builder: (context, deviceInfo) {
       return Scaffold(
+          backgroundColor: Colors.white,
           body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: deviceInfo.screenHeight * 0.01,
-            horizontal: deviceInfo.screenWidth * 0.04,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              BlocBuilder<OnBoardingCubit, OnBoardingState>(
-                builder: (context, state) {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) {
-                      return FadeTransition(
-                        opacity: animation, // Fades the content in
-                        child: child,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: deviceInfo.screenHeight * 0.01,
+                horizontal: deviceInfo.screenWidth * 0.04,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  BlocBuilder<OnBoardingCubit, OnBoardingState>(
+                    builder: (context, state) {
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder:
+                            (Widget child, Animation<double> animation) {
+                          return FadeTransition(
+                            opacity: animation, // Fades the content in
+                            child: child,
+                          );
+                        },
+                        child: OnboardingContent(
+                          key: ValueKey<int>(indexNotifier
+                              .value), // Unique key to trigger the switch
+                          index: indexNotifier.value,
+                          image: state.onboardingContent.image,
+                          title: state.onboardingContent.title,
+                          subTitle: state.onboardingContent.subTitle,
+                          deviceInfo: deviceInfo,
+                        ),
                       );
                     },
-                    child: OnboardingContent(
-                      key: ValueKey<int>(indexNotifier
-                          .value), // Unique key to trigger the switch
-                      index: indexNotifier.value,
-                      image: state.onboardingContent.image,
-                      title: state.onboardingContent.title,
-                      subTitle: state.onboardingContent.subTitle,
-                      deviceInfo: deviceInfo,
-                    ),
-                  );
-                },
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: CustomRoundedButton(
-                      deviceInfo: deviceInfo,
-                      label: 'Next',
-                      textColor: Colors.white,
-                      backgroundColor: AppColors.appBlue,
-                      onPressed: () {
-                        if (indexNotifier.value == 2) {
-                          context.pushNamed(Routes.logIn);
-                          return;
-                        }
-                        context.read<OnBoardingCubit>().nextOnboarding();
-                        indexNotifier.value =
-                            context.read<OnBoardingCubit>().index!;
-                      },
-                    ),
                   ),
-                  Visibility(
-                      visible: finalIndex < 2 ? true : false,
-                      child: SizedBox(width: deviceInfo.screenWidth * 0.02)),
-                  Visibility(
-                    visible: finalIndex < 2 ? true : false,
-                    child: Expanded(
-                      flex: 1,
-                      child: CustomRoundedButton(
-                        deviceInfo: deviceInfo,
-                        label: 'Skip',
-                        textColor: AppColors.appDarkBlue,
-                        backgroundColor: AppColors.appYellow,
-                        onPressed: () {
-                          context.pushNamed(Routes.logIn);
-                        },
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: CustomRoundedButton(
+                          deviceInfo: deviceInfo,
+                          label: 'Next',
+                          textColor: Colors.white,
+                          backgroundColor: AppColors.appBlue,
+                          onPressed: () {
+                            if (indexNotifier.value == 2) {
+                              context.pushReplacementNamed(Routes.logIn);
+                              return;
+                            }
+                            context.read<OnBoardingCubit>().nextOnboarding();
+                            indexNotifier.value =
+                                context.read<OnBoardingCubit>().index!;
+                          },
+                        ),
                       ),
-                    ),
+                      Visibility(
+                          visible: finalIndex < 2 ? true : false,
+                          child:
+                              SizedBox(width: deviceInfo.screenWidth * 0.02)),
+                      Visibility(
+                        visible: finalIndex < 2 ? true : false,
+                        child: Expanded(
+                          flex: 1,
+                          child: CustomRoundedButton(
+                            deviceInfo: deviceInfo,
+                            label: 'Skip',
+                            textColor: AppColors.appDarkBlue,
+                            backgroundColor: AppColors.appYellow,
+                            onPressed: () {
+                              context.pushReplacementNamed(Routes.logIn);
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
-      ));
+            ),
+          ));
     });
   }
 }
