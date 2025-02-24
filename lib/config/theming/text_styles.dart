@@ -20,6 +20,12 @@ class TextStyles {
     fontFamily: 'Poppins',
     color: Colors.white,
   );
+  static final TextStyle mediumWhite16 = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    fontFamily: 'Poppins',
+    color: Colors.white,
+  );
   static final TextStyle mediumDark18 = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w500,
