@@ -105,6 +105,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       keyboardType: widget.keyboardType,
       obscureText: isObscured,
       validator: _validateInput,
+      onChanged: (value) => {},
       textInputAction: widget.nextFocusNode != null
           ? TextInputAction.next
           : TextInputAction.done,
@@ -168,6 +169,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   iconSize: widget.deviceInfo.screenWidth * 0.04,
                   icon: Icon(
                     isObscured ? Icons.visibility_off : Icons.visibility,
+                    color: Colors.grey,
                   ),
                   onPressed: () {
                     setState(() {

@@ -11,7 +11,7 @@ class CustomSignupButton extends CustomRoundedButton {
     required super.backgroundColor,
     required super.onPressed,
     required super.textColor,
-    this.assetIcon, // Optional
+    this.assetIcon,
   });
 
   @override

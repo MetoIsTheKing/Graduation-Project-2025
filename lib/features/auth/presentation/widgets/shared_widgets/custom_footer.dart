@@ -15,7 +15,7 @@ class CustomFooter extends StatelessWidget {
       children: [
         Text(
           isSignup ? "You have an account? " : 'Don’t have an account? ',
-          style: TextStyles.mediumDark16.copyWith(fontSize: 14), // Normal text
+          style: TextStyles.mediumDark16.copyWith(fontSize: 14),
         ),
         GestureDetector(
           onTap: () {

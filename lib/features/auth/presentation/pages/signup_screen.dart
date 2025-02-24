@@ -9,6 +9,8 @@ import 'package:graduation_project_2025/features/auth/presentation/widgets/share
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/divider.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/title._subtitle_widget.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/custom_signup_button.dart';
+import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/country_picker.dart';
+import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/date_picker.dart';
 
 class SignupScreen extends StatefulWidget {
   SignupScreen({super.key});
@@ -20,7 +22,6 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   FocusNode nameFocus = FocusNode();
   FocusNode emailFocus = FocusNode();
-
   FocusNode passwordFocus = FocusNode();
 
   @override
@@ -55,6 +56,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           hint: 'Enter your Nmail',
                           keyboardType: TextInputType.name,
                           focusNode: nameFocus,
+                          needValidation: true,
                           nextFocusNode: emailFocus,
                         ),
                         SizedBox(height: deviceInfo.screenHeight * 0.015),
@@ -76,6 +78,22 @@ class _SignupScreenState extends State<SignupScreen> {
                           isPassword: true,
                           needValidation: true,
                           focusNode: passwordFocus,
+                        ),
+                        SizedBox(height: deviceInfo.screenHeight * 0.015),
+                        CustomCountryPickerField(
+                          deviceInfo: deviceInfo,
+                          prefix: 'location',
+                          hint: 'Choose your Country',
+                          onCountrySelected: (Country) {},
+                        ),
+                        SizedBox(height: deviceInfo.screenHeight * 0.015),
+                        CustomDatePickerField(
+                          deviceInfo: deviceInfo,
+                          prefix: "Birth Date",
+                          hint: "Select Date",
+                          onDateSelected: (date) {
+                            print("Selected Date: $date");
+                          },
                         ),
                         SizedBox(height: deviceInfo.screenHeight * 0.015),
                         CustomSignupButton(
