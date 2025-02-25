@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/config/routing/routes.dart';
+import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
@@ -100,7 +102,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           deviceInfo: deviceInfo,
                           label: 'Sign Up',
                           backgroundColor: AppColors.appBlue,
-                          onPressed: () {},
+                          onPressed: () {
+                            context.pushNamed(Routes.home);
+                          },
                           textColor: Colors.white,
                         ),
                         SizedBox(

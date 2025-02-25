@@ -8,7 +8,7 @@ import 'package:graduation_project_2025/core/responsive/Models/device_info.dart'
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final DeviceInfo deviceInfo;
 
-  const CustomAppBar({Key? key, required this.deviceInfo}) : super(key: key);
+  const CustomAppBar({super.key, required this.deviceInfo});
 
   @override
   Widget build(BuildContext context) {

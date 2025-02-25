@@ -5,7 +5,7 @@ import 'package:graduation_project_2025/core/shared_components/custom_rounded_bu
 class CustomSignupButton extends CustomRoundedButton {
   final String? assetIcon; // Optional icon
 
-  CustomSignupButton({
+  const CustomSignupButton({super.key, 
     required super.deviceInfo,
     required super.label,
     required super.backgroundColor,

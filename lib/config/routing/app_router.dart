@@ -21,6 +21,9 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) => LoginScreen());
       case Routes.signUp:
         return MaterialPageRoute(builder: (context) => SignupScreen());
+      //TODO: replace with explore  
+      // case Routes.home:
+      //   return MaterialPageRoute(builder: (context) => ExploreScreen());
       case Routes.firstOnBoarding:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
