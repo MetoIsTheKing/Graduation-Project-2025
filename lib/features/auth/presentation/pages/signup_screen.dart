@@ -31,7 +31,9 @@ class _SignupScreenState extends State<SignupScreen> {
     return InfoWidget(builder: (context, deviceInfo) {
       return Scaffold(
         backgroundColor: Colors.white,
-        appBar: CustomAppBar(deviceInfo: deviceInfo),
+        appBar: CustomAppBar(
+          deviceInfo: deviceInfo,
+        ),
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(
