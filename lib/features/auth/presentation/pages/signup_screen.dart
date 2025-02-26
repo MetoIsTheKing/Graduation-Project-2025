@@ -29,6 +29,8 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return InfoWidget(builder: (context, deviceInfo) {
+      print('this is code from Signup ---> ${deviceInfo.hashCode}');
+
       return Scaffold(
         backgroundColor: Colors.white,
         appBar: CustomAppBar(

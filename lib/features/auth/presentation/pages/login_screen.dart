@@ -8,11 +8,9 @@ import 'package:graduation_project_2025/features/auth/presentation/widgets/share
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/divider.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/title._subtitle_widget.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/custom_signup_button.dart';
-import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/country_picker.dart';
-import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/date_picker.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LogScreenState();
