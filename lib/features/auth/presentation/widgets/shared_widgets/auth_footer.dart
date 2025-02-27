@@ -4,9 +4,9 @@ import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 
-class CustomFooter extends StatelessWidget {
+class AuthFooter extends StatelessWidget {
   final bool isSignup;
-  const CustomFooter({super.key, required this.isSignup});
+  const AuthFooter({super.key, required this.isSignup});
 
   @override
   Widget build(BuildContext context) {
