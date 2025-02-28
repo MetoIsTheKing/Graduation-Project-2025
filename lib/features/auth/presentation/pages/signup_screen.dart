@@ -15,7 +15,7 @@ import 'package:graduation_project_2025/features/auth/presentation/widgets/signu
 import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/date_picker.dart';
 
 class SignupScreen extends StatefulWidget {
-  SignupScreen({super.key});
+  const SignupScreen({super.key});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -28,7 +28,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return InfoWidget(builder: (context, deviceInfo) {
+    return InfoWidget(builder: (context, deviceInfo,constrains) {
       return Scaffold(
         backgroundColor: Colors.white,
         appBar: CustomAppBar(deviceInfo: deviceInfo),
@@ -103,7 +103,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           label: 'Sign Up',
                           backgroundColor: AppColors.appBlue,
                           onPressed: () {
-                            context.pushNamed(Routes.home);
+                            context.pushNamed(Routes.mainHome);
                           },
                           textColor: Colors.white,
                         ),
