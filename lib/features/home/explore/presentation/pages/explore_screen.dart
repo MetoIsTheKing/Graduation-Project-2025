@@ -27,6 +27,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
       return Scaffold(
         backgroundColor: AppColors.appBlue,
         body: SafeArea(
+          bottom: false,
           child: SingleChildScrollView(
             controller: widget.scrollController,
             child: Container(
