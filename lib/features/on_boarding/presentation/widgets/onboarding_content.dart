@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
@@ -22,7 +22,11 @@ class OnboardingContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('this is code from onBoarding ---> ${deviceInfo.hashCode}');
+    if (deviceInfo == getIt<DeviceInfo>()) {
+      print('device info is equal');
+      
+      print('this is code of di ${getIt<DeviceInfo>().hashCode}');
+    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -31,11 +35,14 @@ class OnboardingContent extends StatelessWidget {
             bottom: deviceInfo.screenHeight * 0.005,
           ),
           child: ClipRRect(
-            child: Image.asset(image, width: deviceInfo.screenHeight * 0.5),
+            child: Image.asset(
+              image,
+              scale: 1 / (deviceInfo.screenHeight * 0.001),
+            ),
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(bottom: deviceInfo.screenHeight * 0.05),
+          padding: EdgeInsets.only(bottom: deviceInfo.screenHeight * 0.02),
           child: AnimatedSmoothIndicator(
             activeIndex: index,
             curve: Curves.bounceOut,
@@ -59,18 +66,19 @@ class OnboardingContent extends StatelessWidget {
           ),
         ),
         Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,
               style: TextStyles.semiBoldDark32
-                  .copyWith(fontSize: deviceInfo.screenWidth * 0.07),
+                  .copyWith(fontSize: deviceInfo.screenHeight * 0.032),
             ),
             Text(
               subTitle,
               style: TextStyles.mediumDark16.copyWith(
-                fontSize: deviceInfo.screenWidth * 0.035,
+                fontSize: deviceInfo.screenHeight * 0.018,
+                height: deviceInfo.screenHeight * 0.00128,
               ),
             ),
           ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
@@ -47,12 +48,14 @@ class _LogScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return InfoWidget(builder: (context, deviceInfo) {
+    return InfoWidget(builder: (context, deviceInfo, constrains) {
       return GestureDetector(
         onTap: FocusScope.of(context).unfocus,
         child: Scaffold(
           backgroundColor: Colors.white,
-          appBar: AuthAppBar(deviceInfo: deviceInfo),
+          appBar: AuthAppBar(
+            backButtonVisible: false,
+          ),
           body: SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -67,14 +70,12 @@ class _LogScreenState extends State<LoginScreen> {
                     AuthHeader(
                       title: AppStrings.loginTitle,
                       subtitle: AppStrings.signupSubtitle,
-                      deviceInfo: deviceInfo,
                     ),
                     SizedBox(height: deviceInfo.screenHeight * 0.045),
                     Form(
                       child: Column(
                         children: [
                           AuthTextField(
-                            deviceInfo: deviceInfo,
                             prefix: 'Email',
                             hint: 'Enter your Email',
                             keyboardType: TextInputType.emailAddress,
@@ -85,7 +86,6 @@ class _LogScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: deviceInfo.screenHeight * 0.015),
                           AuthTextField(
-                            deviceInfo: deviceInfo,
                             prefix: 'Password',
                             hint: 'Enter your Password',
                             keyboardType: TextInputType.visiblePassword,
@@ -106,16 +106,13 @@ class _LogScreenState extends State<LoginScreen> {
                           SizedBox(
                             height: deviceInfo.screenHeight * 0.005,
                           ),
-                          CustomRoundedButton(
-                            deviceInfo: deviceInfo,
-                            label: 'Forgot Password?',
-                            backgroundColor: AppColors.appGrey,
-                            onPressed: () {
-                              AuthFooter(
-                                isSignup: true,
-                              );
-                            },
-                            textColor: AppColors.appDarkBlue,
+                          InkWell(
+                            onTap: () {},
+                            child: Text(
+                              'Forgot password?',
+                              style: TextStyles.regular14(
+                                  deviceInfo, AppColors.appDarkBlue),
+                            ),
                           ),
                           SizedBox(height: deviceInfo.screenHeight * 0.015),
                           CustomDivider(),

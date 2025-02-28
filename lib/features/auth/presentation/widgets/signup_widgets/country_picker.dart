@@ -22,6 +22,7 @@ class CustomCountryPickerField extends StatelessWidget {
 
   void _openCountryPicker(BuildContext context) {
     showCountryPicker(
+      searchAutofocus: true,
       context: context,
       showSearch: true,
       showPhoneCode: false,
