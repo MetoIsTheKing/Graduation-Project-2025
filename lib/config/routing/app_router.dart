@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/features/auth/presentation/pages/login_screen.dart';
 import 'package:graduation_project_2025/features/auth/presentation/pages/signup_screen.dart';
+import 'package:graduation_project_2025/features/home/explore/presentation/pages/explore_screen.dart';
+import 'package:graduation_project_2025/features/home/main_home_screen.dart';
 import 'package:graduation_project_2025/features/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:graduation_project_2025/features/on_boarding/presentation/pages/onboarding_screen.dart';
 
@@ -21,7 +23,11 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) => LoginScreen());
       case Routes.signUp:
         return MaterialPageRoute(builder: (context) => SignupScreen());
-      case Routes.firstOnBoarding:
+      case Routes.mainHome:
+        return MaterialPageRoute(builder: (context) => MainHomeScreen());
+      case Routes.explore:
+        return MaterialPageRoute(builder: (context) => ExploreScreen());
+      case Routes.onBoarding:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
             create: (context) => OnBoardingCubit(),

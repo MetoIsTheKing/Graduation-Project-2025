@@ -4,10 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 
-class CustomDatePickerField extends StatefulWidget {
+class CustomDatePickerField extends StatelessWidget {
   final DeviceInfo deviceInfo;
   final String prefix;
   final String hint;
+  final DateTime? selectedDate;
   final Function(DateTime) onDateSelected;
 
   const CustomDatePickerField({
@@ -15,113 +16,128 @@ class CustomDatePickerField extends StatefulWidget {
     required this.deviceInfo,
     required this.prefix,
     required this.hint,
+    required this.selectedDate,
     required this.onDateSelected,
   });
 
-  @override
-  _CustomDatePickerFieldState createState() => _CustomDatePickerFieldState();
-}
+  void _openDatePicker(BuildContext context) async {
+    DateTime? pickedDate;
 
-class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
-  late FocusNode _focusNode;
-  late Color _borderColor;
-  late Color _fillColor;
-  DateTime? _selectedDate;
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode = FocusNode();
-    _borderColor = Colors.transparent;
-    _fillColor = AppColors.appGrey;
-
-    _focusNode.addListener(() {
-      setState(() {
-        if (_focusNode.hasFocus) {
-          _borderColor = AppColors.appBlue;
-          _fillColor = Colors.white;
-        } else {
-          _borderColor = Colors.transparent;
-          _fillColor = AppColors.appGrey;
-        }
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  void _openDatePicker() async {
-    DateTime? pickedDate = await showDatePicker(
+    await showModalBottomSheet(
       context: context,
-      initialDate: _selectedDate ?? DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100),
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: deviceInfo.screenHeight * 0.5,
+                child: CalendarDatePicker(
+                  initialDate: selectedDate ?? DateTime.now(),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime(2100),
+                  onDateChanged: (date) {
+                    pickedDate = date;
+                  },
+                ),
+              ),
+              const SizedBox(height: 10),
+              // Action Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text("Cancel",
+                        style: TextStyle(color: Colors.red)),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (pickedDate != null) {
+                        onDateSelected(pickedDate!);
+                      }
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.appBlue,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: const Text("Confirm"),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
-
-    if (pickedDate != null) {
-      setState(() {
-        _selectedDate = pickedDate;
-      });
-      widget.onDateSelected(pickedDate);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    /////////
+    final double borderRaduis = deviceInfo.screenHeight * 0.055;
+    final TextStyle hintTextStyle = TextStyles.mediumDark16
+        .copyWith(fontSize: deviceInfo.screenWidth * 0.03, color: Colors.grey);
+    final TextStyle inputTextStyle = TextStyles.mediumDark16.copyWith(
+        fontSize: deviceInfo.screenWidth * 0.04, color: AppColors.appBlue);
+    //////////
     return GestureDetector(
-      onTap: _openDatePicker,
+      onTap: () => _openDatePicker(context),
       child: Container(
-        height: widget.deviceInfo.screenHeight * 0.055,
+        height: deviceInfo.screenHeight > deviceInfo.screenWidth
+            ? deviceInfo.screenHeight * 0.06
+            : deviceInfo.screenWidth * 0.079,
         decoration: BoxDecoration(
-          color: _fillColor,
-          borderRadius:
-              BorderRadius.circular(widget.deviceInfo.screenHeight * 0.055),
-          border: Border.all(color: _borderColor, width: 2),
+          color: AppColors.appGrey,
+          borderRadius: BorderRadius.circular(borderRaduis),
+          border: Border.all(color: AppColors.appGrey, width: 2),
         ),
         padding: EdgeInsets.symmetric(
-            horizontal: widget.deviceInfo.screenWidth * 0.04),
+          horizontal: deviceInfo.screenWidth * 0.04,
+        ),
         width: double.infinity,
         child: Row(
           children: [
             SizedBox(
-              width: widget.deviceInfo.screenWidth * 0.25,
+              width: deviceInfo.screenWidth * 0.285,
               child: Row(
                 children: [
-                  SizedBox(
-                    child: Text(
-                      widget.prefix,
-                      style: const TextStyle(color: Colors.grey, fontSize: 14),
-                    ),
+                  Text(
+                    prefix,
+                    style: hintTextStyle,
                   ),
                   const Spacer(),
-                  const Text("|",
-                      style: TextStyle(color: Colors.grey, fontSize: 20)),
-                  const SizedBox(width: 15),
+                  Text("|",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: deviceInfo.screenWidth * 0.06)),
+                  SizedBox(width: deviceInfo.screenWidth * 0.04),
                 ],
               ),
             ),
             Expanded(
               child: Text(
-                _selectedDate != null
-                    ? DateFormat("MMMM d, yyyy").format(_selectedDate!)
-                    : widget.hint,
-                style: _selectedDate != null
-                    ? TextStyles.semiBoldDark32
-                        .copyWith(color: AppColors.appBlue, fontSize: 18)
-                    : TextStyle(color: Colors.black54, fontSize: 14),
+                selectedDate != null
+                    ? DateFormat("dd/MM/yyyy").format(selectedDate!)
+                    : hint,
+                style: selectedDate != null ? inputTextStyle : hintTextStyle,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: widget.deviceInfo.screenWidth * 0.04,
-              ),
-              child: Icon(
-                Icons.calendar_today,
+              child: const Icon(
+                Icons.calendar_month,
                 color: Colors.grey,
               ),
             ),

@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
+import 'package:graduation_project_2025/core/utils/app_colors.dart';
 
-class TitleSubtitleWidget extends StatelessWidget {
+class AuthHeader extends StatelessWidget {
   final String title;
   final String subtitle;
-  final DeviceInfo deviceInfo;
-  const TitleSubtitleWidget({
+  const AuthHeader({
     super.key,
     required this.title,
     required this.subtitle,
-    required this.deviceInfo,
   });
 
   @override
   Widget build(BuildContext context) {
+    final deviceInfo = getIt<DeviceInfo>();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
-          style: TextStyles.semiBoldDark32.copyWith(fontSize: 28),
+          style: TextStyles.semiBold24(deviceInfo, AppColors.appDarkBlue),
         ),
         SizedBox(
           height: deviceInfo.screenHeight * 0.01,

@@ -9,7 +9,7 @@ final List<ContentModel> onboardingContent = [
   ContentModel(
     'assets/images/first-onboarding.png',
     'Book a flight',
-    'Found a flight that matches your destination and schedule? Book it instantly.',
+    'Found a flight that matches your destination and schedule? Book it instantly and get discounts.',
   ),
   ContentModel(
     'assets/images/second-onboarding.png',

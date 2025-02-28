@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 
 class TextStyles {
@@ -32,4 +33,44 @@ class TextStyles {
     fontFamily: 'Poppins',
     color: AppColors.appDarkBlue,
   );
+
+  // those functions are made with approximation
+  static TextStyle semiBold24(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenWidth * 0.068,
+      color: color,
+      fontWeight: FontWeight.w600,
+    );
+  }
+  static TextStyle semiBold12(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenWidth * 0.04,
+      color: color,
+      fontWeight: FontWeight.w600,
+    );
+  }
+
+  static TextStyle regular14(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenWidth * 0.035,
+      color: color,
+      fontWeight: FontWeight.w400,
+    );
+  }
+
+  static TextStyle regular12(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenWidth * 0.025,
+      color: color,
+      fontWeight: FontWeight.w400,
+    );
+  }
+
+  static TextStyle semiBold16(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenHeight * 0.02,
+      color: color,
+      fontWeight: FontWeight.w600,
+    );
+  }
 }

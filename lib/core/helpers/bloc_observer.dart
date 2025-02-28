@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-
+//TODO: delete jdebugmode or remove the observer
 class MyBlocObserver extends BlocObserver{
 @override
   void onCreate(BlocBase bloc) {
