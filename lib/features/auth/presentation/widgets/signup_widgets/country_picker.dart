@@ -4,126 +4,96 @@ import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 
-class CustomCountryPickerField extends StatefulWidget {
+class CustomCountryPickerField extends StatelessWidget {
   final DeviceInfo deviceInfo;
   final String prefix;
   final String hint;
-  final Function(Country) onCountrySelected;
+  final Country? selectedCountry;
+  final Function(Country selectedCountry) onCountrySelected;
 
   const CustomCountryPickerField({
     super.key,
     required this.deviceInfo,
     required this.prefix,
     required this.hint,
+    required this.selectedCountry,
     required this.onCountrySelected,
   });
 
-  @override
-  _CustomCountryPickerFieldState createState() =>
-      _CustomCountryPickerFieldState();
-}
-
-class _CustomCountryPickerFieldState extends State<CustomCountryPickerField> {
-  late FocusNode _focusNode;
-  late Color _borderColor;
-  late Color _fillColor;
-  Country? _selectedCountry;
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode = FocusNode();
-    _borderColor = Colors.transparent;
-    _fillColor = AppColors.appGrey;
-
-    _focusNode.addListener(() {
-      setState(() {
-        if (_focusNode.hasFocus) {
-          _borderColor = AppColors.appBlue;
-          _fillColor = Colors.white;
-        } else {
-          _borderColor = Colors.transparent;
-          _fillColor = AppColors.appGrey;
-        }
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  void _openCountryPicker() {
+  void _openCountryPicker(BuildContext context) {
     showCountryPicker(
       context: context,
+      showSearch: true,
       showPhoneCode: false,
-      onSelect: (Country country) {
-        setState(() {
-          _selectedCountry = country;
-        });
-        widget.onCountrySelected(country);
-      },
+      onSelect: onCountrySelected,
+      countryListTheme: CountryListThemeData(
+        bottomSheetHeight: deviceInfo.screenHeight * 0.5,
+        textStyle: TextStyles.mediumDark16.copyWith(
+          fontSize: deviceInfo.screenWidth * 0.03,
+          color: Colors.black,
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    /////////
+    final double borderRaduis = deviceInfo.screenHeight * 0.055;
+    final TextStyle hintTextStyle = TextStyles.mediumDark16
+        .copyWith(fontSize: deviceInfo.screenWidth * 0.03, color: Colors.grey);
+    final TextStyle inputTextStyle = TextStyles.mediumDark16
+        .copyWith(fontSize: deviceInfo.screenWidth * 0.04, color: Colors.black);
+    //////////
     return GestureDetector(
-      onTap: _openCountryPicker,
+      onTap: () => _openCountryPicker(context),
       child: Container(
-        height: widget.deviceInfo.screenHeight * 0.055,
+        height: deviceInfo.screenHeight > deviceInfo.screenWidth
+            ? deviceInfo.screenHeight * 0.06
+            : deviceInfo.screenWidth * 0.079,
         decoration: BoxDecoration(
-          color: _fillColor,
-          borderRadius:
-              BorderRadius.circular(widget.deviceInfo.screenHeight * 0.055),
-          border: Border.all(color: _borderColor, width: 2),
+          color: AppColors.appGrey,
+          borderRadius: BorderRadius.circular(borderRaduis),
+          border: Border.all(color: AppColors.appGrey, width: 2),
         ),
         padding: EdgeInsets.symmetric(
-            horizontal: widget.deviceInfo.screenWidth * 0.04),
+          horizontal: deviceInfo.screenWidth * 0.04,
+        ),
         width: double.infinity,
-        child: SizedBox(
-          // width: widget.deviceInfo.screenWidth * 0.30,
-          child: Row(
-            children: [
-              SizedBox(
-                width: widget.deviceInfo.screenWidth * 0.25,
-                child: Row(
-                  children: [
-                    Text(
-                      widget.prefix,
-                      style: const TextStyle(color: Colors.grey, fontSize: 14),
-                    ),
-                    Spacer(),
-                    const Text("|",
-                        style: TextStyle(color: Colors.grey, fontSize: 20)),
-                    const SizedBox(width: 15),
-                  ],
-                ),
+        child: Row(
+          children: [
+            SizedBox(
+              width: deviceInfo.screenWidth * 0.285,
+              child: Row(
+                children: [
+                  Text(
+                    prefix,
+                    style: hintTextStyle,
+                  ),
+                  const Spacer(),
+                  Text("|",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: deviceInfo.screenWidth * 0.06)),
+                  SizedBox(width: deviceInfo.screenWidth * 0.04),
+                ],
               ),
-              Expanded(
-                child: Text(
-                  _selectedCountry != null
-                      ? _selectedCountry!.name
-                      : widget.hint,
-                  style: _selectedCountry != null
-                      ? TextStyles.mediumDark18.copyWith(fontSize: 14)
-                      : TextStyle(color: Colors.black54, fontSize: 14),
-                  overflow: TextOverflow.ellipsis,
-                ),
+            ),
+            Expanded(
+              child: Text(
+                selectedCountry != null ? selectedCountry!.name : hint,
+                style: selectedCountry != null ? inputTextStyle : hintTextStyle,
+                overflow: TextOverflow.ellipsis,
               ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: widget.deviceInfo.screenWidth * 0.04,
-                ),
-                child: Icon(
-                  Icons.arrow_drop_down,
-                  color: Colors.grey,
-                ),
+            ),
+            Container(
+              child: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.grey,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

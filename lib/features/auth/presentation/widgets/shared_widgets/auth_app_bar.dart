@@ -5,10 +5,10 @@ import 'package:graduation_project_2025/core/utils/app_colors.dart';
 
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
   final DeviceInfo deviceInfo;
 
-  const CustomAppBar({super.key, required this.deviceInfo});
+  const AuthAppBar({super.key, required this.deviceInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               : deviceInfo.screenHeight * 0.09,
         ),
         onPressed: () {
-          context.pushNamed(Routes.logIn);
+          context.pushReplacementNamed(Routes.logIn);
         },
       ),
     );

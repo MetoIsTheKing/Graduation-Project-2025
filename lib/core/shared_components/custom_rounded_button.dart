@@ -8,6 +8,7 @@ class CustomRoundedButton extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final VoidCallback onPressed;
+  final String? assetIcon;
   const CustomRoundedButton({
     super.key,
     required this.deviceInfo,
@@ -15,23 +16,37 @@ class CustomRoundedButton extends StatelessWidget {
     required this.backgroundColor,
     required this.onPressed,
     required this.textColor,
+    this.assetIcon,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: deviceInfo.screenHeight * 0.04),
+      padding: EdgeInsets.only(top: deviceInfo.screenHeight * 0.01),
       child: TextButton(
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.all(backgroundColor),
-          fixedSize: WidgetStatePropertyAll(
+          fixedSize: WidgetStateProperty.all(
             Size(deviceInfo.screenWidth, deviceInfo.screenHeight * 0.055),
           ),
         ),
         onPressed: onPressed,
-        child: Text(
-          label,
-          style: TextStyles.mediumWhite18.copyWith(color: textColor),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (assetIcon != null) ...[
+              Image.asset(
+                assetIcon!,
+                width: deviceInfo.screenHeight * 0.035,
+                height: deviceInfo.screenHeight * 0.035,
+              ),
+              SizedBox(width: deviceInfo.screenWidth * 0.015),
+            ],
+            Text(
+              label,
+              style: TextStyles.mediumWhite16.copyWith(color: textColor),
+            ),
+          ],
         ),
       ),
     );

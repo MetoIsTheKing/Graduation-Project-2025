@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 
-class TitleSubtitleWidget extends StatelessWidget {
+class AuthHeader extends StatelessWidget {
   final String title;
   final String subtitle;
   final DeviceInfo deviceInfo;
-  const TitleSubtitleWidget({
+  const AuthHeader({
     super.key,
     required this.title,
     required this.subtitle,
@@ -20,7 +20,8 @@ class TitleSubtitleWidget extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyles.semiBoldDark32.copyWith(fontSize: 28),
+          style: TextStyles.semiBoldDark32
+              .copyWith(fontSize: deviceInfo.screenHeight * 0.05),
         ),
         SizedBox(
           height: deviceInfo.screenHeight * 0.01,
