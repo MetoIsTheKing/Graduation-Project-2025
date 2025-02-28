@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 
 class AuthTextField extends StatelessWidget {
-  final DeviceInfo deviceInfo;
   final String prefix;
   final String hint;
   final TextInputType keyboardType;
@@ -15,9 +15,8 @@ class AuthTextField extends StatelessWidget {
   final Widget? PasswordSuffixIcon;
   final TextEditingController? controller;
 
-  const AuthTextField({
+  AuthTextField({
     super.key,
-    required this.deviceInfo,
     required this.prefix,
     required this.hint,
     required this.keyboardType,
@@ -29,6 +28,9 @@ class AuthTextField extends StatelessWidget {
     required this.controller,
   }) : assert(!isPassword || PasswordSuffixIcon != null,
             'onToggleObscure is required when isPassword is true');
+
+  // instance of DeviceInfo
+  final deviceInfo = getIt<DeviceInfo>();
 
   String? _validateInput(String? value) {
     if (!needValidation) return null;

@@ -1,5 +1,7 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/config/routing/routes.dart';
+import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
@@ -75,7 +77,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return InfoWidget(builder: (context, deviceInfo) {
+    return InfoWidget(builder: (context, deviceInfo, constrains) {
       final fieldsSpacing = deviceInfo.screenHeight * 0.015;
       print('this is code from Signup ---> ${deviceInfo.hashCode}');
 
@@ -84,7 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
         child: Scaffold(
           backgroundColor: Colors.white,
           appBar: AuthAppBar(
-            deviceInfo: deviceInfo,
+            backButtonVisible: true,
           ),
           body: SafeArea(
             child: Padding(
@@ -100,14 +102,12 @@ class _SignupScreenState extends State<SignupScreen> {
                     AuthHeader(
                       title: AppStrings.signupTitle,
                       subtitle: AppStrings.signupSubtitle,
-                      deviceInfo: deviceInfo,
                     ),
                     SizedBox(height: deviceInfo.screenHeight * 0.045),
                     Form(
                       child: Column(
                         children: [
                           AuthTextField(
-                            deviceInfo: deviceInfo,
                             prefix: 'First name',
                             hint: 'Enter First name',
                             keyboardType: TextInputType.name,
@@ -118,7 +118,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           SizedBox(height: fieldsSpacing),
                           AuthTextField(
-                            deviceInfo: deviceInfo,
                             prefix: 'last name',
                             hint: 'Enter Last name',
                             keyboardType: TextInputType.name,
@@ -129,7 +128,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           SizedBox(height: fieldsSpacing),
                           AuthTextField(
-                            deviceInfo: deviceInfo,
                             prefix: 'Email',
                             hint: 'Enter Email',
                             keyboardType: TextInputType.emailAddress,
@@ -140,7 +138,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           SizedBox(height: fieldsSpacing),
                           AuthTextField(
-                            deviceInfo: deviceInfo,
                             prefix: 'Password',
                             hint: 'Enter Password',
                             keyboardType: TextInputType.visiblePassword,
@@ -153,7 +150,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           SizedBox(height: fieldsSpacing),
                           AuthTextField(
-                            deviceInfo: deviceInfo,
                             prefix: 'Confirm Pass.',
                             hint: 'Confirm Password',
                             keyboardType: TextInputType.visiblePassword,
@@ -165,7 +161,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           SizedBox(height: fieldsSpacing),
                           AuthTextField(
-                            deviceInfo: deviceInfo,
                             prefix: 'Phone',
                             hint: 'Enter Phone number',
                             keyboardType: TextInputType.phone,
@@ -194,7 +189,9 @@ class _SignupScreenState extends State<SignupScreen> {
                             deviceInfo: deviceInfo,
                             label: 'Sign Up',
                             backgroundColor: AppColors.appBlue,
-                            onPressed: () {},
+                            onPressed: () {
+                              context.pushReplacementNamed(Routes.mainHome);
+                            },
                             textColor: Colors.white,
                           ),
                           SizedBox(
