@@ -5,5 +5,4 @@ class Routes {
   static const String logIn = '/login';
   static const String signUp = '/signUp';
   static const String onBoarding = '/onBoarding';
-  
 }
