@@ -24,7 +24,7 @@ class OnboardingContent extends StatelessWidget {
   Widget build(BuildContext context) {
     if (deviceInfo == getIt<DeviceInfo>()) {
       print('device info is equal');
-      
+
       print('this is code of di ${getIt<DeviceInfo>().hashCode}');
     }
     return Column(
@@ -83,7 +83,7 @@ class OnboardingContent extends StatelessWidget {
             ),
           ],
         ),
-        //SizedBox(height: deviceInfo.screenHeight * 0.1),
+        SizedBox(height: deviceInfo.screenHeight * 0.02),
       ],
     );
   }

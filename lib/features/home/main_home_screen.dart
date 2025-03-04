@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:dot_curved_bottom_nav/dot_curved_bottom_nav.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/chat_bot.dart';
-import 'package:graduation_project_2025/features/home/my_bookings.dart';
+//import 'package:graduation_project_2025/features/home/my_bookings.dart';
 import 'package:graduation_project_2025/features/home/explore/presentation/pages/explore_screen.dart';
 import 'package:graduation_project_2025/features/home/my_profile.dart';
+import 'package:graduation_project_2025/features/home/search_airport.dart';
 
 class MainHomeScreen extends StatefulWidget {
   const MainHomeScreen({super.key});
@@ -27,9 +28,12 @@ class MainHomeScreenState extends State<MainHomeScreen> {
     super.initState();
     _screens = [
       ExploreScreen(scrollController: _scrollController),
-      MyBookings(),
-      MyProfile(),
+
+      //TODO: just a place holder👇
+      SearchAirport(),
+      //MyBookings(),
       ChatBot(),
+      MyProfile(),
     ];
 
     // Add a listener to the ScrollController
