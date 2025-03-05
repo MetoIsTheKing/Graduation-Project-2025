@@ -30,7 +30,7 @@ class MainHomeScreenState extends State<MainHomeScreen> {
       ExploreScreen(scrollController: _scrollController),
 
       //TODO: just a place holder👇
-      SearchAirport(),
+      SearchAirport(isOrigin: true,),
       //MyBookings(),
       ChatBot(),
       MyProfile(),

@@ -42,6 +42,7 @@ class TextStyles {
       fontWeight: FontWeight.w600,
     );
   }
+
   static TextStyle semiBold12(DeviceInfo deviceInfo, Color color) {
     return TextStyle(
       fontSize: deviceInfo.screenWidth * 0.04,
@@ -71,6 +72,22 @@ class TextStyles {
       fontSize: deviceInfo.screenHeight * 0.02,
       color: color,
       fontWeight: FontWeight.w600,
+    );
+  }
+
+  static TextStyle medium20(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenHeight * 0.024,
+      color: color,
+      fontWeight: FontWeight.w500,
+    );
+  }
+
+  static TextStyle medium16(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenHeight * 0.018,
+      color: color,
+      fontWeight: FontWeight.w500,
     );
   }
 }
