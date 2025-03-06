@@ -18,7 +18,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LogScreenState extends State<LoginScreen> {
-  FocusNode nameFocus = FocusNode();
   FocusNode emailFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();
   TextEditingController? emailController;
