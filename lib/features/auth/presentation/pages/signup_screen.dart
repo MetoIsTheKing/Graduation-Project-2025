@@ -190,7 +190,8 @@ class _SignupScreenState extends State<SignupScreen> {
                             label: 'Sign Up',
                             backgroundColor: AppColors.appBlue,
                             onPressed: () {
-                              context.pushReplacementNamed(Routes.mainHome);
+                              context.pushReplacementNamed(
+                                  Routes.codeVerification);
                             },
                             textColor: Colors.white,
                           ),

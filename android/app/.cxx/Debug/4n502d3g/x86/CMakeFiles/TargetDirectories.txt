@@ -1,0 +1,2 @@
+D:/bloc_ed/Graduation-Project-2025-4/android/app/.cxx/Debug/4n502d3g/x86/CMakeFiles/edit_cache.dir
+D:/bloc_ed/Graduation-Project-2025-4/android/app/.cxx/Debug/4n502d3g/x86/CMakeFiles/rebuild_cache.dir

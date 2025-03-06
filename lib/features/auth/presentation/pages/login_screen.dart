@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
+import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
@@ -27,7 +29,7 @@ class _LogScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    nameFocus.dispose();
+    //  nameFocus.dispose();
     emailFocus.dispose();
     passwordFocus.dispose();
     super.dispose();
@@ -106,7 +108,9 @@ class _LogScreenState extends State<LoginScreen> {
                             height: deviceInfo.screenHeight * 0.005,
                           ),
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              context.pushNamed(Routes.forgetpassword);
+                            },
                             child: Text(
                               'Forgot password?',
                               style: TextStyles.regular14(
