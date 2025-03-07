@@ -14,9 +14,15 @@ class FlightsUtils {
       TextStyles.semiBold18(deviceInfo, AppColors.appBlack);
   static final fieldLabelStyle =
       TextStyles.semiBold18(deviceInfo, AppColors.appBlack);
+  static final TextStyle hintTextStyle = TextStyles.mediumDark16
+      .copyWith(fontSize: deviceInfo.screenWidth * 0.03, color: Colors.grey);
+  static final TextStyle fieldInputStyle = TextStyles.mediumDark16
+      .copyWith(fontSize: deviceInfo.screenWidth * 0.03, color: Colors.black);
 
   //Dimensions
   static final backGroundBorderRadius = deviceInfo.screenHeight * 0.05;
   static final radioTilesRowWidth = deviceInfo.screenWidth * 0.75;
   static final double fieldBorderRaduis = deviceInfo.screenHeight * 0.02;
+
+  //Functions
 }

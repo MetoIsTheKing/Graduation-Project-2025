@@ -1,9 +1,12 @@
+import 'dart:developer' as dev;
+
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
-import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_card_model.dart';
+
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flights_utils.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_field.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_type_content.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/radio_tiles_row.dart';
 
 class FlightsScreen extends StatefulWidget {
@@ -15,12 +18,58 @@ class FlightsScreen extends StatefulWidget {
 
 class _FlightsScreenState extends State<FlightsScreen> {
   String? selectedFlightType = 'option1';
-  TextEditingController? fromController;
-  TextEditingController? toController;
+  final PageController _pageController = PageController(initialPage: 0);
+
+  final TextEditingController fromController = TextEditingController();
+  final TextEditingController toController = TextEditingController();
+  final TextEditingController travellersController = TextEditingController();
+  DateTime? departureDate;
+  DateTime? returnDate;
+  List<FlightCardModel>? multiCityList;
 
   void onSelectedFlightType(String? value) {
     setState(() {
       selectedFlightType = value;
+      int pageIndex;
+      if (value == 'option1') {
+        pageIndex = 0;
+      } else if (value == 'option2') {
+        pageIndex = 1;
+      } else {
+        pageIndex = 2;
+      }
+      _pageController.animateToPage(
+        pageIndex,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  void onChangeButtonPressed() {
+    String temp = fromController.text;
+    setState(() {
+      fromController.text = toController.text;
+      toController.text = temp;
+    });
+  }
+
+  void onDepartureDateSelected(DateTime? selectedDate) {
+    setState(() {
+      departureDate = selectedDate;
+    });
+  }
+
+  void onReturnDateSelected(DateTime? selectedDate) {
+    setState(() {
+      returnDate = selectedDate;
+    });
+  }
+
+  void onSearchFlightsPressed() {
+    setState(() {
+      fromController.text = "ggggggggg";
+      toController.text = "hhhhhhhhhhh";
     });
   }
 
@@ -90,84 +139,65 @@ class _FlightsScreenState extends State<FlightsScreen> {
                               height: deviceInfo.screenHeight * 0.02,
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: deviceInfo.screenWidth * 0.05),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'From',
-                                    style: FlightsUtils.fieldLabelStyle,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: deviceInfo.screenWidth * 0.05),
+                                child: SizedBox(
+                                  height: deviceInfo.screenHeight,
+                                  child: PageView(
+                                    controller: _pageController,
+                                    physics:
+                                        NeverScrollableScrollPhysics(), // Disable swipe
+                                    children: [
+                                      FlightsTypeContent(
+                                        fromController: fromController,
+                                        toController: toController,
+                                        travellersController:
+                                            travellersController,
+                                        selectedDate: departureDate,
+                                        onDepartureDateSelected:
+                                            onDepartureDateSelected,
+                                        onReturnDateSelected:
+                                            onReturnDateSelected,
+                                        onChangeButtonPressed:
+                                            onChangeButtonPressed,
+                                        onSearchFlightsPressed:
+                                            onSearchFlightsPressed,
+                                        onFromFieldTaped: () {},
+                                        onTravellersFieldTapped: () {},
+                                        onToFieldTapped: () {},
+                                      ),
+                                      FlightsTypeContent(
+                                        fromController: fromController,
+                                        toController: toController,
+                                        travellersController:
+                                            travellersController,
+                                        selectedDate: departureDate,
+                                        isTwoWay: true,
+                                        returnDate: returnDate,
+                                        onDepartureDateSelected:
+                                            onDepartureDateSelected,
+                                        onReturnDateSelected:
+                                            onReturnDateSelected,
+                                        onChangeButtonPressed:
+                                            onChangeButtonPressed,
+                                        onSearchFlightsPressed:
+                                            onSearchFlightsPressed,
+                                        onFromFieldTaped: () {
+                                          dev.log('from');
+                                        },
+                                        onTravellersFieldTapped: () {
+                                          dev.log('travellers');
+                                        },
+                                        onToFieldTapped: () {
+                                          dev.log('to');
+                                        },
+                                      ),
+                                      Text("Hello", style: TextStyle()),
+                                    ],
                                   ),
-                                  SizedBox(
-                                    height: deviceInfo.screenHeight * 0.01,
-                                  ),
-                                  FlightsField(
-                                    controller: fromController,
-                                    prefixIcon: 'assets/images/flight_from.png',
-                                    label: 'select start location',
-                                  ),
-                                  SizedBox(
-                                    height: deviceInfo.screenHeight * 0.03,
-                                  ),
-                                  Text(
-                                    'To',
-                                    style: FlightsUtils.fieldLabelStyle,
-                                  ),
-                                  SizedBox(
-                                    height: deviceInfo.screenHeight * 0.01,
-                                  ),
-                                  FlightsField(
-                                    controller: fromController,
-                                    prefixIcon: 'assets/images/flight_to.png',
-                                    label: 'select destination',
-                                  ),
-                                  SizedBox(
-                                    height: deviceInfo.screenHeight * 0.03,
-                                  ),
-                                  Text(
-                                    'Departure Date',
-                                    style: FlightsUtils.fieldLabelStyle,
-                                  ),
-                                  SizedBox(
-                                    height: deviceInfo.screenHeight * 0.01,
-                                  ),
-                                  FlightsField(
-                                      controller: fromController,
-                                      prefixIcon:
-                                          'assets/images/flights_calender.png',
-                                      label: 'select departure date'),
-                                  SizedBox(
-                                    height: deviceInfo.screenHeight * 0.03,
-                                  ),
-                                  Text(
-                                    'Travelers',
-                                    style: FlightsUtils.fieldLabelStyle,
-                                  ),
-                                  SizedBox(
-                                    height: deviceInfo.screenHeight * 0.01,
-                                  ),
-                                  FlightsField(
-                                      controller: fromController,
-                                      prefixIcon:
-                                          'assets/images/flights_traveller.png',
-                                      label: 'select travellers'),
-                                  SizedBox(
-                                    height: deviceInfo.screenHeight * 0.05,
-                                  ),
-                                  CustomRoundedButton(
-                                    deviceInfo: deviceInfo,
-                                    label: 'Search Flights',
-                                    backgroundColor: AppColors.appBlue,
-                                    onPressed: () {},
-                                    textColor: Colors.white,
-                                  )
-                                ],
-                              ),
-                            ),
+                                )),
                             SizedBox(
-                              height: deviceInfo.screenHeight * 0.2,
+                              height: deviceInfo.screenHeight * 0.1,
                             )
                           ],
                         ),

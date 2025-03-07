@@ -8,27 +8,28 @@ class FlightsField extends StatelessWidget {
   final TextEditingController? controller;
   final String prefixIcon;
   final String label;
+  final Function()? onTap;
   const FlightsField({
     super.key,
     required this.controller,
     required this.prefixIcon,
     required this.label,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final deviceInfo = getIt<DeviceInfo>();
     return GestureDetector(
-      onTap: () {
-        print("TextField tapped!");
-        // You can add custom actions here
-      },
+      onTap: onTap,
       child: AbsorbPointer(
         // Prevents keyboard from showing up
         child: TextFormField(
+            style: FlightsUtils.fieldInputStyle,
             controller: controller,
             readOnly: true, // Ensures user can't type
             decoration: InputDecoration(
+              hintStyle: FlightsUtils.hintTextStyle,
               filled: true,
               fillColor: AppColors.appLighterGrey,
               hintText: label,
