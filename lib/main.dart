@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/app.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/core/helpers/bloc_observer.dart';
+import 'package:graduation_project_2025/core/responsive/Models/device_info.dart'as my_device_info;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,8 +16,7 @@ void main() async {
     DevicePreview(
       enabled: !kReleaseMode,
       builder: (context) {
-        // Initialize context-dependent dependencies
-        setupContextDependentDependencies(context);
+        getIt<my_device_info.DeviceInfo>().updateFromContext(context); // Update singleton here
         return MyApp();
       },
     ),
@@ -24,22 +24,24 @@ void main() async {
 }
 
 // WITHOUT DEVICE PREVIEW (Don't touch this)
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+
 // void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
-
-//   // Initialize context-independent dependencies
 //   await initDependencies();
-
-//   // Set up Bloc observer (if needed)
 //   Bloc.observer = MyBlocObserver();
 
-//   // Get the initial MediaQueryData from the window
-//   final mediaQueryData = MediaQueryData.fromWindow(WidgetsBinding.instance.window);
-
-//   // Initialize context-dependent dependencies
-//   setupContextDependentDependencies(mediaQueryData);
-
-//   // Run the app
 //   runApp(MyApp());
 // }
 
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     // Update DeviceInfo with the real device's MediaQuery
+//     getIt<DeviceInfo>().updateFromContext(context);
+//     return MaterialApp(
+//       home: MainHomeScreen(),
+//     );
+//   }
+// }

@@ -27,64 +27,68 @@ class OnboardingContent extends StatelessWidget {
 
       print('this is code of di ${getIt<DeviceInfo>().hashCode}');
     }
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(
-            bottom: deviceInfo.screenHeight * 0.005,
-          ),
-          child: ClipRRect(
-            child: Image.asset(
-              image,
-              scale: 1 / (deviceInfo.screenHeight * 0.001),
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: deviceInfo.screenHeight * 0.06,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: deviceInfo.screenHeight * 0.005,
             ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(bottom: deviceInfo.screenHeight * 0.02),
-          child: AnimatedSmoothIndicator(
-            activeIndex: index,
-            curve: Curves.bounceOut,
-            count: 3,
-            onEnd: () {
-              context.pushNamed(Routes.logIn);
-            },
-            effect: ExpandingDotsEffect(
-              dotHeight: deviceInfo.screenHeight * 0.01,
-              dotWidth: deviceInfo.screenWidth * 0.03,
-              dotColor: Colors.grey,
-              activeDotColor: Colors.blue,
-            ),
-            duration: Duration(milliseconds: 500),
-            axisDirection: Axis.horizontal,
-            onDotClicked: (index) {
-              if (index != 0) {
-                index -= 1;
-              }
-            },
-          ),
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyles.semiBoldDark32
-                  .copyWith(fontSize: deviceInfo.screenHeight * 0.032),
-            ),
-            Text(
-              subTitle,
-              style: TextStyles.mediumDark16.copyWith(
-                fontSize: deviceInfo.screenHeight * 0.018,
-                height: deviceInfo.screenHeight * 0.00128,
+            child: ClipRRect(
+              child: Image.asset(
+                image,
+                scale: 1 / (deviceInfo.screenHeight * 0.00065),
               ),
             ),
-          ],
-        ),
-        SizedBox(height: deviceInfo.screenHeight * 0.02),
-      ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: deviceInfo.screenHeight * 0.04),
+            child: AnimatedSmoothIndicator(
+              activeIndex: index,
+              curve: Curves.bounceOut,
+              count: 3,
+              onEnd: () {
+                context.pushNamed(Routes.logIn);
+              },
+              effect: ExpandingDotsEffect(
+                dotHeight: deviceInfo.screenHeight * 0.01,
+                dotWidth: deviceInfo.screenWidth * 0.03,
+                dotColor: Colors.grey,
+                activeDotColor: Colors.blue,
+              ),
+              duration: Duration(milliseconds: 500),
+              axisDirection: Axis.horizontal,
+              onDotClicked: (index) {
+                if (index != 0) {
+                  index -= 1;
+                }
+              },
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyles.semiBoldDark32
+                    .copyWith(fontSize: deviceInfo.screenHeight * 0.032),
+              ),
+              Text(
+                subTitle,
+                style: TextStyles.mediumDark16.copyWith(
+                  fontSize: deviceInfo.screenHeight * 0.018,
+                ),
+              ),
+            ],
+          ),
+          //SizedBox(height: deviceInfo.screenHeight * 0.01),
+        ],
+      ),
     );
   }
 }

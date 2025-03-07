@@ -19,6 +19,7 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
+    print('explore screen');
     return InfoWidget(builder: (context, deviceInfo, constrains) {
       print('this is hashcod inside explore : ${deviceInfo.hashCode}');
       //print('max width: ${constrains.maxWidth}');
@@ -29,6 +30,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
         body: SafeArea(
           bottom: false,
           child: SingleChildScrollView(
+            physics: ClampingScrollPhysics(),
             controller: widget.scrollController,
             child: Container(
               width: double.infinity,
@@ -64,7 +66,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         child: IntrinsicWidth(
                           stepWidth: deviceInfo.screenWidth * 0.5,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               QuickActionButton(
@@ -77,7 +79,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                               QuickActionButton(
                                   iconlabel: 'Flight',
                                   icon: 'assets/images/flight_icon.png',
-                                  dimension: deviceInfo.screenHeight * 0.13,
+                                  dimension: deviceInfo.screenHeight * 0.14,
                                   onPressed: () {
                                     print('flight clicked');
                                   }),
@@ -173,8 +175,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
                             ),
                             HotelRecomendationCard(
                               hotelImage: 'assets/images/hotel_img_1.png',
-                              hotelName: 'Swissotel The Bosphorus',
-                              hotelAddress: 'Istanbul, Turkey',
+                              hotelName:
+                                  'Swissotel The Bosphorusssssssssssssssssssssssssssssssssss',
+                              hotelAddress:
+                                  'Istanbul, Turkeyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy',
                               hotelRating: 4.5,
                             ),
                             HotelRecomendationCard(

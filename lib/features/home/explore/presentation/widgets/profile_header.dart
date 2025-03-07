@@ -21,7 +21,7 @@ class ProfileHeader extends StatelessWidget {
       print('this is hashcod inside profile header: ${deviceInfo.hashCode}');
       return Padding(
         padding:
-            EdgeInsets.symmetric(horizontal: deviceInfo.screenWidth * 0.05),
+            EdgeInsets.symmetric(horizontal: deviceInfo.screenWidth * 0.03),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -50,8 +50,8 @@ class ProfileHeader extends StatelessWidget {
                     BorderRadius.circular(deviceInfo.screenWidth * 0.12),
                 child: Image.asset(
                   profileImage,
-                  width: deviceInfo.screenWidth * 0.12,
-                  height: deviceInfo.screenWidth * 0.12,
+                  width: deviceInfo.screenWidth * 0.11,
+                  height: deviceInfo.screenWidth * 0.11,
                   fit: BoxFit.cover,
                 ),
               ),

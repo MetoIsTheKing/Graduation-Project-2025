@@ -44,7 +44,8 @@ class CustomRoundedButton extends StatelessWidget {
             ],
             Text(
               label,
-              style: TextStyles.mediumWhite16.copyWith(color: textColor),
+              style: TextStyles.mediumWhite16.copyWith(
+                  color: textColor, fontSize: deviceInfo.screenWidth * 0.03),
             ),
           ],
         ),

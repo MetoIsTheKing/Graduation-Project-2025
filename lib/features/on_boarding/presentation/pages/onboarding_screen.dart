@@ -40,7 +40,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return InfoWidget(builder: (context, deviceInfo,constrains) {
+    return InfoWidget(builder: (context, deviceInfo, constrains) {
       return Scaffold(
           backgroundColor: Colors.white,
           body: SafeArea(
@@ -50,7 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 horizontal: deviceInfo.screenWidth * 0.04,
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   BlocBuilder<OnBoardingCubit, OnBoardingState>(
                     builder: (context, state) {

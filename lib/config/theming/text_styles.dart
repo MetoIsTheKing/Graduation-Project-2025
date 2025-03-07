@@ -45,7 +45,7 @@ class TextStyles {
 
   static TextStyle semiBold12(DeviceInfo deviceInfo, Color color) {
     return TextStyle(
-      fontSize: deviceInfo.screenWidth * 0.04,
+      fontSize: deviceInfo.screenWidth * 0.035,
       color: color,
       fontWeight: FontWeight.w600,
     );
@@ -61,7 +61,7 @@ class TextStyles {
 
   static TextStyle regular12(DeviceInfo deviceInfo, Color color) {
     return TextStyle(
-      fontSize: deviceInfo.screenWidth * 0.025,
+      fontSize: deviceInfo.screenWidth * 0.028,
       color: color,
       fontWeight: FontWeight.w400,
     );

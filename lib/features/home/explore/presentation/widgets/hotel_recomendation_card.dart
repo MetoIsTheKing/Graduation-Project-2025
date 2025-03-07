@@ -57,38 +57,44 @@ class HotelRecomendationCard extends StatelessWidget {
                   left: deviceInfo.screenWidth * 0.025,
                   top: deviceInfo.screenHeight * 0.015,
                   bottom: deviceInfo.screenHeight * 0.01),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    hotelName,
-                    softWrap: true,
-                    style: TextStyles.semiBold16(deviceInfo, AppColors.appBlue),
-                  ),
-                  Text(
-                    hotelAddress,
-                    overflow: TextOverflow.ellipsis,
-                    style:
-                        TextStyles.regular12(deviceInfo, AppColors.appDarkGrey),
-                  ),
-                  SizedBox(
-                    height: deviceInfo.screenHeight * 0.04,
-                  ),
-                  SizedBox(
-                    width: deviceInfo.screenWidth * 0.2,
-                    child: Row(
-                      children: [
-                        Icon(Icons.star,
-                            color: AppColors.appYellow,
-                            size: deviceInfo.screenWidth * 0.04),
-                        Text(hotelRating.toString(),
-                            style: TextStyles.semiBold12(
-                                deviceInfo, AppColors.appDarkBlue)),
-                      ],
+              child: Padding(
+                padding: EdgeInsets.only(right: deviceInfo.screenWidth * 0.045),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      hotelName,
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style:
+                          TextStyles.semiBold16(deviceInfo, AppColors.appBlue),
                     ),
-                  )
-                ],
+                    Text(
+                      hotelAddress,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyles.regular12(
+                          deviceInfo, const Color.fromARGB(255, 104, 104, 104)),
+                    ),
+                    SizedBox(
+                      height: deviceInfo.screenHeight * 0.15 * 0.03,
+                    ),
+                    SizedBox(
+                      width: deviceInfo.screenWidth * 0.2,
+                      child: Row(
+                        children: [
+                          Icon(Icons.star,
+                              color: AppColors.appYellow,
+                              size: deviceInfo.screenWidth * 0.04),
+                          Text(hotelRating.toString(),
+                              style: TextStyles.semiBold12(
+                                  deviceInfo, AppColors.appDarkBlue)),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           )

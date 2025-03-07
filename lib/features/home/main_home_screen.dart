@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dot_curved_bottom_nav/dot_curved_bottom_nav.dart';
+import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/chat_bot.dart';
 //import 'package:graduation_project_2025/features/home/my_bookings.dart';
@@ -30,7 +31,11 @@ class MainHomeScreenState extends State<MainHomeScreen> {
       ExploreScreen(scrollController: _scrollController),
 
       //TODO: just a place holder👇
-      SearchAirport(isOrigin: true,),
+      SearchAirport(
+        isOrigin: true,
+        appBarTitle: 'Search Origin',
+        onBack: () => context.pop(),
+      ),
       //MyBookings(),
       ChatBot(),
       MyProfile(),
@@ -68,6 +73,7 @@ class MainHomeScreenState extends State<MainHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey[200],
       body: Stack(
         children: [
@@ -84,12 +90,12 @@ class MainHomeScreenState extends State<MainHomeScreen> {
           ),
           // AnimatedPositioned for smooth hide/show animation
           AnimatedPositioned(
-            duration: const Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 250),
             curve: Curves.easeInOut,
             left: 8,
             right: 8,
             bottom:
-                _isNavBarVisible ? 0.05 : -200, // Slide out of view when hidden
+                _isNavBarVisible ? 0.05 : -300, // Slide out of view when hidden
             child: Stack(
               children: [
                 Positioned(
