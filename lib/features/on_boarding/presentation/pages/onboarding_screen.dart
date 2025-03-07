@@ -50,7 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 horizontal: deviceInfo.screenWidth * 0.04,
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   BlocBuilder<OnBoardingCubit, OnBoardingState>(
                     builder: (context, state) {

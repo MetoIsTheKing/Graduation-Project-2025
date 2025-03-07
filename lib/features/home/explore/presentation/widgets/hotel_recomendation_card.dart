@@ -48,7 +48,7 @@ class HotelRecomendationCard extends StatelessWidget {
               hotelImage,
               fit: BoxFit.cover,
               width: deviceInfo.screenWidth * 0.3,
-              height: deviceInfo.screenHeight * 0.15,
+              height: deviceInfo.screenWidth * 0.3,
             ),
           ),
           Expanded(
@@ -77,9 +77,9 @@ class HotelRecomendationCard extends StatelessWidget {
                       style: TextStyles.regular12(
                           deviceInfo, const Color.fromARGB(255, 104, 104, 104)),
                     ),
-                    SizedBox(
-                      height: deviceInfo.screenHeight * 0.15 * 0.03,
-                    ),
+                    // SizedBox(
+                    //   height: deviceInfo.screenHeight * 0.15 * 0.005,
+                    // ),
                     SizedBox(
                       width: deviceInfo.screenWidth * 0.2,
                       child: Row(
