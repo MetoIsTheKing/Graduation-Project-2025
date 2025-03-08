@@ -27,13 +27,16 @@ class SearchCustomTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      titleAlignment: ListTileTitleAlignment.center,
+      minVerticalPadding: deviceInfo.screenHeight * 0.015,
+
       minTileHeight: deviceInfo.screenWidth * 0.15,
       tileColor: tileFillColor,
       subtitle: subtitle,
       horizontalTitleGap: deviceInfo.screenWidth * 0.025,
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: deviceInfo.screenWidth * 0.035,
-      ),
+      // contentPadding: EdgeInsets.symmetric(
+      //   horizontal: deviceInfo.screenWidth * 0.035,
+      // ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
         side: BorderSide(color: tileBorderColor, width: 1),

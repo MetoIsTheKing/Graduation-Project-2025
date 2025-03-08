@@ -29,12 +29,13 @@ class _SignupScreenState extends State<SignupScreen> {
   FocusNode passwordFocus = FocusNode();
   FocusNode confirmPasswordFocus = FocusNode();
   FocusNode phoneFocus = FocusNode();
-  TextEditingController? firstNameController;
-  TextEditingController? lastNameController;
-  TextEditingController? emailController;
-  TextEditingController? passwordController;
-  TextEditingController? confirmPasswordController;
-  TextEditingController? phoneController;
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   Country? selectedCountry;
   DateTime? selectedDate;
 
@@ -48,6 +49,12 @@ class _SignupScreenState extends State<SignupScreen> {
     passwordFocus.dispose();
     confirmPasswordFocus.dispose();
     phoneFocus.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    phoneController.dispose();
     super.dispose();
   }
 
@@ -176,21 +183,29 @@ class _SignupScreenState extends State<SignupScreen> {
                             onCountrySelected: onCountrySelected,
                             selectedCountry: selectedCountry,
                           ),
-                          SizedBox(height: fieldsSpacing),
-                          CustomDatePickerField(
-                            deviceInfo: deviceInfo,
-                            prefix: "Birth Date",
-                            hint: "Select Date",
-                            onDateSelected: onDateSelected,
-                            selectedDate: selectedDate,
-                          ),
+                          //SizedBox(height: fieldsSpacing),
+                          // CustomDatePickerField(
+                          //   deviceInfo: deviceInfo,
+                          //   prefix: "Birth Date",
+                          //   hint: "Select Date",
+                          //   onDateSelected: onDateSelected,
+                          //   selectedDate: selectedDate,
+                          // ),
                           SizedBox(height: fieldsSpacing),
                           CustomRoundedButton(
                             deviceInfo: deviceInfo,
                             label: 'Sign Up',
                             backgroundColor: AppColors.appBlue,
                             onPressed: () {
-                              context.pushReplacementNamed(Routes.mainHome);
+                              //context.pushReplacementNamed(Routes.mainHome);
+                              print('first name : ${firstNameController.text}');
+                              print('last name : ${lastNameController.text}');
+                              print('email : ${emailController.text}');
+                              print('password : ${passwordController.text}');
+                              print(
+                                  'confirm password : ${confirmPasswordController.text}');
+                              print('phone : ${phoneController.text}');
+                              print('country : ${selectedCountry?.name}');
                             },
                             textColor: Colors.white,
                           ),

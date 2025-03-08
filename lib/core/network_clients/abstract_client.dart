@@ -9,16 +9,17 @@ import 'package:flutter/foundation.dart';
     dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
-        connectTimeout: Duration(seconds: 5),
-        sendTimeout: Duration(seconds: 5),
-        receiveTimeout: Duration(seconds: 5),
+        connectTimeout: Duration(seconds: 10),
+        sendTimeout: Duration(seconds: 10),
+        receiveTimeout: Duration(seconds: 10),
         headers: {
           'Content-Type': 'application/json',
           //authriztion header
         },
       ),
     );
-
+    
+    //TODO: remember to remove interceptors
     // Add logging interceptor for debugging
     dio.interceptors.add(LogInterceptor(
       request: true,
@@ -31,14 +32,14 @@ import 'package:flutter/foundation.dart';
   }
 
   // Factory constructors to create separate instances
-  //factory DioNetworkClient.posts() => DioNetworkClient(RealEndPoints.realPostsBaseUrl);
+  // factory DioNetworkClient.posts() => DioNetworkClient(RealEndPoints.realPostsBaseUrl);
   
 
 
   // Generic GET request with token and query parameters
   Future<Response> get(
     String path, {
-    required String token, // Add token parameter
+    String? token, // Add token parameter
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
@@ -58,14 +59,18 @@ import 'package:flutter/foundation.dart';
 
   // Generic POST request with token and data
   Future<Response> post(
-    String path, {
- // Add token parameter
+    String path,
+     {
+      String? token,
     Map<String, dynamic>? data,
   }) async {
     try {
       final response = await dio.post(
         path,
         data: data,
+        options: Options(headers: {
+          'Authorization': 'Bearer $token'
+        })
        // Add token dynamically
       );
       return response;
@@ -116,6 +121,7 @@ import 'package:flutter/foundation.dart';
   }
 
   // Error handling method
+  //TODO: remove kDebugMode
   void handleError(Object error) {
     if (error is DioException) {
       switch (error.type) {

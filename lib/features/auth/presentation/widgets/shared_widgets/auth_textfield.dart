@@ -13,7 +13,7 @@ class AuthTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final FocusNode? nextFocusNode;
   final Widget? PasswordSuffixIcon;
-  final TextEditingController? controller;
+  final TextEditingController controller;
 
   AuthTextField({
     super.key,

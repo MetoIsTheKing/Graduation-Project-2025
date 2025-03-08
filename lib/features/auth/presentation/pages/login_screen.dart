@@ -21,8 +21,8 @@ class _LogScreenState extends State<LoginScreen> {
   FocusNode nameFocus = FocusNode();
   FocusNode emailFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();
-  TextEditingController? emailController;
-  TextEditingController? passwordController;
+  final TextEditingController emailController= TextEditingController();
+  final TextEditingController passwordController= TextEditingController();
 
   bool _passwordObsecurity = true;
 

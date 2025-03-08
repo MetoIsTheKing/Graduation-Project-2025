@@ -34,9 +34,9 @@ class _SearchAirportState extends State<SearchAirport> {
 
   @override
   Widget build(BuildContext context) {
-    print('device screen width : ${deviceInfoo.screenWidth}');
     return InfoWidget(
       builder: (context, deviceinfo, constrains) {
+        print('device screen width : ${deviceInfoo.screenWidth}');
         print('width inside the info widget : ${deviceinfo.screenWidth}');
         return Scaffold(
           backgroundColor: Colors.white,
