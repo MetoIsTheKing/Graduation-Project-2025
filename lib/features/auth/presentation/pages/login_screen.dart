@@ -54,9 +54,9 @@ class _LogScreenState extends State<LoginScreen> {
         onTap: FocusScope.of(context).unfocus,
         child: Scaffold(
           backgroundColor: Colors.white,
-          appBar: AuthAppBar(
-            backButtonVisible: false,
-          ),
+          // appBar: AuthAppBar(
+          //   backButtonVisible: false,
+          // ),
           body: SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(

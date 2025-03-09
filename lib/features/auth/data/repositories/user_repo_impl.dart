@@ -7,9 +7,9 @@ class UserRepoImpl implements UserRepo {
   UserRepoImpl(this.usersRemote);
   @override
   Future<Map<String, dynamic>> register(
-      String path, Map<String, dynamic> requestbody) async {
-    final userResponse = await usersRemote.register(path, requestbody);
-    
+      Map<String, dynamic> requestbody) async {
+    final userResponse = await usersRemote.register(requestbody);
+
     final statusCode = userResponse.statusCode;
 
     final userModel = UserModel.fromJson(userResponse as Map<String, dynamic>);
@@ -19,8 +19,8 @@ class UserRepoImpl implements UserRepo {
 
     return {
       'statusCode': statusCode,
-      'success': userRegisteredStatus, 
+      'success': userRegisteredStatus,
       'data': userRegisteredData
-      };
+    };
   }
 }

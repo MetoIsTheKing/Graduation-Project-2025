@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
-import 'package:graduation_project_2025/config/routing/routes.dart';
-import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
@@ -10,10 +8,10 @@ import 'package:graduation_project_2025/core/responsive/Models/device_info.dart'
 final deviceInfo = getIt<DeviceInfo>();
 
 class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
-  
   final bool backButtonVisible;
+  final void Function() onPressed;
 
-  const AuthAppBar({super.key,  required this.backButtonVisible});
+  const AuthAppBar({super.key, required this.backButtonVisible, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +31,7 @@ class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ? deviceInfo.screenWidth * 0.07
                 : deviceInfo.screenHeight * 0.09,
           ),
-          onPressed: () {
-            context.pushReplacementNamed(Routes.logIn);
-          },
+          onPressed: onPressed,
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
@@ -9,16 +10,17 @@ import 'package:graduation_project_2025/features/auth/presentation/widgets/share
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/cod_balls.dart';
 
 class CodeVerification extends StatefulWidget {
-  const CodeVerification({super.key});
+  final String email;
+  const CodeVerification({super.key, required this.email});
 
   @override
   State<CodeVerification> createState() => _CodeVerificationState();
 }
 
 class _CodeVerificationState extends State<CodeVerification> {
-  final List<FocusNode> _codeFocus = List.generate(4, (index) => FocusNode());
+  final List<FocusNode> _codeFocus = List.generate(5, (index) => FocusNode());
   final List<TextEditingController> _codeController =
-      List.generate(4, (index) => TextEditingController());
+      List.generate(5, (index) => TextEditingController());
 
   void dispose() {
     for (var node in _codeFocus) {
@@ -47,7 +49,6 @@ class _CodeVerificationState extends State<CodeVerification> {
   Widget build(BuildContext context) {
     return InfoWidget(builder: (context, deviceInfo, constrains) {
       final fieldsSpacing = deviceInfo.screenHeight * 0.015;
-      print('this is code from Verification ---> ${deviceInfo.hashCode}');
 
       return GestureDetector(
         onTap: FocusScope.of(context).unfocus,
@@ -55,6 +56,7 @@ class _CodeVerificationState extends State<CodeVerification> {
           backgroundColor: Colors.white,
           appBar: AuthAppBar(
             backButtonVisible: true,
+            onPressed: () => context.pop(),
           ),
           body: SafeArea(
             child: Padding(
@@ -65,29 +67,26 @@ class _CodeVerificationState extends State<CodeVerification> {
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     AuthHeader(
                       title: AppStrings.codeVerificationTitle,
                       subtitle: AppStrings.forgetpasswordSubtitle,
                     ),
                     SizedBox(height: deviceInfo.screenHeight * 0.045),
-                    Row(
-                      children: List.generate(4, (index) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                              left: deviceInfo.screenWidth * .08),
-                          child: SizedBox(
-                            width: deviceInfo.screenWidth * .15,
-                            height: deviceInfo.screenWidth * .15,
-                            child: CodBalls(
-                              controller: _codeController[index],
-                              focusNode: _codeFocus[index],
-                              onchang: (value) => _nextField(value, index),
-                            ),
-                          ),
-                        );
-                      }),
+                    SizedBox(
+                      height: deviceInfo.screenHeight * 0.08,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: List.generate(5, (index) {
+                          return CodBalls(
+                            controller: _codeController[index],
+                            focusNode: _codeFocus[index],
+                            onchang: (value) => _nextField(value, index),
+                          );
+                        }),
+                      ),
                     ),
                     SizedBox(height: fieldsSpacing),
                     Form(
@@ -99,7 +98,12 @@ class _CodeVerificationState extends State<CodeVerification> {
                             label: 'Reset',
                             backgroundColor: AppColors.appBlue,
                             onPressed: () {
-                              clearFields();
+                              //clearFields();
+                              final String code = _codeController
+                                  .map((controller) => controller.text)
+                                  .join();
+                              print('Verification code: $code');
+                              print('email from signup: ${widget.email}');
                             },
                             textColor: Colors.white,
                           ),

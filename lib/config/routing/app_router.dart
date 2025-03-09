@@ -23,8 +23,8 @@ class AppRouter {
         );
       case Routes.logIn:
         return MaterialPageRoute(builder: (context) => LoginScreen());
-      case Routes.codeVerification:
-        return MaterialPageRoute(builder: (context) => CodeVerification());
+      // case Routes.codeVerification:
+      //   return MaterialPageRoute(builder: (context) => CodeVerification(email: ,));
       case Routes.forgetpassword:
         return MaterialPageRoute(builder: (context) => ForgetpasswordScreen());
       case Routes.signUp:

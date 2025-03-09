@@ -20,26 +20,30 @@ class CodBalls extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextStyle inputTextStyle = TextStyles.mediumDark16
         .copyWith(fontSize: deviceInfo.screenWidth * 0.04, color: Colors.black);
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        counterText: "",
-        border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(deviceInfo.screenWidth * .30)),
-        constraints: BoxConstraints(
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: deviceInfo.screenWidth * 0.01),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          counterText: "",
+          border: OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(deviceInfo.screenWidth * .8)),
+          constraints: BoxConstraints(
             maxWidth: deviceInfo.screenWidth * .15,
-            minHeight: deviceInfo.screenWidth * .15),
-        filled: true,
-        fillColor: AppColors.appGrey,
+            minHeight: deviceInfo.screenHeight * .11,
+          ),
+          filled: true,
+          fillColor: AppColors.appGrey,
+        ),
+        style: inputTextStyle,
+        keyboardType: TextInputType.text,
+        maxLength: 1,
+        textAlign: TextAlign.center,
+        //inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        focusNode: focusNode,
+        onChanged: onchang,
       ),
-      style: inputTextStyle,
-      keyboardType: TextInputType.number,
-      maxLength: 1,
-      textAlign: TextAlign.center,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-      focusNode: focusNode,
-      onChanged: onchang,
     );
   }
 }

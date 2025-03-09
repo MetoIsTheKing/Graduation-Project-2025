@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:graduation_project_2025/core/network_clients/clients/fake_users_client.dart';
 
 abstract class UsersRemote {
-  Future<Response> register(String path, Map<String, dynamic> requestbody);
+  Future<Response> register(Map<String, dynamic> requestbody , { String? path});
   Future<Response> logIn(String path, Map<String, dynamic> requestbody);
   Future<Response> verifyEmail(String path, Map<String, dynamic> requestbody);
   Future<Response> resendVerification(
@@ -17,10 +17,10 @@ class UsersRemoteImpl implements UsersRemote {
   // POST/register
   @override
   Future<Response> register(
-      String path, Map<String, dynamic> requestbody) async {
+      Map<String, dynamic> requestbody , { String? path}) async {
     try {
       final response = await fakeUsersClient.post(
-        path,
+        'register',
         data: requestbody,
       );
       return response;

@@ -1,5 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 
@@ -7,6 +8,8 @@ import 'package:graduation_project_2025/core/responsive/ui_component/info_widget
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/core/utils/app_strings.dart';
+import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:graduation_project_2025/features/auth/presentation/pages/code_verification.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_footer.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_textfield.dart';
@@ -90,161 +93,188 @@ class _SignupScreenState extends State<SignupScreen> {
 
       return GestureDetector(
         onTap: FocusScope.of(context).unfocus,
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AuthAppBar(
-            backButtonVisible: true,
-          ),
-          body: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: deviceInfo.screenHeight * 0.01,
-                horizontal: deviceInfo.screenWidth * 0.04,
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AuthHeader(
-                      title: AppStrings.signupTitle,
-                      subtitle: AppStrings.signupSubtitle,
-                    ),
-                    SizedBox(height: deviceInfo.screenHeight * 0.045),
-                    Form(
-                      child: Column(
-                        children: [
-                          AuthTextField(
-                            prefix: 'First name',
-                            hint: 'Enter First name',
-                            keyboardType: TextInputType.name,
-                            focusNode: firstNameFocus,
-                            needValidation: true,
-                            nextFocusNode: emailFocus,
-                            controller: firstNameController,
-                          ),
-                          SizedBox(height: fieldsSpacing),
-                          AuthTextField(
-                            prefix: 'last name',
-                            hint: 'Enter Last name',
-                            keyboardType: TextInputType.name,
-                            focusNode: lastNameFocus,
-                            needValidation: true,
-                            nextFocusNode: emailFocus,
-                            controller: lastNameController,
-                          ),
-                          SizedBox(height: fieldsSpacing),
-                          AuthTextField(
-                            prefix: 'Email',
-                            hint: 'Enter Email',
-                            keyboardType: TextInputType.emailAddress,
-                            needValidation: true,
-                            focusNode: emailFocus,
-                            nextFocusNode: passwordFocus,
-                            controller: emailController,
-                          ),
-                          SizedBox(height: fieldsSpacing),
-                          AuthTextField(
-                            prefix: 'Password',
-                            hint: 'Enter Password',
-                            keyboardType: TextInputType.visiblePassword,
-                            isPassword: _passwordObsecurity,
-                            PasswordSuffixIcon: passwordSuffixIcon(),
-                            needValidation: true,
-                            focusNode: passwordFocus,
-                            nextFocusNode: confirmPasswordFocus,
-                            controller: passwordController,
-                          ),
-                          SizedBox(height: fieldsSpacing),
-                          AuthTextField(
-                            prefix: 'Confirm Pass.',
-                            hint: 'Confirm Password',
-                            keyboardType: TextInputType.visiblePassword,
-                            isPassword: _passwordObsecurity,
-                            PasswordSuffixIcon: passwordSuffixIcon(),
-                            needValidation: true,
-                            focusNode: confirmPasswordFocus,
-                            controller: confirmPasswordController,
-                          ),
-                          SizedBox(height: fieldsSpacing),
-                          AuthTextField(
-                            prefix: 'Phone',
-                            hint: 'Enter Phone number',
-                            keyboardType: TextInputType.phone,
-                            needValidation: true,
-                            focusNode: phoneFocus,
-                            controller: phoneController,
-                          ),
-                          SizedBox(height: fieldsSpacing),
-                          CustomCountryPickerField(
-                            deviceInfo: deviceInfo,
-                            prefix: 'location',
-                            hint: 'Choose Country',
-                            onCountrySelected: onCountrySelected,
-                            selectedCountry: selectedCountry,
-                          ),
-                          //SizedBox(height: fieldsSpacing),
-                          // CustomDatePickerField(
-                          //   deviceInfo: deviceInfo,
-                          //   prefix: "Birth Date",
-                          //   hint: "Select Date",
-                          //   onDateSelected: onDateSelected,
-                          //   selectedDate: selectedDate,
-                          // ),
-                          SizedBox(height: fieldsSpacing),
-                          CustomRoundedButton(
-                            deviceInfo: deviceInfo,
-                            label: 'Sign Up',
-                            backgroundColor: AppColors.appBlue,
-                            onPressed: () {
-                              //context.pushReplacementNamed(Routes.mainHome);
-                              print('first name : ${firstNameController.text}');
-                              print('last name : ${lastNameController.text}');
-                              print('email : ${emailController.text}');
-                              print('password : ${passwordController.text}');
-                              print(
-                                  'confirm password : ${confirmPasswordController.text}');
-                              print('phone : ${phoneController.text}');
-                              print('country : ${selectedCountry?.name}');
-                            },
-                            textColor: Colors.white,
-                          ),
-                          SizedBox(
-                            height: deviceInfo.screenHeight * 0.005,
-                          ),
-                          CustomDivider(),
-                          CustomRoundedButton(
-                            deviceInfo: deviceInfo,
-                            label: 'Sign Up with Google',
-                            backgroundColor: AppColors.appBlue,
-                            onPressed: () {},
-                            textColor: Colors.white,
-                            assetIcon: 'assets/images/google_icon.png',
-                          ),
-                          SizedBox(
-                            height: deviceInfo.screenHeight * 0.005,
-                          ),
-                          CustomRoundedButton(
-                            deviceInfo: deviceInfo,
-                            label: 'Sign Up with Facebook',
-                            backgroundColor: AppColors.appBlue,
-                            onPressed: () {},
-                            textColor: Colors.white,
-                            assetIcon: 'assets/images/facebook_icon.png',
-                          ),
-                        ],
+        child: BlocListener<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state is AuthSignUpFailed) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(state.statusCode.toString())));
+            }
+          },
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AuthAppBar(
+              backButtonVisible: true,
+              onPressed: () => context.pop(),
+            ),
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: deviceInfo.screenHeight * 0.01,
+                  horizontal: deviceInfo.screenWidth * 0.04,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AuthHeader(
+                        title: AppStrings.signupTitle,
+                        subtitle: AppStrings.signupSubtitle,
                       ),
-                    ),
-                    SizedBox(
-                      height: deviceInfo.screenHeight * 0.06,
-                    ),
-                    AuthFooter(
-                      isSignup: true,
-                    ),
-                    SizedBox(
-                      height: deviceInfo.screenHeight * 0.06,
-                    ),
-                  ],
+                      SizedBox(height: deviceInfo.screenHeight * 0.045),
+                      Form(
+                        child: Column(
+                          children: [
+                            AuthTextField(
+                              prefix: 'First name',
+                              hint: 'Enter First name',
+                              keyboardType: TextInputType.name,
+                              focusNode: firstNameFocus,
+                              needValidation: true,
+                              nextFocusNode: emailFocus,
+                              controller: firstNameController,
+                            ),
+                            SizedBox(height: fieldsSpacing),
+                            AuthTextField(
+                              prefix: 'last name',
+                              hint: 'Enter Last name',
+                              keyboardType: TextInputType.name,
+                              focusNode: lastNameFocus,
+                              needValidation: true,
+                              nextFocusNode: emailFocus,
+                              controller: lastNameController,
+                            ),
+                            SizedBox(height: fieldsSpacing),
+                            AuthTextField(
+                              prefix: 'Email',
+                              hint: 'Enter Email',
+                              keyboardType: TextInputType.emailAddress,
+                              needValidation: true,
+                              focusNode: emailFocus,
+                              nextFocusNode: passwordFocus,
+                              controller: emailController,
+                            ),
+                            SizedBox(height: fieldsSpacing),
+                            AuthTextField(
+                              prefix: 'Password',
+                              hint: 'Enter Password',
+                              keyboardType: TextInputType.visiblePassword,
+                              isPassword: _passwordObsecurity,
+                              PasswordSuffixIcon: passwordSuffixIcon(),
+                              needValidation: true,
+                              focusNode: passwordFocus,
+                              nextFocusNode: confirmPasswordFocus,
+                              controller: passwordController,
+                            ),
+                            SizedBox(height: fieldsSpacing),
+                            AuthTextField(
+                              prefix: 'Confirm Pass.',
+                              hint: 'Confirm Password',
+                              keyboardType: TextInputType.visiblePassword,
+                              isPassword: _passwordObsecurity,
+                              PasswordSuffixIcon: passwordSuffixIcon(),
+                              needValidation: true,
+                              focusNode: confirmPasswordFocus,
+                              controller: confirmPasswordController,
+                            ),
+                            SizedBox(height: fieldsSpacing),
+                            AuthTextField(
+                              prefix: 'Phone',
+                              hint: 'Enter Phone number',
+                              keyboardType: TextInputType.phone,
+                              needValidation: true,
+                              focusNode: phoneFocus,
+                              controller: phoneController,
+                            ),
+                            SizedBox(height: fieldsSpacing),
+                            CustomCountryPickerField(
+                              deviceInfo: deviceInfo,
+                              prefix: 'location',
+                              hint: 'Choose Country',
+                              onCountrySelected: onCountrySelected,
+                              selectedCountry: selectedCountry,
+                            ),
+                            //SizedBox(height: fieldsSpacing),
+                            // CustomDatePickerField(
+                            //   deviceInfo: deviceInfo,
+                            //   prefix: "Birth Date",
+                            //   hint: "Select Date",
+                            //   onDateSelected: onDateSelected,
+                            //   selectedDate: selectedDate,
+                            // ),
+                            SizedBox(height: fieldsSpacing),
+                            CustomRoundedButton(
+                              deviceInfo: deviceInfo,
+                              label: 'Sign Up',
+                              backgroundColor: AppColors.appBlue,
+                              onPressed: () {
+                                //context.pushReplacementNamed(Routes.mainHome);
+                                print(
+                                    'first name : ${firstNameController.text}');
+                                print('last name : ${lastNameController.text}');
+                                print('email : ${emailController.text}');
+                                print('password : ${passwordController.text}');
+                                print(
+                                    'confirm password : ${confirmPasswordController.text}');
+                                print('phone : ${phoneController.text}');
+                                print('country : ${selectedCountry?.name}');
+                                final requestBody = {
+                                  'firstName': firstNameController.text,
+                                  'lastName': lastNameController.text,
+                                  'email': emailController.text,
+                                  'password': passwordController.text,
+                                  'phoneNumber': phoneController.text,
+                                  'country': selectedCountry?.name,
+                                };
+                                context.read<AuthCubit>().register(requestBody);
+                                if (context.read<AuthCubit>().state
+                                    is AuthSignUpSuccess) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => CodeVerification(
+                                      email: emailController.text,
+                                    ),
+                                  ));
+                                }
+                              },
+                              textColor: Colors.white,
+                            ),
+                            SizedBox(
+                              height: deviceInfo.screenHeight * 0.005,
+                            ),
+                            CustomDivider(),
+                            CustomRoundedButton(
+                              deviceInfo: deviceInfo,
+                              label: 'Sign Up with Google',
+                              backgroundColor: AppColors.appBlue,
+                              onPressed: () {},
+                              textColor: Colors.white,
+                              assetIcon: 'assets/images/google_icon.png',
+                            ),
+                            SizedBox(
+                              height: deviceInfo.screenHeight * 0.005,
+                            ),
+                            CustomRoundedButton(
+                              deviceInfo: deviceInfo,
+                              label: 'Sign Up with Facebook',
+                              backgroundColor: AppColors.appBlue,
+                              onPressed: () {},
+                              textColor: Colors.white,
+                              assetIcon: 'assets/images/facebook_icon.png',
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: deviceInfo.screenHeight * 0.06,
+                      ),
+                      AuthFooter(
+                        isSignup: true,
+                      ),
+                      SizedBox(
+                        height: deviceInfo.screenHeight * 0.06,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
