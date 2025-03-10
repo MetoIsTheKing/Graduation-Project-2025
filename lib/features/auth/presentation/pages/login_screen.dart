@@ -6,7 +6,6 @@ import 'package:graduation_project_2025/core/responsive/ui_component/info_widget
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/core/utils/app_strings.dart';
-import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_footer.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_textfield.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/divider.dart';
@@ -22,8 +21,8 @@ class LoginScreen extends StatefulWidget {
 class _LogScreenState extends State<LoginScreen> {
   FocusNode emailFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();
-  final TextEditingController emailController= TextEditingController();
-  final TextEditingController passwordController= TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   bool _passwordObsecurity = true;
 
@@ -101,7 +100,9 @@ class _LogScreenState extends State<LoginScreen> {
                             deviceInfo: deviceInfo,
                             label: 'Log in',
                             backgroundColor: AppColors.appBlue,
-                            onPressed: () {},
+                            onPressed: () {
+                              context.pushNamed(Routes.mainHome);
+                            },
                             textColor: Colors.white,
                           ),
                           SizedBox(

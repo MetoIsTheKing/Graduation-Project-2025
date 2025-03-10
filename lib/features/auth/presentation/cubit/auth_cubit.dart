@@ -1,33 +1,81 @@
 import 'package:bloc/bloc.dart';
 import 'package:graduation_project_2025/features/auth/domain/repositories/user_repo.dart';
 
-
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final UserRepo userRepo;
   AuthCubit(this.userRepo) : super(AuthInitial());
 
+  //TODO: do i need try & catch ????
   Future<void> register(Map<String, dynamic> requestbody) async {
-    emit(AuthSignUpIsLoading());
+    emit(SignUpIsLoading());
+    print('state now is : $state');
     try {
       final response = await userRepo.register(requestbody);
       if (response['statusCode'] == 201) {
-        emit(AuthSignUpSuccess(
-          data: response['data'],
-          statusCode: response['statusCode'],
-          success: response['success'],
+        emit(SignUpSuccess());
+        print('state now is : $state');
+      } else if (response['statusCode'] == 409) {
+        emit(SignUpEmailAlreadyExists(
+          message: 'Email Already Exists',
         ));
+        print('state now is : $state');
       } else {
-        emit(AuthSignUpFailed(
-          message: 'not success',
-          statusCode: response['statusCode'],
+        emit(SignUpFailed(
+          message: 'An Error Occured , Please Try Again Later',
         ));
+        print('state now is in try : $state');
       }
     } catch (e) {
-      emit(AuthSignUpFailed(
+      emit(SignUpFailed(
         message: e.toString(),
       ));
+      print('state now is in catch : $state');
+    }
+  }
+
+  Future<void> verifyEmail(Map<String, dynamic> requestbody) async {
+    emit(VerificationStates(
+      isLoading: true,
+      isSuccess: false,
+      error: null,
+    ));
+    print('state now is Loading');
+
+    try {
+      final response = await userRepo.verifyEmail(requestbody);
+      if (response['statusCode'] == 201) {
+        emit(VerificationStates(
+          isLoading: false,
+          isSuccess: true,
+          error: null,
+        ));
+        print('state now is Success');
+        return;
+      } else if (response['statusCode'] == 400) {
+        emit(VerificationStates(
+          isLoading: false,
+          isSuccess: false,
+          error: 'Invalid or Expired Verification Code',
+        ));
+        print('state now is Invalid or Expired Verification Code');
+        return;
+      } else {
+        emit(VerificationStates(
+          isLoading: false,
+          isSuccess: false,
+          error: 'An Error Occured , Please Try Again Later',
+        ));
+        print('state now is An Error Occured , Please Try Again Later');
+      }
+    } catch (e) {
+      emit(VerificationStates(
+        isLoading: false,
+        isSuccess: false,
+        error: e.toString(),
+      ));
+      print('state now is Unknown Error');
     }
   }
 }

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/core/utils/app_strings.dart';
+import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_footer.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_header.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/cod_balls.dart';
+import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/error_toast.dart';
 
 class CodeVerification extends StatefulWidget {
   final String email;
@@ -93,19 +97,49 @@ class _CodeVerificationState extends State<CodeVerification> {
                       child: Column(
                         children: [
                           SizedBox(height: fieldsSpacing),
-                          CustomRoundedButton(
-                            deviceInfo: deviceInfo,
-                            label: 'Reset',
-                            backgroundColor: AppColors.appBlue,
-                            onPressed: () {
-                              //clearFields();
-                              final String code = _codeController
-                                  .map((controller) => controller.text)
-                                  .join();
-                              print('Verification code: $code');
-                              print('email from signup: ${widget.email}');
+                          BlocConsumer<AuthCubit, AuthState>(
+                            listener: (context, state) {
+                              if (state is VerificationStates) {
+                                if (!state.isSuccess && !state.isLoading) {
+                                  errorToast(
+                                    title: 'Error',
+                                    description: state.error!,
+                                  ).show(context);
+                                } else if (state.isSuccess &&
+                                    !state.isLoading) {
+                                  successToast(
+                                          title: 'Success',
+                                          description:
+                                              'your account has been verified')
+                                      .show(context);
+                                  Future.delayed(const Duration(seconds: 1));
+                                  context.pushReplacementNamed(Routes.logIn);
+                                }
+                              }
                             },
-                            textColor: Colors.white,
+                            builder: (context, state) {
+                              return CustomRoundedButton(
+                                deviceInfo: deviceInfo,
+                                isLoading: state is VerificationStates &&
+                                    state.isLoading,
+                                label: 'Verify',
+                                backgroundColor: AppColors.appBlue,
+                                onPressed: () {
+                                  //clearFields();
+                                  final String code = _codeController
+                                      .map((controller) => controller.text)
+                                      .join();
+                                  //final emailTest = '3laahanylol@gmail.com';
+                                  //final codeTest = '2R4FQ';
+
+                                  context.read<AuthCubit>().verifyEmail(
+                                      {'email': widget.email, 'code': code});
+                                  print('Verification code: $code');
+                                  print('email from signup: ${widget.email}');
+                                },
+                                textColor: Colors.white,
+                              );
+                            },
                           ),
                         ],
                       ),

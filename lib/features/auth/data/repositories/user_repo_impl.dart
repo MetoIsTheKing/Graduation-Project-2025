@@ -5,22 +5,44 @@ import 'package:graduation_project_2025/features/auth/domain/repositories/user_r
 class UserRepoImpl implements UserRepo {
   final UsersRemote usersRemote;
   UserRepoImpl(this.usersRemote);
+
   @override
   Future<Map<String, dynamic>> register(
-      Map<String, dynamic> requestbody) async {
-    final userResponse = await usersRemote.register(requestbody);
+      Map<String, dynamic> requestBody) async {
+    final userResponse = await usersRemote.register(requestBody);
+    final statusCode = userResponse['statusCode'];
 
-    final statusCode = userResponse.statusCode;
+    if (statusCode == 201) {
+      return {
+        'statusCode': statusCode,
+      };
+    } else {
+      return {
+        'statusCode': statusCode,
+      };
+    }
+  }
 
-    final userModel = UserModel.fromJson(userResponse as Map<String, dynamic>);
-
-    final userRegisteredStatus = userModel.success;
-    final userRegisteredData = userModel.data;
-
-    return {
-      'statusCode': statusCode,
-      'success': userRegisteredStatus,
-      'data': userRegisteredData
-    };
+  @override
+  Future<Map<String, dynamic>> verifyEmail(
+      Map<String, dynamic> requestBody) async {
+    final verificationResponse = await usersRemote.verifyEmail(requestBody);
+    final statusCode = verificationResponse['statusCode'];
+    if (statusCode == 201) {
+      return {
+        'statusCode': statusCode,
+        'message': 'Email Verified Successfully',
+      };
+    } else if (statusCode == 400) {
+      return {
+        'statusCode': statusCode,
+        'message': 'Invalid or Expired Verification Code',
+      };
+    } else {
+      return {
+        'statusCode': statusCode,
+        'message': 'An Error Occured , Please Try Again Later',
+      };
+    }
   }
 }

@@ -21,7 +21,7 @@ class AuthFooter extends StatelessWidget {
           onTap: () {
             isSignup
                 ? context.pushNamed(Routes.logIn)
-                : context.pushNamed(Routes.signUp);
+                : Navigator.of(context).pushNamed(Routes.signUp);
           },
           child: Text(isSignup ? "Login" : 'Sign Up',
               style: TextStyles.semiBoldDark32

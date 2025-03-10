@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
- // needed to be abstracted??
- class DioNetworkClient {
+//TODO: needed to be abstracted??
+class DioNetworkClient {
   late Dio dio;
 
   DioNetworkClient(String baseUrl) {
@@ -16,9 +16,13 @@ import 'package:flutter/foundation.dart';
           'Content-Type': 'application/json',
           //authriztion header
         },
+        validateStatus: (status) {
+          return status != null && (status < 500);
+          // Accepts any response with status < 500, including 409
+        },
       ),
     );
-    
+
     //TODO: remember to remove interceptors
     // Add logging interceptor for debugging
     dio.interceptors.add(LogInterceptor(
@@ -33,8 +37,6 @@ import 'package:flutter/foundation.dart';
 
   // Factory constructors to create separate instances
   // factory DioNetworkClient.posts() => DioNetworkClient(RealEndPoints.realPostsBaseUrl);
-  
-
 
   // Generic GET request with token and query parameters
   Future<Response> get(
@@ -59,20 +61,16 @@ import 'package:flutter/foundation.dart';
 
   // Generic POST request with token and data
   Future<Response> post(
-    String path,
-     {
-      String? token,
+    String path, {
+    String? token,
     Map<String, dynamic>? data,
   }) async {
     try {
-      final response = await dio.post(
-        path,
-        data: data,
-        options: Options(headers: {
-          'Authorization': 'Bearer $token'
-        })
-       // Add token dynamically
-      );
+      final response = await dio.post(path,
+          data: data,
+          options: Options(headers: {'Authorization': 'Bearer $token'})
+          // Add token dynamically
+          );
       return response;
     } catch (e) {
       handleError(e);
