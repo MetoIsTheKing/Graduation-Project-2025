@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:graduation_project_2025/config/dependency_injection/di.dart';
-import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
+
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
+import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flights_utils.dart';
 
 class RadioTilesRow extends StatelessWidget {
@@ -14,7 +14,7 @@ class RadioTilesRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deviceInfo = getIt<DeviceInfo>();
+    //final deviceInfo = getIt<DeviceInfo>();
 
     return Row(
       children: [
@@ -24,6 +24,9 @@ class RadioTilesRow extends StatelessWidget {
               value: 'option1',
               groupValue: selectedFlightType,
               onChanged: onSelectedFlightType),
+        ),
+        SizedBox(
+          width: deviceInfo.screenWidth * 0.05,
         ),
         Text('one-way', style: FlightsUtils.radiotileTextStyle),
         Expanded(
@@ -35,6 +38,9 @@ class RadioTilesRow extends StatelessWidget {
               onSelectedFlightType(value);
             },
           ),
+        ),
+        SizedBox(
+          width: deviceInfo.screenWidth * 0.05,
         ),
         Text(
           'Round-trip',
@@ -49,6 +55,9 @@ class RadioTilesRow extends StatelessWidget {
               onSelectedFlightType(value);
             },
           ),
+        ),
+        SizedBox(
+          width: deviceInfo.screenWidth * 0.05,
         ),
         Text('Multi-city', style: FlightsUtils.radiotileTextStyle),
       ],

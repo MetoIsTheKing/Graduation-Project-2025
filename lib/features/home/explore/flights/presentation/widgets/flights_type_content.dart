@@ -23,6 +23,7 @@ class FlightsTypeContent extends StatelessWidget {
     required this.onTravellersFieldTapped,
     required this.onToFieldTapped,
     required this.onFromFieldTaped,
+    this.ismultiCity = false,
   });
   final TextEditingController fromController;
   final TextEditingController toController;
@@ -32,6 +33,7 @@ class FlightsTypeContent extends StatelessWidget {
   final Function(DateTime) onDepartureDateSelected;
   final Function(DateTime) onReturnDateSelected;
   final bool? isTwoWay;
+  final bool? ismultiCity;
   final Function()? onChangeButtonPressed;
   final void Function() onSearchFlightsPressed;
   final void Function() onTravellersFieldTapped;
@@ -119,16 +121,6 @@ class FlightsTypeContent extends StatelessWidget {
           label: 'select travellers',
           onTap: onTravellersFieldTapped,
         ),
-        SizedBox(
-          height: deviceInfo.screenHeight * 0.05,
-        ),
-        CustomRoundedButton(
-          deviceInfo: deviceInfo,
-          label: 'Search Flights',
-          backgroundColor: AppColors.appBlue,
-          onPressed: onSearchFlightsPressed,
-          textColor: Colors.white,
-        )
       ],
     );
   }

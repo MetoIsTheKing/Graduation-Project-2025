@@ -11,7 +11,8 @@ class FlightsUtils {
   static final titleStyle = TextStyles.semiBold18(deviceInfo, Colors.white);
   static final subTitleStyle = TextStyles.bold34(deviceInfo, Colors.white);
   static final radiotileTextStyle =
-      TextStyles.semiBold18(deviceInfo, AppColors.appBlack);
+      TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
+          .copyWith(fontSize: deviceInfo.screenWidth * 0.03);
   static final fieldLabelStyle =
       TextStyles.semiBold18(deviceInfo, AppColors.appBlack);
   static final TextStyle hintTextStyle = TextStyles.mediumDark16
@@ -24,5 +25,8 @@ class FlightsUtils {
   static final radioTilesRowWidth = deviceInfo.screenWidth * 0.75;
   static final double fieldBorderRaduis = deviceInfo.screenHeight * 0.02;
 
-  //Functions
+  //Durations
+  static final Duration horizontalAnimationDuration =
+      Duration(milliseconds: 300);
+  static final Duration verticalAnimationDuration = Duration(milliseconds: 300);
 }
