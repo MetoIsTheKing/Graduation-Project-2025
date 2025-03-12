@@ -4,20 +4,22 @@ import 'package:intl/intl.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 
-class FlightsDatePickerField extends StatelessWidget {
+class FlightsDatePickerWidget extends StatelessWidget {
   final DeviceInfo deviceInfo;
   final String hint;
-  final DateTime? selectedDate;
+  final DateTime? departureDate;
+  final DateTime? returnDate;
   final String? prefixIcon;
-  final Function(DateTime) onDateSelected;
+  final Function(DateTime?) onDateSelected;
 
-  const FlightsDatePickerField({
+  const FlightsDatePickerWidget({
     super.key,
     required this.deviceInfo,
     required this.hint,
-    required this.selectedDate,
+    required this.departureDate,
     required this.onDateSelected,
     this.prefixIcon,
+    this.returnDate,
   });
 
   void _openDatePicker(BuildContext context) async {
@@ -42,7 +44,7 @@ class FlightsDatePickerField extends StatelessWidget {
               SizedBox(
                 height: deviceInfo.screenHeight * 0.5,
                 child: CalendarDatePicker(
-                  initialDate: selectedDate ?? DateTime.now(),
+                  initialDate: departureDate ?? DateTime.now(),
                   firstDate: DateTime(1900),
                   lastDate: DateTime(2100),
                   onDateChanged: (date) {
@@ -59,6 +61,14 @@ class FlightsDatePickerField extends StatelessWidget {
                     onPressed: () => Navigator.pop(context),
                     child: const Text("Cancel",
                         style: TextStyle(color: Colors.red)),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      onDateSelected(null); // Reset date to null
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Reset",
+                        style: TextStyle(color: Colors.orange)),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -111,14 +121,29 @@ class FlightsDatePickerField extends StatelessWidget {
                   : null,
             ),
             Expanded(
-              child: Text(
-                selectedDate != null
-                    ? DateFormat("dd/MM/yyyy").format(selectedDate!)
-                    : hint,
-                style: selectedDate != null
-                    ? FlightsUtils.fieldInputStyle
-                    : FlightsUtils.hintTextStyle,
-                overflow: TextOverflow.ellipsis,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    departureDate != null
+                        ? DateFormat("MMMM d, yyyy").format(departureDate!)
+                        : hint,
+                    style: departureDate != null
+                        ? FlightsUtils.fieldInputStyle
+                        : FlightsUtils.hintTextStyle,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.only(right: deviceInfo.screenWidth * 0.03),
+                    child: Text(
+                      returnDate != null
+                          ? DateFormat("MMMM d, yyyy").format(returnDate!)
+                          : 'gggg',
+                      style: FlightsUtils.fieldInputStyle,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

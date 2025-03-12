@@ -4,12 +4,12 @@ import 'package:graduation_project_2025/core/responsive/Models/device_info.dart'
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flights_utils.dart';
 
-class FlightsField extends StatelessWidget {
+class FlightsFieldWidget extends StatelessWidget {
   final TextEditingController? controller;
   final String prefixIcon;
   final String label;
   final Function()? onTap;
-  const FlightsField({
+  const FlightsFieldWidget({
     super.key,
     required this.controller,
     required this.prefixIcon,

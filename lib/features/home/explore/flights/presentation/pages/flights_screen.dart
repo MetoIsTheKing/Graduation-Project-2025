@@ -6,10 +6,12 @@ import 'package:graduation_project_2025/core/responsive/Models/device_info.dart'
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_card_model.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_actions_model.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
 
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flights_utils.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_type_content.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_card_widget.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_form_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/radio_tiles_row.dart';
 
 class FlightsScreen extends StatefulWidget {
@@ -23,15 +25,26 @@ class _FlightsScreenState extends State<FlightsScreen> {
   String? selectedFlightType = 'option1';
   final PageController _pageController = PageController(initialPage: 0);
   double _pageViewHeight = 0;
-  bool _isAnimating = false;
 
-  final TextEditingController fromController = TextEditingController();
-  final TextEditingController toController = TextEditingController();
-  final TextEditingController travellersController = TextEditingController();
-  DateTime? departureDate;
-  DateTime? returnDate;
-  List<FlightCardModel>? multiCityList;
+  final FlightModel flightModel = FlightModel();
+  late final FlightActionsModel flightActionsModel;
 
+  List<FlightModel> multiCityList = [];
+  @override
+  void initState() {
+    super.initState();
+    flightActionsModel = FlightActionsModel(
+      onDepartureDateSelected: onDepartureDateSelected,
+      onReturnDateSelected: onReturnDateSelected,
+      onFromFieldTaped: onFromFieldTaped,
+      onToFieldTapped: onToFieldTaped,
+      onTravellersFieldTapped: onTravellersFieldTaped,
+      onChangePressed: onChangeButtonPressed,
+      onAddReturnDateTapped: () {},
+    );
+  }
+
+  ///////////////////////////////// Radio tile functions //////////////////////////////
   void onSelectedFlightType(String? value) {
     setState(() {
       selectedFlightType = value;
@@ -43,12 +56,9 @@ class _FlightsScreenState extends State<FlightsScreen> {
       } else {
         pageIndex = 2;
       }
-      // Set _isAnimating to true before starting the animation
-      _isAnimating = true;
-
       // Update the height of the AnimatedContainer first
-      _pageViewHeight = _getPageHeight(pageIndex);
-
+      // -1 is for the default height during animation
+      _pageViewHeight = _getPageHeight(-1);
       // Delay the horizontal animation to allow the vertical animation to complete first
       Future.delayed(FlightsUtils.verticalAnimationDuration, () {
         _pageController
@@ -60,51 +70,68 @@ class _FlightsScreenState extends State<FlightsScreen> {
             .then((_) {
           // Set _isAnimating to false after the animation completes
           setState(() {
-            _isAnimating = false;
             _pageViewHeight = _getPageHeight(pageIndex);
           });
         });
       });
     });
   }
+  ///////////////////////////////// Radio tile functions //////////////////////////////
 
-  void onChangeButtonPressed() {
-    String temp = fromController.text;
-    setState(() {
-      fromController.text = toController.text;
-      toController.text = temp;
-    });
-  }
-
+  ///////////////////////////////// Date Selection functions //////////////////////////////
   void onDepartureDateSelected(DateTime? selectedDate) {
     setState(() {
-      departureDate = selectedDate;
+      flightModel.departureDate = selectedDate;
     });
   }
 
   void onReturnDateSelected(DateTime? selectedDate) {
     setState(() {
-      returnDate = selectedDate;
+      flightModel.returnDate = selectedDate;
     });
   }
+  ///////////////////////////////// Date Selection functions //////////////////////////////
 
+  ///////////////////////////////// Buttons onPress functions //////////////////////////////
   void onSearchFlightsPressed() {
     setState(() {
-      fromController.text = "ggggggggg";
-      toController.text = "hhhhhhhhhhh";
+      flightModel.fromController.text = "ggggggggg";
+      flightModel.toController.text = "hhhhhhhhhhh";
     });
   }
 
   void onaddAnotherFlightPressed() {
     setState(() {
-      fromController.text = "ggggggggg";
-      toController.text = "hhhhhhhhhhh";
+      multiCityList.add(FlightModel());
     });
   }
 
+  void onaddReturnDatePressed() {}
+
+  void onChangeButtonPressed() {
+    String temp = flightModel.fromController.text;
+    setState(() {
+      flightModel.fromController.text = flightModel.toController.text;
+      flightModel.toController.text = temp;
+    });
+    dev.log(
+        "Changed flight details: from ${flightModel.fromController.text} to ${flightModel.toController.text}");
+  }
+
+  void onDeleteCardPressed(int index) {
+    setState(() {
+      multiCityList.removeAt(index);
+    });
+  }
+  ///////////////////////////////// Buttons onPress functions //////////////////////////////
+
+  ///////////////////////////////// Fields onTap functions //////////////////////////////
   void onFromFieldTaped() {}
+
   void onToFieldTaped() {}
+
   void onTravellersFieldTaped() {}
+///////////////////////////////// Fields onTap functions //////////////////////////////
 
   @override
   Widget build(BuildContext context) {
@@ -119,25 +146,14 @@ class _FlightsScreenState extends State<FlightsScreen> {
                 child: Image.asset('assets/images/global_map.png'),
               ),
               Scaffold(
-                appBar: AppBar(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.transparent,
-                  centerTitle: true,
-                  title: Text(
-                    'Search Flights',
-                    style: FlightsUtils.titleStyle,
-                  ),
-                ),
+                appBar: FlightsUtils.appBar,
                 backgroundColor: Colors.transparent,
                 body: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: deviceInfo.screenWidth * 0.05,
-                          vertical: deviceInfo.screenHeight * 0.03,
-                        ),
+                        padding: FlightsUtils.subTitlePadding,
                         child: Text(
                           'Discover\na new World',
                           style: FlightsUtils.subTitleStyle,
@@ -145,10 +161,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: deviceInfo.screenWidth * 0.02,
-                          vertical: deviceInfo.screenHeight * 0.01,
-                        ),
+                        padding: FlightsUtils.whiteContainerPadding,
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -169,12 +182,8 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                   onSelectedFlightType: onSelectedFlightType,
                                 ),
                               ),
-                              SizedBox(
-                                height: deviceInfo.screenHeight * 0.02,
-                              ),
                               Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: deviceInfo.screenWidth * 0.05),
+                                padding: FlightsUtils.mainContentPadding,
                                 child: Column(
                                   children: [
                                     LayoutBuilder(
@@ -183,64 +192,63 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                           duration: FlightsUtils
                                               .verticalAnimationDuration,
                                           height: _pageViewHeight,
+                                          //////////////// pageView
                                           child: PageView(
                                             controller: _pageController,
                                             physics:
                                                 NeverScrollableScrollPhysics(),
-                                            onPageChanged: (index) {
-                                              setState(() {
-                                                _pageViewHeight =
-                                                    _getPageHeight(index);
-                                              });
-                                            },
                                             children: [
-                                              FlightsTypeContent(
-                                                fromController: fromController,
-                                                toController: toController,
-                                                travellersController:
-                                                    travellersController,
-                                                selectedDate: departureDate,
-                                                onDepartureDateSelected:
-                                                    onDepartureDateSelected,
-                                                onReturnDateSelected:
-                                                    onReturnDateSelected,
-                                                onChangeButtonPressed:
-                                                    onChangeButtonPressed,
-                                                onSearchFlightsPressed:
-                                                    onSearchFlightsPressed,
-                                                onFromFieldTaped:
-                                                    onFromFieldTaped,
-                                                onToFieldTapped: onToFieldTaped,
-                                                onTravellersFieldTapped:
-                                                    onTravellersFieldTaped,
+                                              FlightsFormWidget(
+                                                flightModel: flightModel,
+                                                flightActionsModel:
+                                                    flightActionsModel,
                                               ),
-                                              FlightsTypeContent(
-                                                fromController: fromController,
-                                                toController: toController,
-                                                travellersController:
-                                                    travellersController,
-                                                selectedDate: departureDate,
+                                              FlightsFormWidget(
+                                                flightModel: flightModel,
+                                                flightActionsModel:
+                                                    flightActionsModel,
                                                 isTwoWay: true,
-                                                returnDate: returnDate,
-                                                onDepartureDateSelected:
-                                                    onDepartureDateSelected,
-                                                onReturnDateSelected:
-                                                    onReturnDateSelected,
-                                                onChangeButtonPressed:
-                                                    onChangeButtonPressed,
-                                                onSearchFlightsPressed:
-                                                    onSearchFlightsPressed,
-                                                onFromFieldTaped:
-                                                    onFromFieldTaped,
-                                                onToFieldTapped: onToFieldTaped,
-                                                onTravellersFieldTapped:
-                                                    onTravellersFieldTaped,
                                               ),
-                                              Text("Hello", style: TextStyle()),
+                                              ListView.builder(
+                                                itemCount: multiCityList.length,
+                                                itemBuilder: (context, index) {
+                                                  final FlightModel
+                                                      flightCardModel =
+                                                      multiCityList[index];
+                                                  // you can remove the below
+                                                  flightCardModel.fromController
+                                                      .text = "$index";
+                                                  flightCardModel.toController
+                                                      .text = "${index + 1}";
+                                                  dev.log(
+                                                      "fromController.text: ${flightCardModel.fromController.text}");
+                                                  return Column(
+                                                    children: [
+                                                      FlightCardWidget(
+                                                        flightModel:
+                                                            flightCardModel,
+                                                        flightActionsModel:
+                                                            flightActionsModel,
+                                                        onDeleteCardPressed:
+                                                            onDeleteCardPressed,
+                                                        index: index,
+                                                      ),
+                                                      SizedBox(
+                                                        height: deviceInfo
+                                                                .screenHeight *
+                                                            0.02,
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ),
                                             ],
                                           ),
                                         );
                                       },
+                                    ),
+                                    SizedBox(
+                                      height: deviceInfo.screenHeight * 0.02,
                                     ),
                                     selectedFlightType == 'option3'
                                         ? Column(
@@ -265,7 +273,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                       deviceInfo: deviceInfo,
                                       label: 'Search Flights',
                                       backgroundColor: AppColors.appBlue,
-                                      onPressed: onSearchFlightsPressed,
+                                      onPressed: () => onSearchFlightsPressed(),
                                       textColor: Colors.white,
                                     ),
                                   ],
@@ -292,10 +300,6 @@ class _FlightsScreenState extends State<FlightsScreen> {
   double _getPageHeight(int index) {
     final deviceInfo = getIt<DeviceInfo>();
 
-    // Return a special height during animations
-    if (_isAnimating) {
-      return deviceInfo.screenHeight; // Special height during animations
-    }
     // Return the height for each page based on the index
     switch (index) {
       case 0:
@@ -303,9 +307,9 @@ class _FlightsScreenState extends State<FlightsScreen> {
       case 1:
         return deviceInfo.screenHeight * 0.7; // Height for the second page
       case 2:
-        return deviceInfo.screenHeight * 0.4; // Height for the third page
+        return deviceInfo.screenHeight * 0.55; // Height for the third page
       default:
-        return deviceInfo.screenHeight * 0.5; // Default height
+        return deviceInfo.screenHeight; // Default height during animation
     }
   }
 }

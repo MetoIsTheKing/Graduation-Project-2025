@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
-class FlightCardModel {
+class FlightModel {
   final TextEditingController fromController = TextEditingController();
   final TextEditingController toController = TextEditingController();
   final TextEditingController travellersController = TextEditingController();
   DateTime? departureDate;
+  DateTime? returnDate;
+  FlightModel({
+    this.departureDate,
+    this.returnDate,
+  });
 }

@@ -7,26 +7,75 @@ import 'package:graduation_project_2025/core/utils/app_colors.dart';
 class FlightsUtils {
   static final deviceInfo = getIt<DeviceInfo>();
 
-  //Styles
+  ///////////////////////////// Styles ////////////////////////////////////
   static final titleStyle = TextStyles.semiBold18(deviceInfo, Colors.white);
   static final subTitleStyle = TextStyles.bold34(deviceInfo, Colors.white);
   static final radiotileTextStyle =
       TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
           .copyWith(fontSize: deviceInfo.screenWidth * 0.03);
   static final fieldLabelStyle =
-      TextStyles.semiBold18(deviceInfo, AppColors.appBlack);
+      TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
+          .copyWith(fontSize: deviceInfo.screenWidth * 0.03);
+  static final cardLabelStyle = TextStyles.regular16(deviceInfo, Colors.white)
+      .copyWith(fontSize: deviceInfo.screenWidth * 0.03);
   static final TextStyle hintTextStyle = TextStyles.mediumDark16
       .copyWith(fontSize: deviceInfo.screenWidth * 0.03, color: Colors.grey);
   static final TextStyle fieldInputStyle = TextStyles.mediumDark16
       .copyWith(fontSize: deviceInfo.screenWidth * 0.03, color: Colors.black);
+  ///////////////////////////// Styles ////////////////////////////////////
 
-  //Dimensions
+  ///////////////////////////// Dimensions ////////////////////////////////////
+
   static final backGroundBorderRadius = deviceInfo.screenHeight * 0.05;
   static final radioTilesRowWidth = deviceInfo.screenWidth * 0.75;
   static final double fieldBorderRaduis = deviceInfo.screenHeight * 0.02;
+  static final double cardBorderRadius = deviceInfo.screenHeight * 0.02;
+  static final double deleteButtonBorderRadius = deviceInfo.screenHeight * 0.05;
 
-  //Durations
+  ///////////////////////////// Dimensions ////////////////////////////////////
+
+  ///////////////////////////// Paddings ////////////////////////////////////
+
+  static final EdgeInsets cardHeaderPadding = EdgeInsets.symmetric(
+    horizontal: deviceInfo.screenWidth * 0.03,
+    vertical: deviceInfo.screenHeight * 0.01,
+  );
+  static final EdgeInsets cardContentPadding = EdgeInsets.symmetric(
+    horizontal: deviceInfo.screenWidth * 0.03,
+    vertical: deviceInfo.screenHeight * 0.02,
+  );
+  static final EdgeInsets subTitlePadding = EdgeInsets.symmetric(
+    horizontal: deviceInfo.screenWidth * 0.05,
+    vertical: deviceInfo.screenHeight * 0.03,
+  );
+  static final EdgeInsets whiteContainerPadding = EdgeInsets.symmetric(
+    horizontal: deviceInfo.screenWidth * 0.02,
+    vertical: deviceInfo.screenHeight * 0.01,
+  );
+  static final EdgeInsets mainContentPadding = EdgeInsets.symmetric(
+    horizontal: deviceInfo.screenWidth * 0.05,
+    vertical: deviceInfo.screenHeight * 0.02,
+  );
+  ///////////////////////////// Paddings ////////////////////////////////////
+
+  ///////////////////////////// Durations ////////////////////////////////////
+
   static final Duration horizontalAnimationDuration =
       Duration(milliseconds: 300);
-  static final Duration verticalAnimationDuration = Duration(milliseconds: 300);
+  static final Duration verticalAnimationDuration = Duration(milliseconds: 250);
+
+  ///////////////////////////// Durations ////////////////////////////////////
+
+  ///////////////////////////// Widgets ////////////////////////////////////
+
+  static final AppBar appBar = AppBar(
+    foregroundColor: Colors.white,
+    backgroundColor: Colors.transparent,
+    centerTitle: true,
+    title: Text(
+      'Search Flights',
+      style: FlightsUtils.titleStyle,
+    ),
+  );
+  ///////////////////////////// Widgets ////////////////////////////////////
 }
