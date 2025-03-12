@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
-import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_actions_model.dart';
 
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
@@ -43,27 +42,30 @@ class FlightsFormWidget extends StatelessWidget {
           label: 'select start location',
           onTap: flightActionsModel.onFromFieldTaped,
         ),
-        SizedBox(
-          height: deviceInfo.screenHeight * 0.01,
-        ),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text(
-              'To',
-              style: FlightsUtils.fieldLabelStyle,
+            Padding(
+              padding: EdgeInsets.only(bottom: deviceInfo.screenHeight * 0.01),
+              child: Text(
+                'To',
+                style: FlightsUtils.fieldLabelStyle,
+              ),
             ),
             IconButton(
               onPressed: () => flightActionsModel.onChangePressed(),
               icon: Image.asset(
                 'assets/images/flights_change.png',
+                width: deviceInfo.screenWidth * 0.06,
               ),
             ),
           ],
         ),
-        SizedBox(
-          height: deviceInfo.screenHeight * 0.005,
-        ),
+        // SizedBox(
+        //   height: deviceInfo.screenHeight * 0.005,
+        // ),
         FlightsFieldWidget(
           controller: flightModel.toController,
           prefixIcon: 'assets/images/flight_to.png',
@@ -87,10 +89,10 @@ class FlightsFormWidget extends StatelessWidget {
           departureDate: flightModel.departureDate,
           onDateSelected: flightActionsModel.onDepartureDateSelected,
         ),
-        isTwoWay ? additionalReturnDate() : SizedBox(),
         SizedBox(
           height: deviceInfo.screenHeight * 0.03,
         ),
+        isTwoWay ? additionalReturnDate() : SizedBox(),
         Text(
           'Travelers',
           style: FlightsUtils.fieldLabelStyle,
@@ -109,56 +111,56 @@ class FlightsFormWidget extends StatelessWidget {
   }
 
   Widget additionalReturnDate() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            IconButton(
-                onPressed: flightActionsModel.onAddReturnDateTapped,
-                icon: Icon(
-                  Icons.add,
-                  color: AppColors.appBlue,
-                )),
-            Text(
-              'add return date?',
-              style: FlightsUtils.fieldLabelStyle,
-            ),
-          ],
-        ),
-      ],
-    );
-    //   } else {
-    //     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-    //       Row(
-    //         children: [
-    //           IconButton(
-    //               onPressed: () {},
-    //               icon: Icon(
-    //                 Icons.minimize,
-    //                 color: Colors.red,
-    //               )),
-    //           Text(
-    //             'Return Date',
-    //             style: FlightsUtils.fieldLabelStyle,
-    //           ),
-    //         ],
-    //       ),
-    //       SizedBox(
-    //         height: deviceInfo.screenHeight * 0.01,
-    //       ),
-    //       FlightsDatePickerWidget(
-    //         deviceInfo: deviceInfo,
-    //         hint: 'select return date',
-    //         prefixIcon: 'assets/images/flights_calender.png',
-    //         selectedDate: flightModel.returnDate,
-    //         onDateSelected: flightActionsModel.onReturnDateSelected,
-    //       ),
-    //       SizedBox(
-    //         height: deviceInfo.screenHeight * 0.03,
-    //       ),
-    //     ]);
-    //   }
-    // }
+    final deviceInfo = getIt<DeviceInfo>();
+    // return Column(
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children: [
+    //     Row(
+    //       children: [
+    //         IconButton(
+    //             onPressed: flightActionsModel.onAddReturnDateTapped,
+    //             icon: Icon(
+    //               Icons.add,
+    //               color: AppColors.appBlue,
+    //             )),
+    //         Text(
+    //           'add return date?',
+    //           style: FlightsUtils.fieldLabelStyle,
+    //         ),
+    //       ],
+    //     ),
+    //   ],
+    // );
+    //
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Row(
+        children: [
+          // IconButton(
+          //     onPressed: () {},
+          //     icon: Icon(
+          //       Icons.minimize,
+          //       color: Colors.red,
+          //     )),
+          Text(
+            'Return Date',
+            style: FlightsUtils.fieldLabelStyle,
+          ),
+        ],
+      ),
+      SizedBox(
+        height: deviceInfo.screenHeight * 0.01,
+      ),
+      FlightsDatePickerWidget(
+        deviceInfo: deviceInfo,
+        hint: 'select return date',
+        prefixIcon: 'assets/images/flights_calender.png',
+        selectedDate: flightModel.returnDate,
+        onDateSelected: flightActionsModel.onReturnDateSelected,
+        departureDate: null,
+      ),
+      SizedBox(
+        height: deviceInfo.screenHeight * 0.01,
+      ),
+    ]);
   }
 }

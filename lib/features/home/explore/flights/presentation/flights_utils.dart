@@ -31,6 +31,9 @@ class FlightsUtils {
   static final double fieldBorderRaduis = deviceInfo.screenHeight * 0.02;
   static final double cardBorderRadius = deviceInfo.screenHeight * 0.02;
   static final double deleteButtonBorderRadius = deviceInfo.screenHeight * 0.05;
+  static final double firstPageHeight = deviceInfo.screenHeight * 0.48;
+  static final double secondPageHeight = deviceInfo.screenHeight * 0.57;
+  static final double thirdPageHeight = deviceInfo.screenHeight * 0.45;
 
   ///////////////////////////// Dimensions ////////////////////////////////////
 
@@ -68,14 +71,5 @@ class FlightsUtils {
 
   ///////////////////////////// Widgets ////////////////////////////////////
 
-  static final AppBar appBar = AppBar(
-    foregroundColor: Colors.white,
-    backgroundColor: Colors.transparent,
-    centerTitle: true,
-    title: Text(
-      'Search Flights',
-      style: FlightsUtils.titleStyle,
-    ),
-  );
   ///////////////////////////// Widgets ////////////////////////////////////
 }

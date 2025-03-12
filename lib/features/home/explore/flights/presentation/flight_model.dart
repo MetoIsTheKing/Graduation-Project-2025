@@ -10,4 +10,9 @@ class FlightModel {
     this.departureDate,
     this.returnDate,
   });
+  void dispose() {
+    fromController.dispose();
+    toController.dispose();
+    travellersController.dispose();
+  }
 }

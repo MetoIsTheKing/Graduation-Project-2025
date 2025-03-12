@@ -20,6 +20,7 @@ class FlightsDatePickerWidget extends StatelessWidget {
     required this.onDateSelected,
     this.prefixIcon,
     this.returnDate,
+    DateTime? selectedDate,
   });
 
   void _openDatePicker(BuildContext context) async {
@@ -139,7 +140,7 @@ class FlightsDatePickerWidget extends StatelessWidget {
                     child: Text(
                       returnDate != null
                           ? DateFormat("MMMM d, yyyy").format(returnDate!)
-                          : 'gggg',
+                          : '',
                       style: FlightsUtils.fieldInputStyle,
                     ),
                   ),

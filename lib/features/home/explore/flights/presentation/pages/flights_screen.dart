@@ -2,6 +2,8 @@ import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
+import 'package:graduation_project_2025/config/routing/routes.dart';
+import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
@@ -22,6 +24,7 @@ class FlightsScreen extends StatefulWidget {
 }
 
 class _FlightsScreenState extends State<FlightsScreen> {
+  final deviceInfo = getIt<DeviceInfo>();
   String? selectedFlightType = 'option1';
   final PageController _pageController = PageController(initialPage: 0);
   double _pageViewHeight = 0;
@@ -33,6 +36,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
   @override
   void initState() {
     super.initState();
+    _pageViewHeight = FlightsUtils.firstPageHeight;
     flightActionsModel = FlightActionsModel(
       onDepartureDateSelected: onDepartureDateSelected,
       onReturnDateSelected: onReturnDateSelected,
@@ -40,8 +44,18 @@ class _FlightsScreenState extends State<FlightsScreen> {
       onToFieldTapped: onToFieldTaped,
       onTravellersFieldTapped: onTravellersFieldTaped,
       onChangePressed: onChangeButtonPressed,
-      onAddReturnDateTapped: () {},
+      onAddReturnDateTapped: onaddReturnDatePressed,
     );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    flightModel.dispose();
+    for (var flight in multiCityList) {
+      flight.dispose();
+    }
+    super.dispose();
   }
 
   ///////////////////////////////// Radio tile functions //////////////////////////////
@@ -140,13 +154,41 @@ class _FlightsScreenState extends State<FlightsScreen> {
         child: Scaffold(
           body: Stack(
             children: [
-              Container(
-                padding: EdgeInsets.only(top: deviceInfo.screenHeight * 0.08),
-                color: AppColors.appBlue,
-                child: Image.asset('assets/images/global_map.png'),
+              Column(
+                children: [
+                  Container(
+                    padding:
+                        EdgeInsets.only(top: deviceInfo.screenHeight * 0.08),
+                    color: AppColors.appBlue,
+                    child: Image.asset('assets/images/global_map.png'),
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
               Scaffold(
-                appBar: FlightsUtils.appBar,
+                appBar: AppBar(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.transparent,
+                  centerTitle: true,
+                  leading: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                      size: deviceInfo.screenWidth * 0.04,
+                    ),
+                    onPressed: () {
+                      context.pushReplacementNamed(Routes.mainHome);
+                    },
+                  ),
+                  title: Text(
+                    'Search Flights',
+                    style: FlightsUtils.titleStyle,
+                  ),
+                ),
                 backgroundColor: Colors.transparent,
                 body: SingleChildScrollView(
                   child: Column(
@@ -303,11 +345,11 @@ class _FlightsScreenState extends State<FlightsScreen> {
     // Return the height for each page based on the index
     switch (index) {
       case 0:
-        return deviceInfo.screenHeight * 0.55; // Height for the first page
+        return FlightsUtils.firstPageHeight; // Height for the first page
       case 1:
-        return deviceInfo.screenHeight * 0.7; // Height for the second page
+        return FlightsUtils.secondPageHeight; // Height for the second page
       case 2:
-        return deviceInfo.screenHeight * 0.55; // Height for the third page
+        return FlightsUtils.thirdPageHeight; // Height for the third page
       default:
         return deviceInfo.screenHeight; // Default height during animation
     }
