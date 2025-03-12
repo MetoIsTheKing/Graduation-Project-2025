@@ -6,4 +6,6 @@ class Routes {
   static const String signUp = '/signUp';
   static const String flights = '/flights';
   static const String onBoarding = '/onBoarding';
+  static const String codeVerification = '/codeVerification';
+  static const String forgetpassword = '/forgetpassword';
 }
