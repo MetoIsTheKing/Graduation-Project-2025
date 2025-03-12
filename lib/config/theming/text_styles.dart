@@ -77,7 +77,7 @@ class TextStyles {
 
   static TextStyle medium20(DeviceInfo deviceInfo, Color color) {
     return TextStyle(
-      fontSize: deviceInfo.screenHeight * 0.024,
+      fontSize: deviceInfo.screenHeight * 0.026,
       color: color,
       fontWeight: FontWeight.w500,
     );
@@ -85,7 +85,15 @@ class TextStyles {
 
   static TextStyle medium16(DeviceInfo deviceInfo, Color color) {
     return TextStyle(
-      fontSize: deviceInfo.screenHeight * 0.018,
+      fontSize: deviceInfo.screenHeight * 0.0185,
+      color: color,
+      fontWeight: FontWeight.w500,
+    );
+  }
+
+  static TextStyle medium12(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenHeight * 0.016,
       color: color,
       fontWeight: FontWeight.w500,
     );

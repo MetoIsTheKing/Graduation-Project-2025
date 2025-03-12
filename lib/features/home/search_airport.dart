@@ -5,6 +5,7 @@ import 'package:graduation_project_2025/core/responsive/Models/device_info.dart'
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/airport_text_input.dart';
+import 'package:graduation_project_2025/features/home/explore/presentation/flight_search_results_screen.dart';
 import 'package:graduation_project_2025/features/home/search_custom_tile.dart';
 import 'package:graduation_project_2025/features/home/curved_appbar.dart';
 
@@ -41,7 +42,12 @@ class _SearchAirportState extends State<SearchAirport> {
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: CurvedAppbar(
-            title: widget.appBarTitle,
+            backgroundColor: AppColors.appBlue,
+            backButtonColor: Colors.white,
+            titleWidget: Text(
+              widget.appBarTitle,
+              style: TextStyles.medium20(deviceinfo, Colors.white),
+            ),
             onBack: widget.onBack,
           ),
           body: SafeArea(
@@ -67,7 +73,9 @@ class _SearchAirportState extends State<SearchAirport> {
                   tileBorderColor: Colors.grey,
                   tileFillColor: Colors.white,
                   onTap: () {
-                    //print('clicked');
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            const FlightSearchResultsScreen()));
                   },
                 ),
                 Padding(

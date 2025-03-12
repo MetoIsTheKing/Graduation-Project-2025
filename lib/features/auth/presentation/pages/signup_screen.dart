@@ -1,9 +1,6 @@
-import 'package:cherry_toast/cherry_toast.dart';
-import 'package:cherry_toast/resources/arrays.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
@@ -12,7 +9,6 @@ import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/core/utils/app_strings.dart';
 import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:graduation_project_2025/features/auth/presentation/pages/code_verification.dart';
-import 'package:graduation_project_2025/features/auth/presentation/pages/login_screen.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_footer.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_textfield.dart';
@@ -20,7 +16,6 @@ import 'package:graduation_project_2025/features/auth/presentation/widgets/share
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_header.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/error_toast.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/country_picker.dart';
-import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/date_picker.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -45,6 +40,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController phoneController = TextEditingController();
   Country? selectedCountry;
   DateTime? selectedDate;
+  
 
   bool _passwordObsecurity = true;
 
@@ -261,6 +257,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                   context
                                       .read<AuthCubit>()
                                       .register(requestBody);
+
+                                  //email :
+                                  //code    :
                                   // errorToast(
                                   //   title: 'Error',
                                   //   description: 'Something went wrong',
