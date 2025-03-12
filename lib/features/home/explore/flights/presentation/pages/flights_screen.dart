@@ -15,6 +15,7 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_card_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_form_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/radio_tiles_row.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/search_airports/presentation/pages/search_airport.dart';
 
 class FlightsScreen extends StatefulWidget {
   const FlightsScreen({super.key});
@@ -150,9 +151,11 @@ class _FlightsScreenState extends State<FlightsScreen> {
   @override
   Widget build(BuildContext context) {
     return InfoWidget(builder: (context, deviceInfo, constrains) {
-      return SafeArea(
-        child: Scaffold(
-          body: Stack(
+      return Scaffold(
+        backgroundColor: AppColors.appBlue,
+        body: SafeArea(
+          bottom: false,
+          child: Stack(
             children: [
               Column(
                 children: [
@@ -191,6 +194,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                 ),
                 backgroundColor: Colors.transparent,
                 body: SingleChildScrollView(
+                  physics: ClampingScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -315,7 +319,18 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                       deviceInfo: deviceInfo,
                                       label: 'Search Flights',
                                       backgroundColor: AppColors.appBlue,
-                                      onPressed: () => onSearchFlightsPressed(),
+                                      onPressed: () {
+                                        onSearchFlightsPressed();
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => SearchAirport(
+                                              appBarTitle: 'Search Origin',
+                                              isOrigin: true,
+                                              onBack: context.pop,
+                                            ),
+                                          ),
+                                        );
+                                      },
                                       textColor: Colors.white,
                                     ),
                                   ],

@@ -4,11 +4,12 @@ import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 
-class FlightsUtils {
-  static final deviceInfo = getIt<DeviceInfo>();
+final deviceInfo = getIt<DeviceInfo>();
 
+class FlightsUtils {
   ///////////////////////////// Styles ////////////////////////////////////
-  static final titleStyle = TextStyles.semiBold18(deviceInfo, Colors.white);
+  static final titleStyle =
+      TextStyles.semiBold18(getIt<DeviceInfo>(), Colors.white);
   static final subTitleStyle = TextStyles.bold34(deviceInfo, Colors.white);
   static final radiotileTextStyle =
       TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
@@ -31,7 +32,7 @@ class FlightsUtils {
   static final double fieldBorderRaduis = deviceInfo.screenHeight * 0.02;
   static final double cardBorderRadius = deviceInfo.screenHeight * 0.02;
   static final double deleteButtonBorderRadius = deviceInfo.screenHeight * 0.05;
-  static final double firstPageHeight = deviceInfo.screenHeight * 0.52;
+  static final double firstPageHeight = deviceInfo.screenHeight * 0.4;
   static final double secondPageHeight = deviceInfo.screenHeight * 0.63;
   static final double thirdPageHeight = deviceInfo.screenHeight * 0.45;
 

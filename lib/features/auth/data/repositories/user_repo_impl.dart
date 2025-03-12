@@ -1,5 +1,4 @@
 import 'package:graduation_project_2025/features/auth/data/datasources/users_remote.dart';
-import 'package:graduation_project_2025/features/auth/data/models/user_model.dart';
 import 'package:graduation_project_2025/features/auth/domain/repositories/user_repo.dart';
 
 class UserRepoImpl implements UserRepo {

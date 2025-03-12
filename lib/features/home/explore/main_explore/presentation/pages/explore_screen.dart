@@ -1,15 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project_2025/config/routing/app_router.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
-import 'package:graduation_project_2025/features/home/explore/presentation/widgets/hotel_recomendation_card.dart';
-import 'package:graduation_project_2025/features/home/explore/presentation/widgets/profile_header.dart';
-import 'package:graduation_project_2025/features/home/explore/presentation/widgets/quick_action_button.dart';
-import 'package:graduation_project_2025/features/home/explore/presentation/widgets/section_label.dart';
-import 'package:graduation_project_2025/features/home/explore/presentation/widgets/tour_card.dart';
+import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/widgets/hotel_recomendation_card.dart';
+import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/widgets/profile_header.dart';
+import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/widgets/quick_action_button.dart';
+import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/widgets/section_label.dart';
+import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/widgets/tour_card.dart';
 
 class ExploreScreen extends StatefulWidget {
   final ScrollController? scrollController;
