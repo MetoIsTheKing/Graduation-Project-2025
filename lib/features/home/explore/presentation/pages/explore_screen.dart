@@ -1,5 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/config/routing/app_router.dart';
+import 'package:graduation_project_2025/config/routing/routes.dart';
+import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/explore/presentation/widgets/hotel_recomendation_card.dart';
@@ -81,6 +84,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                   icon: 'assets/images/flight_icon.png',
                                   dimension: deviceInfo.screenHeight * 0.14,
                                   onPressed: () {
+                                    context
+                                        .pushReplacementNamed(Routes.flights);
                                     print('flight clicked');
                                   }),
                               QuickActionButton(

@@ -30,7 +30,7 @@ class AuthHeader extends StatelessWidget {
         Text(
           subtitle,
           style: TextStyles.mediumDark16
-              .copyWith(fontSize: deviceInfo.screenWidth * 0.03),
+              .copyWith(fontSize: deviceInfo.screenWidth * 0.035),
         ),
       ],
     );
