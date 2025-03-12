@@ -29,7 +29,8 @@ class AuthHeader extends StatelessWidget {
         ),
         Text(
           subtitle,
-          style: TextStyles.mediumDark16.copyWith(fontSize: 14),
+          style: TextStyles.mediumDark16
+              .copyWith(fontSize: deviceInfo.screenWidth * 0.035),
         ),
       ],
     );

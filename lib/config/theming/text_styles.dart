@@ -40,13 +40,16 @@ class TextStyles {
       fontSize: deviceInfo.screenWidth * 0.068,
       color: color,
       fontWeight: FontWeight.w600,
+      fontFamily: 'Poppins',
     );
   }
+
   static TextStyle semiBold12(DeviceInfo deviceInfo, Color color) {
     return TextStyle(
       fontSize: deviceInfo.screenWidth * 0.04,
       color: color,
       fontWeight: FontWeight.w600,
+      fontFamily: 'Poppins',
     );
   }
 
@@ -55,6 +58,7 @@ class TextStyles {
       fontSize: deviceInfo.screenWidth * 0.035,
       color: color,
       fontWeight: FontWeight.w400,
+      fontFamily: 'Poppins',
     );
   }
 
@@ -63,6 +67,16 @@ class TextStyles {
       fontSize: deviceInfo.screenWidth * 0.025,
       color: color,
       fontWeight: FontWeight.w400,
+      fontFamily: 'Poppins',
+    );
+  }
+
+  static TextStyle regular16(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenWidth * 0.045,
+      color: color,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Poppins',
     );
   }
 
@@ -71,6 +85,34 @@ class TextStyles {
       fontSize: deviceInfo.screenHeight * 0.02,
       color: color,
       fontWeight: FontWeight.w600,
+      fontFamily: 'Poppins',
+    );
+  }
+
+  static TextStyle semiBold18(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenHeight * 0.025,
+      color: color,
+      fontWeight: FontWeight.w600,
+      fontFamily: 'Poppins',
+    );
+  }
+
+  static TextStyle semiBold20(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenHeight * 0.03,
+      fontFamily: 'Poppins',
+      color: color,
+      fontWeight: FontWeight.w600,
+    );
+  }
+
+  static TextStyle bold34(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenHeight * 0.04,
+      fontFamily: 'Poppins',
+      color: color,
+      fontWeight: FontWeight.bold,
     );
   }
 }

@@ -63,8 +63,8 @@ class AuthTextField extends StatelessWidget {
     final double borderRaduis = deviceInfo.screenHeight * 0.055;
     final TextStyle hintTextStyle = TextStyles.mediumDark16
         .copyWith(fontSize: deviceInfo.screenWidth * 0.03, color: Colors.grey);
-    final TextStyle inputTextStyle = TextStyles.mediumDark16
-        .copyWith(fontSize: deviceInfo.screenWidth * 0.04, color: Colors.black);
+    final TextStyle inputTextStyle = TextStyles.mediumDark16.copyWith(
+        fontSize: deviceInfo.screenWidth * 0.035, color: Colors.black);
     /////////
     return TextFormField(
       controller: controller,
