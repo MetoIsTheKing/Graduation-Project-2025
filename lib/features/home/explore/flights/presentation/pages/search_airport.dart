@@ -4,10 +4,10 @@ import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/search_airports/presentation/widgets/airport_text_input.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/airport_text_input.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/flight_search_results_screen.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/search_airports/presentation/widgets/search_custom_tile.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/search_airports/presentation/widgets/curved_appbar.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_custom_tile.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/curved_appbar.dart';
 
 final deviceInfoo = getIt<DeviceInfo>();
 

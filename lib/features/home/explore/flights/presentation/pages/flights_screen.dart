@@ -15,7 +15,7 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_card_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_form_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/radio_tiles_row.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/search_airports/presentation/pages/search_airport.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_airport.dart';
 
 class FlightsScreen extends StatefulWidget {
   const FlightsScreen({super.key});
