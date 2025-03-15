@@ -84,10 +84,16 @@ class AuthCubit extends Cubit<AuthState> {
     print('state now is : $state');
     try {
       final response = await userRepo.login(requestbody);
+
       if (response['statusCode'] == 201) {
-        emit(LoginSuccess());
+        emit(
+          LoginSuccess(
+            accessToken: response['accessToken'],
+            refreshToken: response['refreshToken'],
+          ),
+        );
         print('state now is : $state');
-        print('response is -------------> : $response');
+        print('response is from Cubit -------------> : $response');
       } else if (response['statusCode'] == 401) {
         emit(LoginFailed(
           message: 'Invalid Email or Password',

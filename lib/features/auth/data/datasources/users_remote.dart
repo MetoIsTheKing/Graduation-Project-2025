@@ -63,6 +63,7 @@ class UsersRemoteImpl implements UsersRemote {
         'verify-email',
         data: requestbody,
       );
+
       return {
         'statusCode': response.statusCode,
         'data': response.data,

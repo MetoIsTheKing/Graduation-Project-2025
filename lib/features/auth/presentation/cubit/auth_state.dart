@@ -51,7 +51,11 @@ class LoginInitial extends AuthState {}
 
 class LoginIsLoading extends AuthState {}
 
-class LoginSuccess extends AuthState {}
+class LoginSuccess extends AuthState {
+  final String accessToken;
+  final String refreshToken;
+  LoginSuccess({required this.accessToken, required this.refreshToken});
+}
 
 class LoginFailed extends AuthState {
   final String message;

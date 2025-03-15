@@ -49,10 +49,13 @@ class UserRepoImpl implements UserRepo {
   Future<Map<String, dynamic>> login(Map<String, dynamic> requestbody) async {
     final loginResponse = await usersRemote.logIn(requestbody);
     final statusCode = loginResponse['statusCode'];
-    if (statusCode == 200) {
+
+    if (statusCode == 201) {
       return {
         'statusCode': statusCode,
         'message': 'Login Success',
+        'accessToken': loginResponse['data']['data']['accessToken'],
+        'refreshToken': loginResponse['data']['data']['refreshToken'],
       };
     } else if (statusCode == 401) {
       return {
