@@ -33,60 +33,67 @@ class FlightsDatePickerWidget extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: deviceInfo.screenHeight * 0.5,
-                child: CalendarDatePicker(
-                  initialDate: departureDate ?? DateTime.now(),
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime(2100),
-                  onDateChanged: (date) {
-                    pickedDate = date;
-                  },
+        return Theme(
+          data: ThemeData.light().copyWith(
+              focusColor: Colors.amberAccent, //OK/Cancel button text color
+              primaryColor: const Color(0xFF4A5BF6), //Head background
+              highlightColor: Colors.cyan //selection color
+              ),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 96, 88, 88),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: deviceInfo.screenHeight * 0.5,
+                  child: CalendarDatePicker(
+                    initialDate: departureDate ?? DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime(2100),
+                    onDateChanged: (date) {
+                      pickedDate = date;
+                    },
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              // Action Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text("Cancel",
-                        style: TextStyle(color: Colors.red)),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      onDateSelected(null); // Reset date to null
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Reset",
-                        style: TextStyle(color: Colors.orange)),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (pickedDate != null) {
-                        onDateSelected(pickedDate!);
-                      }
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.appBlue,
-                      foregroundColor: Colors.white,
+                const SizedBox(height: 10),
+                // Action Buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text("Cancel",
+                          style: TextStyle(color: Colors.red)),
                     ),
-                    child: const Text("Confirm"),
-                  ),
-                ],
-              ),
-            ],
+                    TextButton(
+                      onPressed: () {
+                        onDateSelected(null); // Reset date to null
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Reset",
+                          style: TextStyle(color: Colors.orange)),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (pickedDate != null) {
+                          onDateSelected(pickedDate!);
+                        }
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.appBlue,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text("Confirm"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },

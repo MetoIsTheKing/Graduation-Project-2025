@@ -140,7 +140,9 @@ class _FlightsScreenState extends State<FlightsScreen> {
   ///////////////////////////////// Buttons onPress functions //////////////////////////////
 
   ///////////////////////////////// Fields onTap functions //////////////////////////////
-  void onFromFieldTaped() {}
+  void onFromFieldTaped() {
+    dev.log("fromFieldTaped");
+  }
 
   void onToFieldTaped() {}
 

@@ -20,6 +20,7 @@ class _CodeVerificationState extends State<CodeVerification> {
   final List<TextEditingController> _codeController =
       List.generate(4, (index) => TextEditingController());
 
+  @override
   void dispose() {
     for (var node in _codeFocus) {
       node.dispose();

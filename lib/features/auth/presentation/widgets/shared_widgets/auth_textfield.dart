@@ -24,7 +24,7 @@ class AuthTextField extends StatelessWidget {
     this.needValidation = false,
     this.focusNode,
     this.nextFocusNode,
-    this.PasswordSuffixIcon = null,
+    this.PasswordSuffixIcon,
     required this.controller,
   }) : assert(!isPassword || PasswordSuffixIcon != null,
             'onToggleObscure is required when isPassword is true');
