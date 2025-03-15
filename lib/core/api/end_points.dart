@@ -1,3 +1,4 @@
 class EndPoints {
-  static const String baseUrl = "https://api.themoviedb.org/3/";
+  static const String fakeUsersBaseUrl = "http://13.81.120.153/users/";
+  static const String register = "register";
 }

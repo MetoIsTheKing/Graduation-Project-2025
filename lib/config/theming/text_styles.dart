@@ -46,7 +46,7 @@ class TextStyles {
 
   static TextStyle semiBold12(DeviceInfo deviceInfo, Color color) {
     return TextStyle(
-      fontSize: deviceInfo.screenWidth * 0.04,
+      fontSize: deviceInfo.screenWidth * 0.035,
       color: color,
       fontWeight: FontWeight.w600,
       fontFamily: 'Poppins',
@@ -64,7 +64,7 @@ class TextStyles {
 
   static TextStyle regular12(DeviceInfo deviceInfo, Color color) {
     return TextStyle(
-      fontSize: deviceInfo.screenWidth * 0.025,
+      fontSize: deviceInfo.screenWidth * 0.028,
       color: color,
       fontWeight: FontWeight.w400,
       fontFamily: 'Poppins',
@@ -113,6 +113,30 @@ class TextStyles {
       fontFamily: 'Poppins',
       color: color,
       fontWeight: FontWeight.bold,
+    );
+  }
+
+  static TextStyle medium20(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenHeight * 0.026,
+      color: color,
+      fontWeight: FontWeight.w500,
+    );
+  }
+
+  static TextStyle medium16(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenHeight * 0.0185,
+      color: color,
+      fontWeight: FontWeight.w500,
+    );
+  }
+
+  static TextStyle medium12(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenHeight * 0.016,
+      color: color,
+      fontWeight: FontWeight.w500,
     );
   }
 }

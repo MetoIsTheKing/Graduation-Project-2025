@@ -19,7 +19,7 @@ class ForgetpasswordScreen extends StatefulWidget {
 
 class _ForgetpasswordState extends State<ForgetpasswordScreen> {
   FocusNode emailFocus = FocusNode();
-  TextEditingController? emailController;
+  final TextEditingController emailController = TextEditingController();
 
   @override
   void dispose() {
@@ -39,6 +39,7 @@ class _ForgetpasswordState extends State<ForgetpasswordScreen> {
           backgroundColor: Colors.white,
           appBar: AuthAppBar(
             backButtonVisible: true,
+            onPressed: () => context.pop(),
           ),
           body: SafeArea(
             child: Padding(

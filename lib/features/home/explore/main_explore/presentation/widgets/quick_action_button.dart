@@ -23,7 +23,8 @@ class QuickActionButton extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-          padding: EdgeInsets.all(deviceInfo.screenWidth * 0.02),
+          clipBehavior: Clip.antiAlias,
+          //padding: EdgeInsets.all(deviceInfo.screenWidth * 0.01),
           margin:
               EdgeInsets.symmetric(horizontal: deviceInfo.screenWidth * 0.02),
           width: dimension,
@@ -39,7 +40,8 @@ class QuickActionButton extends StatelessWidget {
                 onPressed: null,
                 icon: Image.asset(
                   icon,
-                  scale: deviceInfo.screenWidth * 0.0045,
+                  width: dimension / 3,
+                  height: dimension / 3,
                 ),
               ),
               Text(

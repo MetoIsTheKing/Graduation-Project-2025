@@ -13,7 +13,7 @@ class AuthTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final FocusNode? nextFocusNode;
   final Widget? PasswordSuffixIcon;
-  final TextEditingController? controller;
+  final TextEditingController controller;
 
   AuthTextField({
     super.key,
@@ -43,7 +43,7 @@ class AuthTextField extends StatelessWidget {
     }
 
     if (keyboardType == TextInputType.visiblePassword) {
-      if (value.length < 8) return 'Password must be at least 8 characters';
+      if (value.length < 10) return 'Password must be at least 8 characters';
       if (!RegExp(r'[A-Z]').hasMatch(value)) {
         return 'Must contain at least one uppercase letter';
       }

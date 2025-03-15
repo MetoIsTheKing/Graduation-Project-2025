@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_2025/config/routing/routes.dart';
+import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/core/utils/app_strings.dart';
+import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_footer.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_header.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/cod_balls.dart';
+import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/error_toast.dart';
 
 class CodeVerification extends StatefulWidget {
-  const CodeVerification({super.key});
+  final String email;
+  const CodeVerification({super.key, required this.email});
 
   @override
   State<CodeVerification> createState() => _CodeVerificationState();
 }
 
 class _CodeVerificationState extends State<CodeVerification> {
-  final List<FocusNode> _codeFocus = List.generate(4, (index) => FocusNode());
+  final List<FocusNode> _codeFocus = List.generate(5, (index) => FocusNode());
   final List<TextEditingController> _codeController =
-      List.generate(4, (index) => TextEditingController());
+      List.generate(5, (index) => TextEditingController());
 
   @override
   void dispose() {
@@ -48,7 +54,6 @@ class _CodeVerificationState extends State<CodeVerification> {
   Widget build(BuildContext context) {
     return InfoWidget(builder: (context, deviceInfo, constrains) {
       final fieldsSpacing = deviceInfo.screenHeight * 0.015;
-      print('this is code from Verification ---> ${deviceInfo.hashCode}');
 
       return GestureDetector(
         onTap: FocusScope.of(context).unfocus,
@@ -56,6 +61,7 @@ class _CodeVerificationState extends State<CodeVerification> {
           backgroundColor: Colors.white,
           appBar: AuthAppBar(
             backButtonVisible: true,
+            onPressed: () => context.pop(),
           ),
           body: SafeArea(
             child: Padding(
@@ -66,43 +72,75 @@ class _CodeVerificationState extends State<CodeVerification> {
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     AuthHeader(
                       title: AppStrings.codeVerificationTitle,
                       subtitle: AppStrings.forgetpasswordSubtitle,
                     ),
                     SizedBox(height: deviceInfo.screenHeight * 0.045),
-                    Row(
-                      children: List.generate(4, (index) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                              left: deviceInfo.screenWidth * .08),
-                          child: SizedBox(
-                            width: deviceInfo.screenWidth * .15,
-                            height: deviceInfo.screenWidth * .15,
-                            child: CodBalls(
-                              controller: _codeController[index],
-                              focusNode: _codeFocus[index],
-                              onchang: (value) => _nextField(value, index),
-                            ),
-                          ),
-                        );
-                      }),
+                    SizedBox(
+                      height: deviceInfo.screenHeight * 0.08,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: List.generate(5, (index) {
+                          return CodBalls(
+                            controller: _codeController[index],
+                            focusNode: _codeFocus[index],
+                            onchang: (value) => _nextField(value, index),
+                          );
+                        }),
+                      ),
                     ),
                     SizedBox(height: fieldsSpacing),
                     Form(
                       child: Column(
                         children: [
                           SizedBox(height: fieldsSpacing),
-                          CustomRoundedButton(
-                            deviceInfo: deviceInfo,
-                            label: 'Reset',
-                            backgroundColor: AppColors.appBlue,
-                            onPressed: () {
-                              clearFields();
+                          BlocConsumer<AuthCubit, AuthState>(
+                            listener: (context, state) {
+                              if (state is VerificationStates) {
+                                if (!state.isSuccess && !state.isLoading) {
+                                  errorToast(
+                                    title: 'Error',
+                                    description: state.error!,
+                                  ).show(context);
+                                } else if (state.isSuccess &&
+                                    !state.isLoading) {
+                                  successToast(
+                                          title: 'Success',
+                                          description:
+                                              'your account has been verified')
+                                      .show(context);
+                                  Future.delayed(const Duration(seconds: 1));
+                                  context.pushReplacementNamed(Routes.logIn);
+                                }
+                              }
                             },
-                            textColor: Colors.white,
+                            builder: (context, state) {
+                              return CustomRoundedButton(
+                                deviceInfo: deviceInfo,
+                                isLoading: state is VerificationStates &&
+                                    state.isLoading,
+                                label: 'Verify',
+                                backgroundColor: AppColors.appBlue,
+                                onPressed: () {
+                                  //clearFields();
+                                  final String code = _codeController
+                                      .map((controller) => controller.text)
+                                      .join();
+                                  //final emailTest = '3laahanylol@gmail.com';
+                                  //final codeTest = '2R4FQ';
+
+                                  context.read<AuthCubit>().verifyEmail(
+                                      {'email': widget.email, 'code': code});
+                                  print('Verification code: $code');
+                                  print('email from signup: ${widget.email}');
+                                },
+                                textColor: Colors.white,
+                              );
+                            },
                           ),
                         ],
                       ),

@@ -40,7 +40,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return InfoWidget(builder: (context, deviceInfo,constrains) {
+    return InfoWidget(builder: (context, deviceInfo, constrains) {
       return Scaffold(
           backgroundColor: Colors.white,
           body: SafeArea(

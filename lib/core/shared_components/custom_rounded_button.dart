@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
+import 'package:graduation_project_2025/core/utils/app_colors.dart';
 
 class CustomRoundedButton extends StatelessWidget {
   final DeviceInfo deviceInfo;
@@ -9,6 +10,7 @@ class CustomRoundedButton extends StatelessWidget {
   final Color textColor;
   final VoidCallback onPressed;
   final String? assetIcon;
+  final bool isLoading;
   const CustomRoundedButton({
     super.key,
     required this.deviceInfo,
@@ -16,7 +18,7 @@ class CustomRoundedButton extends StatelessWidget {
     required this.backgroundColor,
     required this.onPressed,
     required this.textColor,
-    this.assetIcon,
+    this.assetIcon,  this.isLoading = false,
   });
 
   @override
@@ -25,13 +27,16 @@ class CustomRoundedButton extends StatelessWidget {
       padding: EdgeInsets.only(top: deviceInfo.screenHeight * 0.01),
       child: TextButton(
         style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(backgroundColor),
+          backgroundColor: WidgetStateProperty.all( isLoading ? AppColors.appYellow : backgroundColor),
           fixedSize: WidgetStateProperty.all(
             Size(deviceInfo.screenWidth, deviceInfo.screenHeight * 0.055),
           ),
         ),
-        onPressed: onPressed,
-        child: Row(
+        onPressed: isLoading ? null : onPressed,
+        child: isLoading ? SizedBox(
+          height: deviceInfo.screenHeight * 0.05,
+          child: CircularProgressIndicator(color: AppColors.appDarkBlue)) 
+          : Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (assetIcon != null) ...[
@@ -44,7 +49,8 @@ class CustomRoundedButton extends StatelessWidget {
             ],
             Text(
               label,
-              style: TextStyles.mediumWhite16.copyWith(color: textColor),
+              style: TextStyles.mediumWhite16.copyWith(
+                  color: textColor, fontSize: deviceInfo.screenWidth * 0.03),
             ),
           ],
         ),

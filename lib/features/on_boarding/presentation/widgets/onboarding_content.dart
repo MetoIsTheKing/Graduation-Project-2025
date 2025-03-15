@@ -37,12 +37,12 @@ class OnboardingContent extends StatelessWidget {
           child: ClipRRect(
             child: Image.asset(
               image,
-              scale: 1 / (deviceInfo.screenHeight * 0.001),
+              scale: 1 / (deviceInfo.screenHeight * 0.00065),
             ),
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(bottom: deviceInfo.screenHeight * 0.02),
+          padding: EdgeInsets.only(bottom: deviceInfo.screenHeight * 0.04),
           child: AnimatedSmoothIndicator(
             activeIndex: index,
             curve: Curves.bounceOut,
@@ -66,19 +66,18 @@ class OnboardingContent extends StatelessWidget {
           ),
         ),
         Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,
               style: TextStyles.semiBoldDark32
-                  .copyWith(fontSize: deviceInfo.screenHeight * 0.032),
+                  .copyWith(fontSize: deviceInfo.screenHeight * 0.04),
             ),
             Text(
               subTitle,
               style: TextStyles.mediumDark16.copyWith(
-                fontSize: deviceInfo.screenHeight * 0.018,
-                height: deviceInfo.screenHeight * 0.00128,
+                fontSize: deviceInfo.screenHeight * 0.02,
               ),
             ),
           ],

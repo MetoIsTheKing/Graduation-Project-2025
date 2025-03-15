@@ -35,7 +35,7 @@ class TourCard extends StatelessWidget {
           ),
           child: Container(
             color: Colors.white,
-            width: deviceInfo.screenWidth * 0.43,
+            width: deviceInfo.screenWidth * 0.4,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -90,22 +90,22 @@ class TourCard extends StatelessWidget {
                                 deviceInfo, AppColors.appBlue),
                           ),
                           const Spacer(),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: deviceInfo.screenWidth * 0.02,
-                                vertical: deviceInfo.screenHeight * 0.005),
-                            decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(
-                                  deviceInfo.screenWidth * 0.02),
-                            ),
-                            child: Text('3D2N',
-                                style: TextStyles.semiBold12(
-                                        deviceInfo, AppColors.appDarkBlue)
-                                    .copyWith(
-                                  fontSize: deviceInfo.screenWidth * 0.03,
-                                )),
-                          ),
+                          // Container(
+                          //   padding: EdgeInsets.symmetric(
+                          //       horizontal: deviceInfo.screenWidth * 0.02,
+                          //       vertical: deviceInfo.screenHeight * 0.005),
+                          //   decoration: BoxDecoration(
+                          //     color: Colors.amber,
+                          //     borderRadius: BorderRadius.circular(
+                          //         deviceInfo.screenWidth * 0.02),
+                          //   ),
+                          //   child: Text('3D2N',
+                          //       style: TextStyles.semiBold12(
+                          //               deviceInfo, AppColors.appDarkBlue)
+                          //           .copyWith(
+                          //         fontSize: deviceInfo.screenWidth * 0.03,
+                          //       )),
+                          // ),
                         ],
                       ),
                     ],
