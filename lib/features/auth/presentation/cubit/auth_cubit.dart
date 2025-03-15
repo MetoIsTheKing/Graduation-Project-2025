@@ -78,4 +78,32 @@ class AuthCubit extends Cubit<AuthState> {
       print('state now is Unknown Error');
     }
   }
+
+  Future<void> login(Map<String, dynamic> requestbody) async {
+    emit(LoginIsLoading());
+    print('state now is : $state');
+    try {
+      final response = await userRepo.login(requestbody);
+      if (response['statusCode'] == 201) {
+        emit(LoginSuccess());
+        print('state now is : $state');
+        print('response is -------------> : $response');
+      } else if (response['statusCode'] == 401) {
+        emit(LoginFailed(
+          message: 'Invalid Email or Password',
+        ));
+        print('state now is : $state');
+      } else {
+        emit(LoginFailed(
+          message: 'An Error Occured , Please Try Again Later',
+        ));
+        print('state now is in try : $state');
+      }
+    } catch (e) {
+      emit(LoginFailed(
+        message: e.toString(),
+      ));
+      print('state now is in catch : $state');
+    }
+  }
 }

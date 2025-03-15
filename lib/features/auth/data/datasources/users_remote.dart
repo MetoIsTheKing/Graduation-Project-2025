@@ -4,7 +4,8 @@ import 'package:graduation_project_2025/core/network_clients/abstract_client.dar
 abstract class UsersRemote {
   Future<Map<String, dynamic>> register(Map<String, dynamic> requestbody,
       {String? path});
-  Future<Response> logIn(String path, Map<String, dynamic> requestbody);
+  Future<Map<String, dynamic>> logIn(Map<String, dynamic> requestbody,
+      {String? path});
   Future<Map<String, dynamic>> verifyEmail(Map<String, dynamic> requestbody,
       {String? path});
   Future<Response> resendVerification(
@@ -25,6 +26,7 @@ class UsersRemoteImpl implements UsersRemote {
         'register',
         data: requestbody,
       );
+      // print('response ---------->: ${response}');
       return {
         'statusCode': response.statusCode,
         'data': response.data,
@@ -36,9 +38,21 @@ class UsersRemoteImpl implements UsersRemote {
   }
 
   @override
-  Future<Response> logIn(String path, Map<String, dynamic> requestbody) {
-    // TODO: implement logIn
-    throw UnimplementedError();
+  Future<Map<String, dynamic>> logIn(Map<String, dynamic> requestbody,
+      {String? path}) async {
+    try {
+      final response = await fakeUsersClient.post(
+        'login',
+        data: requestbody,
+      );
+      return {
+        'statusCode': response.statusCode,
+        'data': response.data,
+      };
+    } catch (e, stackTrace) {
+      print(stackTrace);
+      return Future.error(e);
+    }
   }
 
   @override

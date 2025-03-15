@@ -44,4 +44,26 @@ class UserRepoImpl implements UserRepo {
       };
     }
   }
+
+  @override
+  Future<Map<String, dynamic>> login(Map<String, dynamic> requestbody) async {
+    final loginResponse = await usersRemote.logIn(requestbody);
+    final statusCode = loginResponse['statusCode'];
+    if (statusCode == 200) {
+      return {
+        'statusCode': statusCode,
+        'message': 'Login Success',
+      };
+    } else if (statusCode == 401) {
+      return {
+        'statusCode': statusCode,
+        'message': 'Invalid Email or Password',
+      };
+    } else {
+      return {
+        'statusCode': statusCode,
+        'message': 'An Error Occured , Please Try Again Later',
+      };
+    }
+  }
 }

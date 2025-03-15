@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
@@ -6,10 +7,12 @@ import 'package:graduation_project_2025/core/responsive/ui_component/info_widget
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/core/utils/app_strings.dart';
+import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_footer.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_textfield.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/divider.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_header.dart';
+import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/error_toast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -96,14 +99,43 @@ class _LogScreenState extends State<LoginScreen> {
                             controller: passwordController,
                           ),
                           SizedBox(height: deviceInfo.screenHeight * 0.015),
-                          CustomRoundedButton(
-                            deviceInfo: deviceInfo,
-                            label: 'Log in',
-                            backgroundColor: AppColors.appBlue,
-                            onPressed: () {
-                              context.pushNamed(Routes.mainHome);
+                          BlocConsumer<AuthCubit, AuthState>(
+                            listener: (context, state) {
+                              if (state is LoginFailed) {
+                                errorToast(
+                                        title: 'Error',
+                                        description: (state).message)
+                                    .show(context);
+                              } else if (state is LoginSuccess) {
+                                successToast(
+                                        title: 'Success',
+                                        description: 'Login Successful')
+                                    .show(context);
+                                Future.delayed(const Duration(seconds: 1));
+                                context.pushNamed(Routes.mainHome);
+                              }
                             },
-                            textColor: Colors.white,
+                            builder: (context, state) {
+                              return CustomRoundedButton(
+                                isLoading: state is LoginIsLoading,
+                                deviceInfo: deviceInfo,
+                                label: 'Log in',
+                                backgroundColor: AppColors.appBlue,
+                                onPressed: () {
+                                  print('email : ${emailController.text}');
+                                  print(
+                                      'password : ${passwordController.text}');
+                                  final requestBody = {
+                                    'email': emailController.text,
+                                    'password': passwordController.text,
+                                  };
+                                  print('this is requetBody : $requestBody');
+
+                                  context.read<AuthCubit>().login(requestBody);
+                                },
+                                textColor: Colors.white,
+                              );
+                            },
                           ),
                           SizedBox(
                             height: deviceInfo.screenHeight * 0.005,

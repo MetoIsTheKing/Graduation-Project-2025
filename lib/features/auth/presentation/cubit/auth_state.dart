@@ -6,13 +6,16 @@ abstract class AuthState {
 
 //----->> sign up
 class AuthInitial extends AuthState {}
+
 class SignUpIsLoading extends AuthState {}
+
 class SignUpSuccess extends AuthState {}
 
 class SignUpEmailAlreadyExists extends AuthState {
   final String message;
   SignUpEmailAlreadyExists({required this.message});
 }
+
 class SignUpFailed extends AuthState {
   final String message;
   SignUpFailed({required this.message});
@@ -41,4 +44,16 @@ class VerificationStates extends AuthState {
       error: error ?? this.error,
     );
   }
+}
+
+//----->> login
+class LoginInitial extends AuthState {}
+
+class LoginIsLoading extends AuthState {}
+
+class LoginSuccess extends AuthState {}
+
+class LoginFailed extends AuthState {
+  final String message;
+  LoginFailed({required this.message});
 }
