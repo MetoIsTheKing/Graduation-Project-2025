@@ -11,15 +11,9 @@ class UserRepoImpl implements UserRepo {
     final userResponse = await usersRemote.register(requestBody);
     final statusCode = userResponse['statusCode'];
 
-    if (statusCode == 201) {
-      return {
-        'statusCode': statusCode,
-      };
-    } else {
-      return {
-        'statusCode': statusCode,
-      };
-    }
+    return {
+      'statusCode': statusCode,
+    };
   }
 
   @override

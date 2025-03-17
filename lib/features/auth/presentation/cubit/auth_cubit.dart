@@ -7,7 +7,6 @@ class AuthCubit extends Cubit<AuthState> {
   final UserRepo userRepo;
   AuthCubit(this.userRepo) : super(AuthInitial());
 
-  //TODO: do i need try & catch ????
   Future<void> register(Map<String, dynamic> requestbody) async {
     emit(SignUpIsLoading());
     print('state now is : $state');

@@ -26,10 +26,8 @@ class UsersRemoteImpl implements UsersRemote {
         'register',
         data: requestbody,
       );
-      // print('response ---------->: ${response}');
       return {
         'statusCode': response.statusCode,
-        'data': response.data,
       };
     } catch (e, stackTrace) {
       print(stackTrace);
@@ -66,7 +64,6 @@ class UsersRemoteImpl implements UsersRemote {
 
       return {
         'statusCode': response.statusCode,
-        'data': response.data,
       };
     } catch (e, stackTrace) {
       print(stackTrace);

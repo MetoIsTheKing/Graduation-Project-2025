@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 
@@ -121,6 +122,7 @@ class TextStyles {
       fontSize: deviceInfo.screenHeight * 0.026,
       color: color,
       fontWeight: FontWeight.w500,
+      fontFamily: 'Poppins',
     );
   }
 
@@ -129,6 +131,7 @@ class TextStyles {
       fontSize: deviceInfo.screenHeight * 0.0185,
       color: color,
       fontWeight: FontWeight.w500,
+      fontFamily: 'Poppins',
     );
   }
 
@@ -137,6 +140,16 @@ class TextStyles {
       fontSize: deviceInfo.screenHeight * 0.016,
       color: color,
       fontWeight: FontWeight.w500,
+      fontFamily: 'Poppins',
+    );
+  }
+  
+  static TextStyle constrainedSize(double size, Color color , FontWeight fontWeight) {
+    return TextStyle(
+      fontSize: size,
+      color: color,
+      fontWeight:fontWeight,
+      fontFamily: 'Poppins',
     );
   }
 }
