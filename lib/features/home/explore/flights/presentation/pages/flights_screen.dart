@@ -47,12 +47,10 @@ class _FlightsScreenState extends State<FlightsScreen> {
   @override
   void initState() {
     super.initState();
-
+    multiCityList.add(FlightModel());
     flightActionsModel = FlightActionsModel(
       onAddAnotherFlightPressed: onaddAnotherFlightPressed,
       onSearchFlightsPressed: onSearchFlightsPressed,
-      onDepartureDateSelected: onDepartureDateSelected,
-      onReturnDateSelected: onReturnDateSelected,
       onFromFieldTaped: onFromFieldTaped,
       onToFieldTapped: onToFieldTaped,
       onTravellersFieldTapped: onTravellersFieldTaped,
@@ -86,7 +84,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
 
       _pageController.animateToPage(
         pageIndex,
-        duration: Duration(milliseconds: 300), // Replace this line
+        duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
     });
@@ -95,17 +93,6 @@ class _FlightsScreenState extends State<FlightsScreen> {
   ///////////////////////////////// Radio tile functions //////////////////////////////
 
   ///////////////////////////////// Date Selection functions //////////////////////////////
-  void onDepartureDateSelected(DateTime? selectedDate) {
-    setState(() {
-      flightModel.departureDate = selectedDate;
-    });
-  }
-
-  void onReturnDateSelected(DateTime? selectedDate) {
-    setState(() {
-      flightModel.returnDate = selectedDate;
-    });
-  }
 
   Future<void> onDatePickerTapped({
     required FlightModel selecteFlightModel,
@@ -169,11 +156,15 @@ class _FlightsScreenState extends State<FlightsScreen> {
   ///////////////////////////////// Date Selection functions //////////////////////////////
 
   ///////////////////////////////// Buttons onPress functions //////////////////////////////
-  void onSearchFlightsPressed() {
-    setState(() {
-      flightModel.fromController.text = "ggggggggg";
-      flightModel.toController.text = "hhhhhhhhhhh";
-    });
+  void onSearchFlightsPressed(FlightModel selectedFlightModel) {
+    dev.log('''************flightModel = *********
+      From: ${selectedFlightModel.fromController.text}
+      To: ${selectedFlightModel.toController.text}
+      Departure Date: ${selectedFlightModel.departureDateController.text}
+      Return Date: ${selectedFlightModel.returnDateController.text}
+      Travellers: ${selectedFlightModel.travellers.toString()}
+      Flight Class: ${selectedFlightModel.flightClass}
+    ''');
   }
 
   void onaddAnotherFlightPressed() {
@@ -181,8 +172,6 @@ class _FlightsScreenState extends State<FlightsScreen> {
       multiCityList.add(FlightModel());
     });
   }
-
-  void onaddReturnDatePressed() {}
 
   void onChangeButtonPressed(FlightModel selectedFlightModel) {
     String temp = selectedFlightModel.fromController.text;
@@ -202,11 +191,17 @@ class _FlightsScreenState extends State<FlightsScreen> {
   ///////////////////////////////// Buttons onPress functions //////////////////////////////
 
   ///////////////////////////////// Fields onTap functions //////////////////////////////
-  void onFromFieldTaped() {
-    dev.log("fromFieldTaped");
+  void onFromFieldTaped(FlightModel selectedFlightModel) {
+    setState(() {
+      selectedFlightModel.fromController.text = 'Fattooooooor';
+    });
   }
 
-  void onToFieldTaped() {}
+  void onToFieldTaped(FlightModel selectedFlightModel) {
+    setState(() {
+      selectedFlightModel.toController.text = 'Saa7ooooor';
+    });
+  }
 
   void onTravellersFieldTaped(FlightModel selectedFlightModel) async {
     await showModalBottomSheet(
@@ -230,25 +225,59 @@ class _FlightsScreenState extends State<FlightsScreen> {
                   topRight: Radius.circular(deviceInfo.screenHeight * 0.05),
                 ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  FlightsTravellersCardWidget(),
-                  FlightsClassCardWidget(
-                    onSelectedFlightClass: (String? value) {
-                      setModalState(() {
-                        selectedFlightModel.flightClass = value!;
-                      }); // Update state inside modal
-                    },
-                    flightModel: selectedFlightModel,
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    FlightsTravellersCardWidget(
+                      flightModel: selectedFlightModel,
+                      onAddTraveller: (String travellerType) {
+                        setModalState(() {
+                          selectedFlightModel.travellers[travellerType] =
+                              (selectedFlightModel.travellers[travellerType] ??
+                                      0) +
+                                  1;
+                        });
+                      },
+                      onremoveTraveller: (String travellerType) {
+                        setModalState(() {
+                          if (selectedFlightModel.travellers[travellerType] !=
+                              0) {
+                            selectedFlightModel.travellers[travellerType] =
+                                (selectedFlightModel
+                                            .travellers[travellerType] ??
+                                        0) -
+                                    1;
+                          }
+                        });
+                      },
+                    ),
+                    FlightsClassCardWidget(
+                      onSelectedFlightClass: (String? value) {
+                        setModalState(() {
+                          selectedFlightModel.flightClass = value!;
+                        }); // Update state inside modal
+                      },
+                      flightModel: selectedFlightModel,
+                    ),
+                  ],
+                ),
               ),
             );
           },
         );
       },
     );
+    setState(() {
+      int totalTravellers =
+          selectedFlightModel.travellers.values.reduce((a, b) => a + b);
+      selectedFlightModel.travellersController.text = totalTravellers == 0
+          ? ''
+          : '${totalTravellers.toString()} Travellers , ${selectedFlightModel.flightClass}';
+    });
+
+    dev.log('----------------------------> ${selectedFlightModel.travellers}');
   }
 ///////////////////////////////// Fields onTap functions //////////////////////////////
 
@@ -321,24 +350,22 @@ class _FlightsScreenState extends State<FlightsScreen> {
                             padding: EdgeInsets.symmetric(
                               horizontal: deviceInfo.screenWidth * 0.02,
                               vertical: deviceInfo.screenHeight * 0.001,
-                            ), // Replace this line
+                            ),
                             width: double.infinity,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(
-                                    deviceInfo.screenHeight *
-                                        0.05), // Replace this line
+                                    deviceInfo.screenHeight * 0.05),
                                 topRight: Radius.circular(
-                                    deviceInfo.screenHeight *
-                                        0.05), // Replace this line
+                                    deviceInfo.screenHeight * 0.05),
                               ),
                             ),
                             child: Form(
                               child: Column(
                                 children: [
                                   SizedBox(
-                                    width: deviceInfo.screenWidth * 0.75,
+                                    width: deviceInfo.screenWidth * 0.85,
                                     child: RadioTilesRow(
                                       selectedFlightType: selectedFlightType,
                                       onSelectedFlightType:
@@ -352,7 +379,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                             deviceInfo.screenWidth * 0.05,
                                         vertical:
                                             deviceInfo.screenHeight * 0.005,
-                                      ), // Replace this line
+                                      ),
                                       child: PageView(
                                         controller: _pageController,
                                         physics: NeverScrollableScrollPhysics(),
@@ -382,14 +409,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                                     final FlightModel
                                                         flightCardModel =
                                                         multiCityList[index];
-                                                    // you can remove the below
-                                                    flightCardModel
-                                                        .fromController
-                                                        .text = "$index";
-                                                    flightCardModel.toController
-                                                        .text = "${index + 1}";
-                                                    dev.log(
-                                                        "fromController.text: ${flightCardModel.fromController.text}");
+
                                                     return FlightCardWidget(
                                                       flightModel:
                                                           flightCardModel,
@@ -410,7 +430,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                                       backgroundColor:
                                                           Colors.white,
                                                       onPressed: flightActionsModel
-                                                          .onAddAnotherFlightPressed, // Replace this line
+                                                          .onAddAnotherFlightPressed,
                                                       textColor:
                                                           AppColors.appBlue,
                                                     )
@@ -420,8 +440,9 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                                 label: 'Search Flights',
                                                 backgroundColor:
                                                     AppColors.appBlue,
-                                                onPressed: flightActionsModel
-                                                    .onSearchFlightsPressed, // Replace this line
+                                                onPressed: () {
+                                                  // TODO: what happens when search flights is presased in multylist?
+                                                },
                                                 textColor: Colors.white,
                                               ),
                                             ],

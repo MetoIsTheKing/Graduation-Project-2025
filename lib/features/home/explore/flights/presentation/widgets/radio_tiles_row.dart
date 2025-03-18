@@ -21,22 +21,21 @@ class RadioTilesRow extends StatelessWidget {
     final deviceInfo = getIt<DeviceInfo>();
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: RadioListTile(
-              activeColor: AppColors.appBlue,
-              value: 'option1',
-              groupValue: selectedFlightType,
-              onChanged: onSelectedFlightType),
+            activeColor: AppColors.appBlue,
+            value: 'option1',
+            groupValue: selectedFlightType,
+            onChanged: onSelectedFlightType,
+            visualDensity: VisualDensity.compact, // Reduces space
+            contentPadding: EdgeInsets.zero, // Removes extra padding
+            title: Text('one-way',
+                style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
+                    .copyWith(fontSize: deviceInfo.screenWidth * 0.03)),
+          ),
         ),
-        SizedBox(
-          width: deviceInfo.screenWidth * 0.05,
-        ),
-        Text('one-way',
-            style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
-                .copyWith(
-                    fontSize:
-                        deviceInfo.screenWidth * 0.03)), // Replace this line
         Expanded(
           child: RadioListTile(
             activeColor: AppColors.appBlue,
@@ -45,15 +44,16 @@ class RadioTilesRow extends StatelessWidget {
             onChanged: (String? value) {
               onSelectedFlightType(value);
             },
+            visualDensity: VisualDensity.compact, // Reduces space
+            contentPadding: EdgeInsets.zero, // Removes extra padding
+            title: Text(
+              'Round-trip',
+              style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
+                  .copyWith(
+                      fontSize:
+                          deviceInfo.screenWidth * 0.03), // Replace this line
+            ),
           ),
-        ),
-        SizedBox(
-          width: deviceInfo.screenWidth * 0.05,
-        ),
-        Text(
-          'Round-trip',
-          style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack).copyWith(
-              fontSize: deviceInfo.screenWidth * 0.03), // Replace this line
         ),
         Expanded(
           child: RadioListTile(
@@ -63,16 +63,13 @@ class RadioTilesRow extends StatelessWidget {
             onChanged: (String? value) {
               onSelectedFlightType(value);
             },
+            visualDensity: VisualDensity.compact, // Reduces space
+            contentPadding: EdgeInsets.zero, // Removes extra padding
+            title: Text('Multi-city',
+                style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
+                    .copyWith(fontSize: deviceInfo.screenWidth * 0.03)),
           ),
         ),
-        SizedBox(
-          width: deviceInfo.screenWidth * 0.05,
-        ),
-        Text('Multi-city',
-            style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
-                .copyWith(
-                    fontSize:
-                        deviceInfo.screenWidth * 0.03)), // Replace this line
       ],
     );
   }

@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_custom_tile.dart';
 
 class FlightsTravellersFieldWidget extends StatelessWidget {
-  const FlightsTravellersFieldWidget({super.key});
+  const FlightsTravellersFieldWidget(
+      {super.key,
+      required this.title,
+      required this.subTitle,
+      required this.numberOfTravellers,
+      required this.onAddTraveller,
+      required this.onRemoveTraveller});
+
+  final String title;
+  final String subTitle;
+  final String numberOfTravellers;
+  final void Function() onAddTraveller;
+  final void Function() onRemoveTraveller;
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +36,9 @@ class FlightsTravellersFieldWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                'Adults',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                'Age(+12)',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
-              ),
+              Text(title, style: TextStyles.medium16(deviceInfo, Colors.black)),
+              Text(subTitle,
+                  style: TextStyles.medium12(deviceInfo, Colors.grey)),
             ],
           ),
           Spacer(),
@@ -44,13 +47,16 @@ class FlightsTravellersFieldWidget extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.remove_circle_outline),
                 color: AppColors.appBlue,
-                onPressed: () {},
+                onPressed: numberOfTravellers == '0' ? null : onRemoveTraveller,
               ),
-              Text('1'),
+              Text(
+                numberOfTravellers,
+                style: TextStyles.medium16(deviceInfo, Colors.black),
+              ),
               IconButton(
                 icon: Icon(Icons.add_circle_outline),
                 color: AppColors.appBlue,
-                onPressed: () {},
+                onPressed: onAddTraveller,
               ),
             ],
           )

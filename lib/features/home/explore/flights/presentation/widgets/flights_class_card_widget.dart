@@ -4,7 +4,6 @@ import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_travellers_field_widget.dart';
 
 class FlightsClassCardWidget extends StatelessWidget {
   const FlightsClassCardWidget({
@@ -19,13 +18,18 @@ class FlightsClassCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceInfo = getIt<DeviceInfo>();
+    final List<Map<String, String>> flightClasses = [
+      {'label': 'Economy', 'value': 'economy'},
+      {'label': 'Premium Economy', 'value': 'premium'},
+      {'label': 'Business', 'value': 'business'},
+      {'label': 'First', 'value': 'first'},
+    ];
+
     return Column(
       children: [
         Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              deviceInfo.screenHeight * 0.02, // Replace this line
-            ),
+            borderRadius: BorderRadius.circular(deviceInfo.screenHeight * 0.02),
           ),
           color: Colors.white,
           elevation: 5,
@@ -34,19 +38,15 @@ class FlightsClassCardWidget extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(
-                      deviceInfo.screenHeight * 0.02, // Replace this line
-                    ),
-                    topRight: Radius.circular(
-                      deviceInfo.screenHeight * 0.02, // Replace this line
-                    ),
+                    topLeft: Radius.circular(deviceInfo.screenHeight * 0.02),
+                    topRight: Radius.circular(deviceInfo.screenHeight * 0.02),
                   ),
                   color: AppColors.appBlue,
                 ),
                 padding: EdgeInsets.symmetric(
                   horizontal: deviceInfo.screenWidth * 0.03,
                   vertical: deviceInfo.screenHeight * 0.015,
-                ), // Replace this line
+                ),
                 child: Row(
                   children: [
                     Padding(
@@ -59,55 +59,31 @@ class FlightsClassCardWidget extends StatelessWidget {
                     ),
                     Text(
                       'Cabin Class',
-
                       style: TextStyles.regular16(deviceInfo, Colors.white)
-                          .copyWith(
-                        fontSize: deviceInfo.screenWidth * 0.03,
-                      ),
-                      // Replace this line
+                          .copyWith(fontSize: deviceInfo.screenWidth * 0.03),
                     ),
                   ],
                 ),
               ),
               Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: deviceInfo.screenWidth * 0.03,
-                    vertical: deviceInfo.screenHeight * 0.02,
-                  ), // Replace this line
-                  child: Column(
-                    children: [
-                      RadioListTile(
-                        value: 'economy',
-                        groupValue: flightModel.flightClass,
-                        onChanged: onSelectedFlightClass,
-                        activeColor: AppColors.appBlue,
-                        title: Text('Economy'),
-                      ),
-                      RadioListTile(
-                        value: 'premium',
-                        groupValue: flightModel.flightClass,
-                        onChanged: onSelectedFlightClass,
-                        activeColor: AppColors.appBlue,
-                        title: Text('Premium Economy'),
-                      ),
-                      RadioListTile(
-                        value: 'business',
-                        groupValue: flightModel.flightClass,
-                        onChanged: onSelectedFlightClass,
-                        activeColor: AppColors.appBlue,
-                        title: Text('Business'),
-                      ),
-                      RadioListTile(
-                        value: 'first',
-                        groupValue: flightModel.flightClass,
-                        onChanged: (String? value) {
-                          onSelectedFlightClass(value);
-                        },
-                        activeColor: AppColors.appBlue,
-                        title: Text('First'),
-                      ),
-                    ],
-                  )),
+                padding: EdgeInsets.symmetric(
+                  horizontal: deviceInfo.screenWidth * 0.03,
+                  vertical: deviceInfo.screenHeight * 0.02,
+                ),
+                child: Column(
+                  children: flightClasses.map((classItem) {
+                    return RadioListTile<String>(
+                      value: classItem['value']!,
+                      groupValue: flightModel.flightClass,
+                      onChanged: onSelectedFlightClass,
+                      activeColor: AppColors.appBlue,
+                      title: Text(classItem['label']!),
+                      visualDensity: VisualDensity.compact, // Reduces space
+                      contentPadding: EdgeInsets.zero, // Removes extra padding
+                    );
+                  }).toList(),
+                ),
+              ),
             ],
           ),
         ),

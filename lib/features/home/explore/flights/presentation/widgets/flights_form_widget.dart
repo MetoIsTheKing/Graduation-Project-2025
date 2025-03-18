@@ -46,7 +46,9 @@ class FlightsFormWidget extends StatelessWidget {
           controller: flightModel.fromController,
           prefixIcon: 'assets/images/flight_from.png',
           label: 'select start location',
-          onTap: flightActionsModel.onFromFieldTaped,
+          onTap: () {
+            flightActionsModel.onFromFieldTaped(flightModel);
+          },
         ),
 
         Row(
@@ -84,7 +86,9 @@ class FlightsFormWidget extends StatelessWidget {
           controller: flightModel.toController,
           prefixIcon: 'assets/images/flight_to.png',
           label: 'select destination',
-          onTap: flightActionsModel.onToFieldTapped,
+          onTap: () {
+            flightActionsModel.onToFieldTapped(flightModel);
+          },
         ),
         SizedBox(
           height: deviceInfo.screenHeight * 0.03,
@@ -164,7 +168,9 @@ class FlightsFormWidget extends StatelessWidget {
                 deviceInfo: deviceInfo,
                 label: 'Search Flights',
                 backgroundColor: AppColors.appBlue,
-                onPressed: flightActionsModel.onSearchFlightsPressed,
+                onPressed: () {
+                  flightActionsModel.onSearchFlightsPressed(flightModel);
+                },
                 textColor: Colors.white,
               ),
       ],
