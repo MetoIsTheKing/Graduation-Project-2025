@@ -4,6 +4,8 @@ class FlightModel {
   final TextEditingController fromController = TextEditingController();
   final TextEditingController toController = TextEditingController();
   final TextEditingController travellersController = TextEditingController();
+  final TextEditingController departureDateController = TextEditingController();
+  final TextEditingController returnDateController = TextEditingController();
   DateTime? departureDate;
   DateTime? returnDate;
   FlightModel({
@@ -14,5 +16,7 @@ class FlightModel {
     fromController.dispose();
     toController.dispose();
     travellersController.dispose();
+    departureDateController.dispose();
+    returnDateController.dispose();
   }
 }

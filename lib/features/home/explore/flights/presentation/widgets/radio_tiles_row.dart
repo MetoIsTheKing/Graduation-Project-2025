@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
+import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
@@ -8,10 +9,12 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 class RadioTilesRow extends StatelessWidget {
   final String? selectedFlightType;
   final void Function(String? value) onSelectedFlightType;
-  const RadioTilesRow(
-      {super.key,
-      required this.selectedFlightType,
-      required this.onSelectedFlightType});
+
+  const RadioTilesRow({
+    super.key,
+    required this.selectedFlightType,
+    required this.onSelectedFlightType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,11 @@ class RadioTilesRow extends StatelessWidget {
         SizedBox(
           width: deviceInfo.screenWidth * 0.05,
         ),
-        Text('one-way', style: FlightsUtils.radiotileTextStyle),
+        Text('one-way',
+            style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
+                .copyWith(
+                    fontSize:
+                        deviceInfo.screenWidth * 0.03)), // Replace this line
         Expanded(
           child: RadioListTile(
             activeColor: AppColors.appBlue,
@@ -45,7 +52,8 @@ class RadioTilesRow extends StatelessWidget {
         ),
         Text(
           'Round-trip',
-          style: FlightsUtils.radiotileTextStyle,
+          style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack).copyWith(
+              fontSize: deviceInfo.screenWidth * 0.03), // Replace this line
         ),
         Expanded(
           child: RadioListTile(
@@ -60,7 +68,11 @@ class RadioTilesRow extends StatelessWidget {
         SizedBox(
           width: deviceInfo.screenWidth * 0.05,
         ),
-        Text('Multi-city', style: FlightsUtils.radiotileTextStyle),
+        Text('Multi-city',
+            style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
+                .copyWith(
+                    fontSize:
+                        deviceInfo.screenWidth * 0.03)), // Replace this line
       ],
     );
   }
