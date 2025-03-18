@@ -4,7 +4,7 @@ class FlightActionsModel {
   final Function(DateTime?) onDepartureDateSelected;
   final Function(DateTime?) onReturnDateSelected;
   final Function(FlightModel flightModel) onChangePressed;
-  final void Function() onTravellersFieldTapped;
+  final Function(FlightModel flightModel) onTravellersFieldTapped;
   final void Function() onToFieldTapped;
   final void Function() onFromFieldTaped;
   final Future<void> Function({

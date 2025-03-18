@@ -8,9 +8,17 @@ class FlightModel {
   final TextEditingController returnDateController = TextEditingController();
   DateTime? departureDate;
   DateTime? returnDate;
+  final Map<String, int> travellers;
+  String flightClass;
   FlightModel({
     this.departureDate,
     this.returnDate,
+    this.travellers = const {
+      'adults': 0,
+      'children': 0,
+      'infants': 0,
+    },
+    this.flightClass = 'economy',
   });
   void dispose() {
     fromController.dispose();

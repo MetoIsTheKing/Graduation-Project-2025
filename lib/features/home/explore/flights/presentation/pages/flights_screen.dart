@@ -14,7 +14,10 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flights_utils.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_card_widget.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_class_card_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_form_widget.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_travellers_card_widget.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_travellers_field_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/radio_tiles_row.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_airport.dart';
 import 'package:intl/intl.dart';
@@ -80,26 +83,15 @@ class _FlightsScreenState extends State<FlightsScreen> {
       } else {
         pageIndex = 2;
       }
-      // Update the height of the AnimatedContainer first
-      // -1 is for the default height during animation
-      // _pageViewHeight = _getPageHeight(-1);
-      // Delay the horizontal animation to allow the vertical animation to complete first
 
-      // Replace this line
-      // Replace this line
       _pageController.animateToPage(
         pageIndex,
         duration: Duration(milliseconds: 300), // Replace this line
         curve: Curves.easeInOut,
       );
-      //     .then((_) {
-      //   // Set _isAnimating to false after the animation completes
-      //   setState(() {
-      //     // _pageViewHeight = _getPageHeight(pageIndex);
-      //   });
-      // });
     });
   }
+
   ///////////////////////////////// Radio tile functions //////////////////////////////
 
   ///////////////////////////////// Date Selection functions //////////////////////////////
@@ -130,7 +122,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
         return Theme(
           data: ThemeData(
             colorScheme: ColorScheme.light(
-              primary: Colors.blue, // Change selection color to blue
+              primary: AppColors.appBlue, // Change selection color to blue
             ),
           ),
           child: Column(
@@ -216,7 +208,48 @@ class _FlightsScreenState extends State<FlightsScreen> {
 
   void onToFieldTaped() {}
 
-  void onTravellersFieldTaped() {}
+  void onTravellersFieldTaped(FlightModel selectedFlightModel) async {
+    await showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            // StatefulBuilder allows UI updates inside the modal
+            return Container(
+              height: deviceInfo.screenHeight * 0.76,
+              padding: EdgeInsets.symmetric(
+                horizontal: deviceInfo.screenWidth * 0.02,
+                vertical: deviceInfo.screenHeight * 0.001,
+              ),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(deviceInfo.screenHeight * 0.05),
+                  topRight: Radius.circular(deviceInfo.screenHeight * 0.05),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  FlightsTravellersCardWidget(),
+                  FlightsClassCardWidget(
+                    onSelectedFlightClass: (String? value) {
+                      setModalState(() {
+                        selectedFlightModel.flightClass = value!;
+                      }); // Update state inside modal
+                    },
+                    flightModel: selectedFlightModel,
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 ///////////////////////////////// Fields onTap functions //////////////////////////////
 
   @override
@@ -416,20 +449,4 @@ class _FlightsScreenState extends State<FlightsScreen> {
       );
     });
   }
-
-  // double _getPageHeight(int index) {
-  //   final deviceInfo = getIt<DeviceInfo>();
-
-  //   // Return the height for each page based on the index
-  //   switch (index) {
-  //     case 0:
-  //       return FlightsUtils.firstPageHeight; // Height for the first page
-  //     case 1:
-  //       return FlightsUtils.secondPageHeight; // Height for the second page
-  //     case 2:
-  //       return FlightsUtils.thirdPageHeight; // Height for the third page
-  //     default:
-  //       return deviceInfo.screenHeight; // Default height during animation
-  //   }
-  // }
 }

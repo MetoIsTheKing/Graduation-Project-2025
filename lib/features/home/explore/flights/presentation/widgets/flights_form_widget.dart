@@ -9,7 +9,6 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flights_utils.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_date_picker_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_field_widget.dart';
 
 class FlightsFormWidget extends StatelessWidget {
@@ -152,7 +151,9 @@ class FlightsFormWidget extends StatelessWidget {
           controller: flightModel.travellersController,
           prefixIcon: 'assets/images/flights_traveller.png',
           label: 'select travellers',
-          onTap: flightActionsModel.onTravellersFieldTapped,
+          onTap: () {
+            flightActionsModel.onTravellersFieldTapped(flightModel);
+          },
         ),
         SizedBox(
           height: deviceInfo.screenHeight * 0.03,
