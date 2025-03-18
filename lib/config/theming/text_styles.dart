@@ -117,6 +117,15 @@ class TextStyles {
     );
   }
 
+  static TextStyle bold24(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenHeight * 0.03,
+      fontFamily: 'Poppins',
+      color: color,
+      fontWeight: FontWeight.bold,
+    );
+  }
+
   static TextStyle medium20(DeviceInfo deviceInfo, Color color) {
     return TextStyle(
       fontSize: deviceInfo.screenHeight * 0.026,
@@ -143,12 +152,13 @@ class TextStyles {
       fontFamily: 'Poppins',
     );
   }
-  
-  static TextStyle constrainedSize(double size, Color color , FontWeight fontWeight) {
+
+  static TextStyle constrainedSize(
+      double size, Color color, FontWeight fontWeight) {
     return TextStyle(
       fontSize: size,
       color: color,
-      fontWeight:fontWeight,
+      fontWeight: fontWeight,
       fontFamily: 'Poppins',
     );
   }

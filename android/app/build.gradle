@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.flutter_base_version"
-    compileSdk = 34  // Make sure it's a valid SDK version
+    compileSdk = 35  // Make sure it's a valid SDK version
     //ndkVersion = "25.2.9519653"  // Optional, update based on your setup
 
     compileOptions {

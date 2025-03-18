@@ -68,9 +68,9 @@ class TicketTile extends StatelessWidget {
                     : deviceInfo.screenWidth * 0.9,
               ),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius:
-                    BorderRadius.circular(deviceInfo.screenWidth * 0.05),
+                  color: Colors.white,
+                  borderRadius:
+                      BorderRadius.circular(deviceInfo.screenWidth * 0.05),
               ),
               child: LayoutBuilder(builder: (context, constrain) {
                 final TextStyle medium20 = TextStyle(

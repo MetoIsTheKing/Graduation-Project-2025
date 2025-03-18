@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:dot_curved_bottom_nav/dot_curved_bottom_nav.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/chat_bot.dart';
-//import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/flight_search_results_screen.dart';
-import 'package:graduation_project_2025/features/home/my_bookings.dart';
+import 'package:graduation_project_2025/features/home/my_bookings/presentation/pages/my_bookings.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/pages/explore_screen.dart';
 import 'package:graduation_project_2025/features/home/my_profile.dart';
 
@@ -18,25 +18,48 @@ class MainHomeScreen extends StatefulWidget {
 class MainHomeScreenState extends State<MainHomeScreen> {
   int _currentPage = 0;
   final PageController _pageController = PageController();
-  final ScrollController _scrollController = ScrollController();
-
-  late List<Widget> _screens;
+  late List<ScrollController> _scrollControllers; // List of ScrollControllers
   bool _isNavBarVisible = true; // State variable to control visibility
   double _lastOffset = 0.0; // To track the last scroll position
 
   @override
   void initState() {
     super.initState();
-    _screens = [
-      ExploreScreen(scrollController: _scrollController),
-      MyBookings(),
-      ChatBot(),
-      MyProfile(),
-    ];
+    // Initialize one ScrollController per page
+    _scrollControllers = List.generate(
+      2, // Number of screens (Explore, MyBookings, ChatBot, MyProfile)
+      (index) => ScrollController(),
+    );
 
-    // Add a listener to the ScrollController
-    _scrollController.addListener(() {
-      double currentOffset = _scrollController.offset;
+    // Add a listener to all ScrollControllers
+    for (var controller in _scrollControllers) {
+      controller.addListener(_onScroll);
+    }
+
+    // Ensure initial scroll check happens after first frame
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _checkScrollPosition();
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    for (var controller in _scrollControllers) {
+      controller.removeListener(_onScroll);
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  void _onScroll() {
+    _checkScrollPosition(); // Call the check method
+  }
+
+  void _checkScrollPosition() {
+    final controller = _scrollControllers[_currentPage];
+    if (controller.hasClients) {
+      double currentOffset = controller.offset;
       if (currentOffset > _lastOffset && currentOffset > 0) {
         // Scrolling down
         if (_isNavBarVisible) {
@@ -53,20 +76,13 @@ class MainHomeScreenState extends State<MainHomeScreen> {
         }
       }
       _lastOffset = currentOffset;
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    _pageController.dispose();
-    super.dispose();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return InfoWidget(
-      builder: (context, deviceInfo, constrains) {
+      builder: (context, deviceInfo, constraints) {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.grey[200],
@@ -79,9 +95,17 @@ class MainHomeScreenState extends State<MainHomeScreen> {
                 onPageChanged: (index) {
                   setState(() {
                     _currentPage = index;
+                    SchedulerBinding.instance.addPostFrameCallback((_) {
+                      _checkScrollPosition(); // Re-check after page change
+                    });
                   });
                 },
-                children: _screens,
+                children: [
+                  ExploreScreen(scrollController: _scrollControllers[0]),
+                  MyBookings(scrollController: _scrollControllers[1]),
+                  ChatBot(),
+                  MyProfile(),
+                ],
               ),
               // AnimatedPositioned for smooth hide/show animation
               AnimatedPositioned(
@@ -89,9 +113,7 @@ class MainHomeScreenState extends State<MainHomeScreen> {
                 curve: Curves.easeInOut,
                 left: 8,
                 right: 8,
-                bottom: _isNavBarVisible
-                    ? 0.05
-                    : -300, // Slide out of view when hidden
+                bottom: _isNavBarVisible ? 0.05 : -300, // Slide out of view when hidden
                 child: Stack(
                   children: [
                     Positioned(
@@ -112,7 +134,7 @@ class MainHomeScreenState extends State<MainHomeScreen> {
                       ),
                     ),
                     DotCurvedBottomNav(
-                      scrollController: _scrollController,
+                      scrollController: _scrollControllers[_currentPage], // Use current page's controller
                       hideOnScroll: true,
                       indicatorColor: AppColors.appYellow,
                       backgroundColor: Colors.white,
@@ -126,6 +148,9 @@ class MainHomeScreenState extends State<MainHomeScreen> {
                         setState(() {
                           _currentPage = index;
                           _pageController.jumpToPage(index);
+                          SchedulerBinding.instance.addPostFrameCallback((_) {
+                            _checkScrollPosition(); // Re-check after tap
+                          });
                         });
                       },
                       items: [
