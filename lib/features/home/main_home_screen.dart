@@ -27,7 +27,7 @@ class MainHomeScreenState extends State<MainHomeScreen> {
     super.initState();
     // Initialize one ScrollController per page
     _scrollControllers = List.generate(
-      2, // Number of screens (Explore, MyBookings, ChatBot, MyProfile)
+      4, // Number of screens (Explore, MyBookings, ChatBot, MyProfile)
       (index) => ScrollController(),
     );
 
@@ -103,8 +103,10 @@ class MainHomeScreenState extends State<MainHomeScreen> {
                 children: [
                   ExploreScreen(scrollController: _scrollControllers[0]),
                   MyBookings(scrollController: _scrollControllers[1]),
-                  ChatBot(),
-                  MyProfile(),
+                  ChatBot(scrollController: _scrollControllers[2]),
+                  MyProfile(
+                    scrollController: _scrollControllers[3]
+                  ),
                 ],
               ),
               // AnimatedPositioned for smooth hide/show animation

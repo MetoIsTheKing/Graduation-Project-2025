@@ -1,12 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project_2025/config/dependency_injection/di.dart'
-    show getIt;
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/map_widget.dart';
-import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/widgets/hotel_recomendation_card.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/widgets/profile_header.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/widgets/quick_action_button.dart';
@@ -28,10 +25,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
     print('explore screen');
     return InfoWidget(builder: (context, deviceInfo, constrains) {
       print('this is hashcod inside explore : ${deviceInfo.hashCode}');
-      final state = getIt<AuthCubit>().state;
-      if (state is LoginSuccess) {
-        print('This is accessToken \n  ${state.accessToken}');
-      }
       return BaseWidget(
         scrollController: widget.scrollController,
         backgroundWidget: MapWidget(

@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:graduation_project_2025/config/token_manager.dart';
 
 //TODO: needed to be abstracted??
 class DioNetworkClient {
@@ -33,6 +35,71 @@ class DioNetworkClient {
       responseBody: true,
       responseHeader: true,
     ));
+
+    dio.interceptors.add(_authInterceptor());
+  }
+
+  Interceptor _authInterceptor() {
+    return InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        // Add access token to headers
+        final accessToken = await TokenManager.getAccessToken();
+        if (accessToken != null) {
+          options.headers['Authorization'] = 'Bearer $accessToken';
+        }
+        return handler.next(options);
+      },
+      onError: (DioException error, ErrorInterceptorHandler handler) async {
+        if (error.response?.statusCode == 401) {
+          // Token expired, attempt to refresh
+          final refreshed = await _refreshToken();
+          if (refreshed) {
+            // Retry the original request with the new token
+            final options = error.requestOptions;
+            final accessToken = await TokenManager.getAccessToken();
+            options.headers['Authorization'] = 'Bearer $accessToken';
+            try {
+              final response = await dio.fetch(options);
+              return handler.resolve(response);
+            } catch (e) {
+              return handler.reject(error);
+            }
+          }
+        }
+        return handler.reject(error);
+      },
+    );
+  }
+
+  // Refresh token logic
+  Future<bool> _refreshToken() async {
+    final refreshToken = await TokenManager.getRefreshToken();
+    if (refreshToken == null) return false;
+
+    try {
+      final refreshUrl =
+          '${dotenv.env['FAKE_USERS_BASE_URL']}/refresh-token'; // Adjust endpoint as needed
+      final response = await Dio().post(
+        refreshUrl,
+        data: {'refresh_token': refreshToken},
+      );
+
+      if (response.statusCode == 201) {
+        final newAccessToken = response.data['access_token'];
+        final newRefreshToken =
+            response.data['refresh_token']; // Optional, if provided
+        await TokenManager.saveTokens(
+          newAccessToken,
+          newRefreshToken ??
+              refreshToken, // Use old refresh token if new one isn't provided
+        );
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('Token refresh failed: $e');
+      return false;
+    }
   }
 
   // Factory constructors to create separate instances
@@ -40,17 +107,13 @@ class DioNetworkClient {
 
   // Generic GET request with token and query parameters
   Future<Response> get(
-    String path, {
-    String? token, // Add token parameter
+    String path, { // Add token parameter
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
       final response = await dio.get(
         path,
         queryParameters: queryParameters,
-        options: Options(headers: {
-          'Authorization': 'Bearer $token'
-        }), // Add token dynamically
       );
       return response;
     } catch (e) {
@@ -62,14 +125,11 @@ class DioNetworkClient {
   // Generic POST request with token and data
   Future<Response> post(
     String path, {
-    String? token,
     Map<String, dynamic>? data,
   }) async {
     try {
       final response = await dio.post(path,
           data: data,
-          options: Options(headers: {'Authorization': 'Bearer $token'})
-          // Add token dynamically
           );
       return response;
     } catch (e) {
@@ -80,17 +140,13 @@ class DioNetworkClient {
 
   // Generic PUT request with token and data
   Future<Response> put(
-    String path, {
-    required String token, // Add token parameter
+    String path, { // Add token parameter
     Map<String, dynamic>? data,
   }) async {
     try {
       final response = await dio.put(
         path,
         data: data,
-        options: Options(headers: {
-          'Authorization': 'Bearer $token'
-        }), // Add token dynamically
       );
       return response;
     } catch (e) {
@@ -101,15 +157,10 @@ class DioNetworkClient {
 
   // Generic DELETE request with token
   Future<Response> delete(
-    String path, {
-    required String token, // Add token parameter
-  }) async {
+    String path, ) async {
     try {
       final response = await dio.delete(
-        path,
-        options: Options(headers: {
-          'Authorization': 'Bearer $token'
-        }), // Add token dynamically
+        path,// Add token dynamically
       );
       return response;
     } catch (e) {

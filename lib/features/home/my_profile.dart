@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MyProfile extends StatelessWidget {
-  const MyProfile({super.key});
+  final ScrollController scrollController;
+  const MyProfile({super.key, required this.scrollController});
 
   @override
   Widget build(BuildContext context) {

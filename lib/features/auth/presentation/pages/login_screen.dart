@@ -112,10 +112,6 @@ class _LogScreenState extends State<LoginScreen> {
                                         description: 'Login Successful')
                                     .show(context);
                                 Future.delayed(const Duration(seconds: 1));
-                                print(
-                                    'access token from the page --------> : ${state.accessToken}');
-                                print(
-                                    'refresh token from the page ---------> : ${state.refreshToken}');
                                 context.pushReplacementNamed(Routes.mainHome);
                               }
                             },

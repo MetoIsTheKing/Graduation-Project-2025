@@ -8,59 +8,23 @@ class UserRepoImpl implements UserRepo {
   @override
   Future<Map<String, dynamic>> register(
       Map<String, dynamic> requestBody) async {
-    final userResponse = await usersRemote.register(requestBody);
-    final statusCode = userResponse['statusCode'];
-
-    return {
-      'statusCode': statusCode,
-    };
+    return await usersRemote.register(requestBody);
   }
 
   @override
   Future<Map<String, dynamic>> verifyEmail(
       Map<String, dynamic> requestBody) async {
-    final verificationResponse = await usersRemote.verifyEmail(requestBody);
-    final statusCode = verificationResponse['statusCode'];
-    if (statusCode == 201) {
-      return {
-        'statusCode': statusCode,
-        'message': 'Email Verified Successfully',
-      };
-    } else if (statusCode == 400) {
-      return {
-        'statusCode': statusCode,
-        'message': 'Invalid or Expired Verification Code',
-      };
-    } else {
-      return {
-        'statusCode': statusCode,
-        'message': 'An Error Occured , Please Try Again Later',
-      };
-    }
+   return await usersRemote.verifyEmail(requestBody);
   }
 
   @override
   Future<Map<String, dynamic>> login(Map<String, dynamic> requestbody) async {
-    final loginResponse = await usersRemote.logIn(requestbody);
-    final statusCode = loginResponse['statusCode'];
+   return await usersRemote.logIn(requestbody);
+  }
 
-    if (statusCode == 201) {
-      return {
-        'statusCode': statusCode,
-        'message': 'Login Success',
-        'accessToken': loginResponse['data']['data']['accessToken'],
-        'refreshToken': loginResponse['data']['data']['refreshToken'],
-      };
-    } else if (statusCode == 401) {
-      return {
-        'statusCode': statusCode,
-        'message': 'Invalid Email or Password',
-      };
-    } else {
-      return {
-        'statusCode': statusCode,
-        'message': 'An Error Occured , Please Try Again Later',
-      };
-    }
+  @override
+  Future<Map<String, dynamic>> resendVerification(
+      Map<String, dynamic> requestbody) async {
+    return await usersRemote.resendVerification(requestbody);
   }
 }

@@ -5,6 +5,7 @@ import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart'
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
+import 'package:graduation_project_2025/features/auth/presentation/pages/code_verification.dart';
 import 'package:graduation_project_2025/features/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:graduation_project_2025/features/on_boarding/presentation/widgets/onboarding_content.dart';
 
@@ -109,6 +110,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             textColor: AppColors.appDarkBlue,
                             backgroundColor: AppColors.appYellow,
                             onPressed: () {
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) =>
+                              //         CodeVerification(email: 'ana we7sh')));
                               context.pushReplacementNamed(Routes.logIn);
                             },
                           ),
