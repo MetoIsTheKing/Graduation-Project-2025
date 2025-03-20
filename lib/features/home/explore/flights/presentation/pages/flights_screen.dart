@@ -104,30 +104,46 @@ class _FlightsScreenState extends State<FlightsScreen> {
       builder: (context) {
         DateTime? tempPickedDate = !isReturnDate
             ? selecteFlightModel.departureDate
-            : selecteFlightModel.returnDate; // Use temp variable inside builder
+            : selecteFlightModel.returnDate;
 
         return Theme(
           data: ThemeData(
             colorScheme: ColorScheme.light(
-              primary: AppColors.appBlue, // Change selection color to blue
+              primary: AppColors.appBlue,
+            ),
+            textTheme: TextTheme(
+              bodyLarge: TextStyles.medium20(deviceInfo, Colors.black).copyWith(
+                  fontSize: deviceInfo.screenWidth * 0.035), // Responsive text
             ),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  "Select Date",
+                  style: TextStyles.mediumDark16
+                      .copyWith(fontSize: deviceInfo.screenWidth * 0.05),
+                ),
+              ),
               CalendarDatePicker(
                 initialDate: tempPickedDate ?? DateTime.now(),
                 firstDate: DateTime.now(),
                 lastDate: DateTime(2030),
                 onDateChanged: (date) {
-                  tempPickedDate = date; // Update temp variable
+                  tempPickedDate = date;
                 },
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context, tempPickedDate); // Return picked date
+                  Navigator.pop(context, tempPickedDate);
                 },
-                child: Text("Select"),
+                child: Text(
+                  "Select",
+                  style: TextStyles.medium20(deviceInfo, Colors.blue)
+                      .copyWith(fontSize: deviceInfo.screenWidth * 0.05),
+                ),
               ),
               SizedBox(height: deviceInfo.screenHeight * 0.03),
             ],
@@ -152,7 +168,6 @@ class _FlightsScreenState extends State<FlightsScreen> {
       });
     }
   }
-
   ///////////////////////////////// Date Selection functions //////////////////////////////
 
   ///////////////////////////////// Buttons onPress functions //////////////////////////////
@@ -185,9 +200,12 @@ class _FlightsScreenState extends State<FlightsScreen> {
 
   void onDeleteCardPressed(int index) {
     setState(() {
-      multiCityList.removeAt(index);
+      if (multiCityList.length > 1) {
+        multiCityList.removeAt(index);
+      }
     });
   }
+
   ///////////////////////////////// Buttons onPress functions //////////////////////////////
 
   ///////////////////////////////// Fields onTap functions //////////////////////////////
@@ -215,7 +233,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
               height: deviceInfo.screenHeight * 0.76,
               padding: EdgeInsets.symmetric(
                 horizontal: deviceInfo.screenWidth * 0.02,
-                vertical: deviceInfo.screenHeight * 0.001,
+                vertical: deviceInfo.screenHeight * 0.01,
               ),
               width: double.infinity,
               decoration: BoxDecoration(
@@ -395,13 +413,13 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                                 flightActionsModel,
                                             isTwoWay: true,
                                           ),
-                                          Column(
-                                            children: [
-                                              SizedBox(
-                                                height:
-                                                    deviceInfo.screenHeight *
-                                                        0.45,
-                                                child: ListView.builder(
+                                          SingleChildScrollView(
+                                            child: Column(
+                                              children: [
+                                                ListView.builder(
+                                                  physics:
+                                                      NeverScrollableScrollPhysics(),
+                                                  shrinkWrap: true,
                                                   itemCount:
                                                       multiCityList.length,
                                                   itemBuilder:
@@ -421,38 +439,44 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                                     );
                                                   },
                                                 ),
-                                              ),
-                                              selectedFlightType == 'option3'
-                                                  ? CustomRoundedButton(
-                                                      deviceInfo: deviceInfo,
-                                                      label:
-                                                          'add another flight ?',
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                      onPressed: flightActionsModel
-                                                          .onAddAnotherFlightPressed,
-                                                      textColor:
-                                                          AppColors.appBlue,
-                                                    )
-                                                  : SizedBox(),
-                                              CustomRoundedButton(
-                                                deviceInfo: deviceInfo,
-                                                label: 'Search Flights',
-                                                backgroundColor:
-                                                    AppColors.appBlue,
-                                                onPressed: () {
-                                                  // TODO: what happens when search flights is presased in multylist?
-                                                },
-                                                textColor: Colors.white,
-                                              ),
-                                            ],
+                                                selectedFlightType == 'option3'
+                                                    ? CustomRoundedButton(
+                                                        deviceInfo: deviceInfo,
+                                                        label:
+                                                            'add another flight ?',
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        onPressed:
+                                                            flightActionsModel
+                                                                .onAddAnotherFlightPressed,
+                                                        textColor:
+                                                            AppColors.appBlue,
+                                                      )
+                                                    : SizedBox(),
+                                                CustomRoundedButton(
+                                                  deviceInfo: deviceInfo,
+                                                  label: 'Search Flights',
+                                                  backgroundColor:
+                                                      AppColors.appBlue,
+                                                  onPressed: () {
+                                                    // TODO: what happens when search flights is presased in multylist?
+                                                  },
+                                                  textColor: Colors.white,
+                                                ),
+                                                SizedBox(
+                                                  height:
+                                                      deviceInfo.screenHeight *
+                                                          0.03,
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
                                   ),
                                   // SizedBox(
-                                  //   height: deviceInfo.screenHeight * 0.01,
+                                  //   height: deviceInfo.screenHeight * 0.05,
                                   // )
                                 ],
                               ),
