@@ -1,76 +1,68 @@
 import 'package:flutter/material.dart';
-import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 
-final deviceInfo = getIt<DeviceInfo>();
-
 class FlightsUtils {
+  final DeviceInfo deviceInfo;
+
+  FlightsUtils(this.deviceInfo);
+
   ///////////////////////////// Styles ////////////////////////////////////
-  static final titleStyle =
-      TextStyles.semiBold18(getIt<DeviceInfo>(), Colors.white);
-  static final subTitleStyle = TextStyles.bold34(deviceInfo, Colors.white);
-  static final radiotileTextStyle =
+  TextStyle get titleStyle => TextStyles.semiBold18(deviceInfo, Colors.white);
+  TextStyle get subTitleStyle => TextStyles.bold34(deviceInfo, Colors.white);
+  TextStyle get radiotileTextStyle =>
       TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
           .copyWith(fontSize: deviceInfo.screenWidth * 0.03);
-  static final fieldLabelStyle =
+  TextStyle get fieldLabelStyle =>
       TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
           .copyWith(fontSize: deviceInfo.screenWidth * 0.03);
-  static final cardLabelStyle = TextStyles.regular16(deviceInfo, Colors.white)
+  TextStyle get cardLabelStyle => TextStyles.regular16(deviceInfo, Colors.white)
       .copyWith(fontSize: deviceInfo.screenWidth * 0.03);
-  static final TextStyle hintTextStyle = TextStyles.mediumDark16
+  TextStyle get hintTextStyle => TextStyles.mediumDark16
       .copyWith(fontSize: deviceInfo.screenWidth * 0.03, color: Colors.grey);
-  static final TextStyle fieldInputStyle = TextStyles.mediumDark16
+  TextStyle get fieldInputStyle => TextStyles.mediumDark16
       .copyWith(fontSize: deviceInfo.screenWidth * 0.03, color: Colors.black);
   ///////////////////////////// Styles ////////////////////////////////////
 
   ///////////////////////////// Dimensions ////////////////////////////////////
-
-  static final backGroundBorderRadius = deviceInfo.screenHeight * 0.05;
-  static final radioTilesRowWidth = deviceInfo.screenWidth * 0.75;
-  static final double fieldBorderRaduis = deviceInfo.screenHeight * 0.02;
-  static final double cardBorderRadius = deviceInfo.screenHeight * 0.02;
-  static final double deleteButtonBorderRadius = deviceInfo.screenHeight * 0.05;
-  static final double firstPageHeight = deviceInfo.screenHeight * 0.4;
-  static final double secondPageHeight = deviceInfo.screenHeight * 0.63;
-  static final double thirdPageHeight = deviceInfo.screenHeight * 0.45;
-
+  double get backGroundBorderRadius => deviceInfo.screenHeight * 0.05;
+  double get radioTilesRowWidth => deviceInfo.screenWidth * 0.75;
+  double get fieldBorderRaduis => deviceInfo.screenHeight * 0.02;
+  double get cardBorderRadius => deviceInfo.screenHeight * 0.02;
+  double get deleteButtonBorderRadius => deviceInfo.screenHeight * 0.05;
+  double get pageViewHeight => deviceInfo.screenHeight * 0.65;
+  double get listViewHeight => deviceInfo.screenHeight * 0.5;
   ///////////////////////////// Dimensions ////////////////////////////////////
 
   ///////////////////////////// Paddings ////////////////////////////////////
-
-  static final EdgeInsets cardHeaderPadding = EdgeInsets.symmetric(
-    horizontal: deviceInfo.screenWidth * 0.03,
-    vertical: deviceInfo.screenHeight * 0.01,
-  );
-  static final EdgeInsets cardContentPadding = EdgeInsets.symmetric(
-    horizontal: deviceInfo.screenWidth * 0.03,
-    vertical: deviceInfo.screenHeight * 0.02,
-  );
-  static final EdgeInsets subTitlePadding = EdgeInsets.symmetric(
-    horizontal: deviceInfo.screenWidth * 0.05,
-    vertical: deviceInfo.screenHeight * 0.03,
-  );
-  static final EdgeInsets whiteContainerPadding = EdgeInsets.symmetric(
-    horizontal: deviceInfo.screenWidth * 0.02,
-    vertical: deviceInfo.screenHeight * 0.01,
-  );
-  static final EdgeInsets mainContentPadding = EdgeInsets.symmetric(
-    horizontal: deviceInfo.screenWidth * 0.05,
-    vertical: deviceInfo.screenHeight * 0.02,
-  );
+  EdgeInsets get cardHeaderPadding => EdgeInsets.symmetric(
+        horizontal: deviceInfo.screenWidth * 0.03,
+        vertical: deviceInfo.screenHeight * 0.01,
+      );
+  EdgeInsets get cardContentPadding => EdgeInsets.symmetric(
+        horizontal: deviceInfo.screenWidth * 0.03,
+        vertical: deviceInfo.screenHeight * 0.02,
+      );
+  EdgeInsets get subTitlePadding => EdgeInsets.symmetric(
+        horizontal: deviceInfo.screenWidth * 0.05,
+        vertical: deviceInfo.screenHeight * 0.03,
+      );
+  EdgeInsets get whiteContainerPadding => EdgeInsets.symmetric(
+        horizontal: deviceInfo.screenWidth * 0.02,
+        vertical: deviceInfo.screenHeight * 0.001,
+      );
+  EdgeInsets get mainContentPadding => EdgeInsets.symmetric(
+        horizontal: deviceInfo.screenWidth * 0.05,
+        vertical: deviceInfo.screenHeight * 0.005,
+      );
   ///////////////////////////// Paddings ////////////////////////////////////
 
   ///////////////////////////// Durations ////////////////////////////////////
-
-  static final Duration horizontalAnimationDuration =
-      Duration(milliseconds: 300);
-  static final Duration verticalAnimationDuration = Duration(milliseconds: 250);
-
+  Duration get horizontalAnimationDuration => Duration(milliseconds: 300);
+  Duration get verticalAnimationDuration => Duration(milliseconds: 250);
   ///////////////////////////// Durations ////////////////////////////////////
 
   ///////////////////////////// Widgets ////////////////////////////////////
-
   ///////////////////////////// Widgets ////////////////////////////////////
 }
