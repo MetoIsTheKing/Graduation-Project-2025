@@ -6,7 +6,7 @@ import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/chat_bot.dart';
 import 'package:graduation_project_2025/features/home/my_bookings/presentation/pages/my_bookings.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/pages/explore_screen.dart';
-import 'package:graduation_project_2025/features/home/my_profile.dart';
+import 'package:graduation_project_2025/features/home/profile/presentaion/pages/my_profile.dart';
 
 class MainHomeScreen extends StatefulWidget {
   const MainHomeScreen({super.key});

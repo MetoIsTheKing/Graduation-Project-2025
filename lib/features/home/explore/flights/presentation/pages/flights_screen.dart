@@ -13,13 +13,12 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
 
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flights_utils.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_airport.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_card_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_class_card_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_form_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_travellers_card_widget.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_travellers_field_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/radio_tiles_row.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_airport.dart';
 import 'package:intl/intl.dart';
 
 class FlightsScreen extends StatefulWidget {
@@ -180,6 +179,13 @@ class _FlightsScreenState extends State<FlightsScreen> {
       Travellers: ${selectedFlightModel.travellers.toString()}
       Flight Class: ${selectedFlightModel.flightClass}
     ''');
+    Navigator.of(context).push(
+      MaterialPageRoute(
+          builder: (context) => SearchAirport(
+              isOrigin: true,
+              appBarTitle: 'Search Origin',
+              onBack: context.pop)),
+    );
   }
 
   void onaddAnotherFlightPressed() {
@@ -224,6 +230,9 @@ class _FlightsScreenState extends State<FlightsScreen> {
   void onTravellersFieldTaped(FlightModel selectedFlightModel) async {
     await showModalBottomSheet(
       isScrollControlled: true,
+      constraints: BoxConstraints(
+        maxWidth: deviceInfo.screenWidth,
+      ),
       context: context,
       builder: (context) {
         return StatefulBuilder(

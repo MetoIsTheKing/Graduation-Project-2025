@@ -131,7 +131,8 @@ class _LogScreenState extends State<LoginScreen> {
                                   };
                                   print('this is requetBody : $requestBody');
 
-                                  context.read<AuthCubit>().login(requestBody);
+                                  //context.read<AuthCubit>().login(requestBody);
+                                  context.pushReplacementNamed(Routes.mainHome);
                                 },
                                 textColor: Colors.white,
                               );

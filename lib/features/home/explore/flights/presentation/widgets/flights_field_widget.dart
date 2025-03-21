@@ -6,6 +6,7 @@ import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flights_utils.dart';
 
 class FlightsFieldWidget extends StatelessWidget {
+  final DeviceInfo deviceInfo;
   final TextEditingController? controller;
   final String prefixIcon;
   final String label;
@@ -17,15 +18,15 @@ class FlightsFieldWidget extends StatelessWidget {
     required this.prefixIcon,
     required this.label,
     this.onTap,
+    required this.deviceInfo,
   });
 
   @override
   Widget build(BuildContext context) {
-    final deviceInfo = getIt<DeviceInfo>();
+    //final deviceInfo = getIt<DeviceInfo>();
     return GestureDetector(
       onTap: onTap,
       child: AbsorbPointer(
-        // Prevents keyboard from showing up
         child: TextFormField(
             style: TextStyles.mediumDark16.copyWith(
                 fontSize: deviceInfo.screenWidth * 0.03,
@@ -53,8 +54,8 @@ class FlightsFieldWidget extends StatelessWidget {
                 ),
                 child: Image.asset(
                   prefixIcon,
-                  width: deviceInfo.screenWidth * 0.001,
-                  height: deviceInfo.screenHeight * 0.001,
+                  fit: BoxFit.cover,
+                  width: deviceInfo.screenWidth * 0.05, // Replace this line
                 ),
               ),
             )),

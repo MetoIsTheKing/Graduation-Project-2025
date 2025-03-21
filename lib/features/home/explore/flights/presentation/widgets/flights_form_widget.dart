@@ -8,7 +8,6 @@ import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_actions_model.dart';
 
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/flights_utils.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_field_widget.dart';
 
 class FlightsFormWidget extends StatelessWidget {
@@ -43,6 +42,7 @@ class FlightsFormWidget extends StatelessWidget {
           height: deviceInfo.screenHeight * 0.01,
         ),
         FlightsFieldWidget(
+          deviceInfo: deviceInfo,
           controller: flightModel.fromController,
           prefixIcon: 'assets/images/flight_from.png',
           label: 'select start location',
@@ -83,6 +83,7 @@ class FlightsFormWidget extends StatelessWidget {
         //   height: deviceInfo.screenHeight * 0.005,
         // ),
         FlightsFieldWidget(
+          deviceInfo: deviceInfo,
           controller: flightModel.toController,
           prefixIcon: 'assets/images/flight_to.png',
           label: 'select destination',
@@ -108,6 +109,7 @@ class FlightsFormWidget extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.only(right: deviceInfo.screenWidth * 0.02),
                 child: FlightsFieldWidget(
+                  deviceInfo: deviceInfo,
                   controller: flightModel.departureDateController,
                   prefixIcon: 'assets/images/flights_calender.png',
                   label: 'select departure date',
@@ -124,6 +126,7 @@ class FlightsFormWidget extends StatelessWidget {
                       padding:
                           EdgeInsets.only(left: deviceInfo.screenWidth * 0.02),
                       child: FlightsFieldWidget(
+                        deviceInfo: deviceInfo,
                         controller: flightModel.returnDateController,
                         prefixIcon: 'assets/images/flights_calender.png',
                         label: 'select return date',
@@ -152,6 +155,7 @@ class FlightsFormWidget extends StatelessWidget {
         ),
 
         FlightsFieldWidget(
+          deviceInfo: deviceInfo,
           controller: flightModel.travellersController,
           prefixIcon: 'assets/images/flights_traveller.png',
           label: 'select travellers',
