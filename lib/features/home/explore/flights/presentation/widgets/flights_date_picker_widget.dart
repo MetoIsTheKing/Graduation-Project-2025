@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/flights_utils.dart';
+import 'package:graduation_project_2025/config/dependency_injection/di.dart';
+import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:intl/intl.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 
 class FlightsDatePickerWidget extends StatelessWidget {
-  final DeviceInfo deviceInfo;
   final String hint;
   final DateTime? departureDate;
   final DateTime? returnDate;
@@ -14,10 +14,10 @@ class FlightsDatePickerWidget extends StatelessWidget {
 
   const FlightsDatePickerWidget({
     super.key,
-    required this.deviceInfo,
     required this.hint,
     required this.departureDate,
     required this.onDateSelected,
+    // Add this line
     this.prefixIcon,
     this.returnDate,
     DateTime? selectedDate,
@@ -25,7 +25,7 @@ class FlightsDatePickerWidget extends StatelessWidget {
 
   void _openDatePicker(BuildContext context) async {
     DateTime? pickedDate;
-
+    final deviceInfo = getIt<DeviceInfo>();
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -102,6 +102,7 @@ class FlightsDatePickerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceInfo = getIt<DeviceInfo>();
     return GestureDetector(
       onTap: () => _openDatePicker(context),
       child: Container(
@@ -110,7 +111,8 @@ class FlightsDatePickerWidget extends StatelessWidget {
             : deviceInfo.screenWidth * 0.079,
         decoration: BoxDecoration(
           color: AppColors.appLighterGrey,
-          borderRadius: BorderRadius.circular(FlightsUtils.fieldBorderRaduis),
+          borderRadius: BorderRadius.circular(
+              deviceInfo.screenHeight * 0.02), // Replace this line
         ),
         width: double.infinity,
         child: Row(
@@ -123,8 +125,9 @@ class FlightsDatePickerWidget extends StatelessWidget {
               child: prefixIcon != null
                   ? Image.asset(
                       prefixIcon!,
-                      width: 24, // Adjust size if needed
-                      height: 24,
+                      width: deviceInfo.screenWidth *
+                          0.001, // Adjust size if needed
+                      height: deviceInfo.screenHeight * 0.001,
                     )
                   : null,
             ),
@@ -137,8 +140,12 @@ class FlightsDatePickerWidget extends StatelessWidget {
                         ? DateFormat("MMMM d, yyyy").format(departureDate!)
                         : hint,
                     style: departureDate != null
-                        ? FlightsUtils.fieldInputStyle
-                        : FlightsUtils.hintTextStyle,
+                        ? TextStyles.mediumDark16.copyWith(
+                            fontSize: deviceInfo.screenWidth * 0.03,
+                            color: Colors.black) // Replace this line
+                        : TextStyles.mediumDark16.copyWith(
+                            fontSize: deviceInfo.screenWidth * 0.03,
+                            color: Colors.grey), // Replace this line
                     overflow: TextOverflow.ellipsis,
                   ),
                   Padding(
@@ -148,7 +155,9 @@ class FlightsDatePickerWidget extends StatelessWidget {
                       returnDate != null
                           ? DateFormat("MMMM d, yyyy").format(returnDate!)
                           : '',
-                      style: FlightsUtils.fieldInputStyle,
+                      style: TextStyles.mediumDark16.copyWith(
+                          fontSize: deviceInfo.screenWidth * 0.03,
+                          color: Colors.black), // Replace this line
                     ),
                   ),
                 ],

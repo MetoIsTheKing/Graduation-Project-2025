@@ -109,6 +109,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             textColor: AppColors.appDarkBlue,
                             backgroundColor: AppColors.appYellow,
                             onPressed: () {
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) =>
+                              //         CodeVerification(email: 'ana we7sh')));
                               context.pushReplacementNamed(Routes.logIn);
                             },
                           ),

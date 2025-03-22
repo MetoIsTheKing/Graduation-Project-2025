@@ -10,6 +10,7 @@ class CustomRoundedButton extends StatelessWidget {
   final Color textColor;
   final VoidCallback onPressed;
   final String? assetIcon;
+  final Color? imageColor;
   final bool isLoading;
   const CustomRoundedButton({
     super.key,
@@ -18,7 +19,7 @@ class CustomRoundedButton extends StatelessWidget {
     required this.backgroundColor,
     required this.onPressed,
     required this.textColor,
-    this.assetIcon,  this.isLoading = false,
+    this.assetIcon,  this.isLoading = false, this.imageColor,
   });
 
   @override
@@ -44,6 +45,7 @@ class CustomRoundedButton extends StatelessWidget {
                 assetIcon!,
                 width: deviceInfo.screenHeight * 0.035,
                 height: deviceInfo.screenHeight * 0.035,
+                color: imageColor,
               ),
               SizedBox(width: deviceInfo.screenWidth * 0.015),
             ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
@@ -22,20 +21,30 @@ class CodBalls extends StatelessWidget {
         .copyWith(fontSize: deviceInfo.screenWidth * 0.04, color: Colors.black);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: deviceInfo.screenWidth * 0.01),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "";
+          }
+          return null;
+        },
         decoration: InputDecoration(
-          counterText: "",
-          border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(deviceInfo.screenWidth * .8)),
-          constraints: BoxConstraints(
-            maxWidth: deviceInfo.screenWidth * .15,
-            minHeight: deviceInfo.screenHeight * .11,
-          ),
-          filled: true,
-          fillColor: AppColors.appGrey,
-        ),
+            counterText: "",
+            border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius:
+                    BorderRadius.circular(deviceInfo.screenWidth * .8)),
+            constraints: BoxConstraints(
+              maxWidth: deviceInfo.screenWidth * .15,
+              minHeight: deviceInfo.screenHeight * .11,
+            ),
+            filled: true,
+            fillColor: AppColors.appGrey,
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(deviceInfo.screenWidth * .8),
+            )),
         style: inputTextStyle,
         keyboardType: TextInputType.text,
         maxLength: 1,

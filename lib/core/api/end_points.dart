@@ -1,4 +1,5 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class EndPoints {
-  static const String fakeUsersBaseUrl = "http://13.81.120.153/users/";
-  static const String register = "register";
+  static String get fakeUsersBaseUrl => dotenv.env['FAKE_USERS_BASE_URL'] ?? 'https://fake-users-api.com';
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/config/dependency_injection/di.dart';
+import 'package:graduation_project_2025/config/theming/text_styles.dart';
+import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_actions_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/flights_utils.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_form_widget.dart';
 
 class FlightCardWidget extends StatelessWidget {
@@ -20,66 +22,84 @@ class FlightCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          FlightsUtils.cardBorderRadius,
-        ),
-      ),
-      color: Colors.white,
-      elevation: 5,
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(
-                  FlightsUtils.cardBorderRadius,
+    final deviceInfo = getIt<DeviceInfo>();
+    return Column(
+      children: [
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+              deviceInfo.screenHeight * 0.02, // Replace this line
+            ),
+          ),
+          color: Colors.white,
+          elevation: 5,
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(
+                      deviceInfo.screenHeight * 0.02, // Replace this line
+                    ),
+                    topRight: Radius.circular(
+                      deviceInfo.screenHeight * 0.02, // Replace this line
+                    ),
+                  ),
+                  color: AppColors.appBlue,
                 ),
-                topRight: Radius.circular(
-                  FlightsUtils.cardBorderRadius,
+                padding: EdgeInsets.symmetric(
+                  horizontal: deviceInfo.screenWidth * 0.03,
+                  vertical: deviceInfo.screenHeight * 0.01,
+                ), // Replace this line
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Flight ${index + 1}',
+                      style: TextStyles.regular16(deviceInfo, Colors.white)
+                          .copyWith(
+                              fontSize: deviceInfo.screenWidth *
+                                  0.03), // Replace this line
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(
+                          deviceInfo.screenHeight * 0.05, // Replace this line
+                        ),
+                      ),
+                      child: IconButton(
+                        onPressed: () => onDeleteCardPressed(
+                          index,
+                        ),
+                        icon: Icon(
+                          Icons.delete_forever,
+                          color: Colors.red,
+                        ),
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
                 ),
               ),
-              color: AppColors.appBlue,
-            ),
-            padding: FlightsUtils.cardHeaderPadding,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Flight ${index + 1}',
-                  style: FlightsUtils.cardLabelStyle,
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: deviceInfo.screenWidth * 0.03,
+                  vertical: deviceInfo.screenHeight * 0.02,
+                ), // Replace this line
+                child: FlightsFormWidget(
+                  flightModel: flightModel,
+                  flightActionsModel: flightActionsModel,
+                  isMultiCity: true,
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(
-                      FlightsUtils.deleteButtonBorderRadius,
-                    ),
-                  ),
-                  child: IconButton(
-                    onPressed: () => onDeleteCardPressed(
-                      index,
-                    ),
-                    icon: Icon(
-                      Icons.delete_forever,
-                      color: Colors.red,
-                    ),
-                    color: Colors.white,
-                  ),
-                )
-              ],
-            ),
+              ),
+            ],
           ),
-          Padding(
-            padding: FlightsUtils.cardContentPadding,
-            child: FlightsFormWidget(
-              flightModel: flightModel,
-              flightActionsModel: flightActionsModel,
-            ),
-          ),
-        ],
-      ),
+        ),
+        SizedBox(
+          height: deviceInfo.screenHeight * 0.02,
+        ),
+      ],
     );
   }
 }

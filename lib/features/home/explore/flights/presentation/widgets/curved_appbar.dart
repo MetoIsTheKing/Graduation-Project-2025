@@ -9,22 +9,25 @@ class CurvedAppbar extends StatelessWidget implements PreferredSizeWidget {
   final Color backButtonColor;
   final Widget titleWidget;
   final void Function() onBack;
+  final List<Widget>? actions;
   const CurvedAppbar(
       {super.key,
       required this.onBack,
       required this.backgroundColor,
       required this.titleWidget,
-      required this.backButtonColor});
+      required this.backButtonColor,
+      this.actions});
   @override
   Size get preferredSize => Size.fromHeight(
         deviceInfo.screenHeight > deviceInfo.screenWidth
-            ? deviceInfo.screenHeight * 0.065
-            : deviceInfo.screenWidth * 0.05,
+            ? deviceInfo.screenHeight * 0.075
+            : deviceInfo.screenWidth * 0.06,
       );
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      actions: actions,
       backgroundColor: backgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -34,6 +37,7 @@ class CurvedAppbar extends StatelessWidget implements PreferredSizeWidget {
       ),
       centerTitle: true,
       title: titleWidget,
+      
       leading: Padding(
         padding: EdgeInsets.only(left: deviceInfo.screenWidth * 0.02),
         child: IconButton(
