@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graduation_project_2025/app.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/core/helpers/bloc_observer.dart';
@@ -9,6 +10,7 @@ import 'package:graduation_project_2025/core/responsive/Models/device_info.dart'
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await initDependencies();
   Bloc.observer = MyBlocObserver();
 

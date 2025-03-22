@@ -14,7 +14,8 @@ class AirportTextInput extends StatelessWidget {
   const AirportTextInput({
     super.key,
     required this.iconPath,
-    required this.airportConteroller, this.onChanged,
+    required this.airportConteroller,
+    this.onChanged,
   });
 
   @override
@@ -53,9 +54,9 @@ class AirportTextInput extends StatelessWidget {
             ),
             prefixIcon: SvgPicture.asset(
               iconPath,
-              width: deviceInfo.screenWidth * 0.03,
-              height: deviceInfo.screenHeight * 0.03,
-              fit: BoxFit.scaleDown,
+              fit: BoxFit.fitHeight,
+              height: deviceInfo.screenHeight * 0.005,
+              width: deviceInfo.screenHeight * 0.005,
             )),
       ),
     );

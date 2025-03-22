@@ -21,6 +21,18 @@ class SignUpFailed extends AuthState {
   SignUpFailed({required this.message});
 }
 
+//----->> login
+class LoginInitial extends AuthState {}
+
+class LoginIsLoading extends AuthState {}
+
+class LoginSuccess extends AuthState {}
+
+class LoginFailed extends AuthState {
+  final String message;
+  LoginFailed({required this.message});
+}
+
 //----->> verify email
 class VerificationStates extends AuthState {
   final bool isLoading;
@@ -46,18 +58,21 @@ class VerificationStates extends AuthState {
   }
 }
 
-//----->> login
-class LoginInitial extends AuthState {}
+//----->> resend verification code
+class ResendVerificationStates extends AuthState {
+  final bool isLoading;
+  final bool isSuccess;
+  final String? error;
 
-class LoginIsLoading extends AuthState {}
+  const ResendVerificationStates(
+      {this.isLoading = false, this.isSuccess = false, this.error});
 
-class LoginSuccess extends AuthState {
-  final String accessToken;
-  final String refreshToken;
-  LoginSuccess({required this.accessToken, required this.refreshToken});
-}
-
-class LoginFailed extends AuthState {
-  final String message;
-  LoginFailed({required this.message});
+  ResendVerificationStates copyWith(
+      {bool? isLoading, bool? isSuccess, String? error}) {
+    return ResendVerificationStates(
+      isLoading: isLoading ?? this.isLoading,
+      isSuccess: isSuccess ?? this.isSuccess,
+      error: error ?? this.error,
+    );
+  }
 }

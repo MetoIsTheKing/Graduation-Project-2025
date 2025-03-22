@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ChatBot extends StatelessWidget {
-  const ChatBot({super.key});
+  final ScrollController scrollController;
+  const ChatBot({super.key, required this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -9,6 +10,6 @@ class ChatBot extends StatelessWidget {
       body: Center(
         child: Text('Chat Bot'),
       ),
-    );  
+    );
   }
 }

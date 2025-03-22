@@ -1,4 +1,5 @@
-import 'package:dio/dio.dart';
+
+import 'package:graduation_project_2025/config/token_manager.dart';
 import 'package:graduation_project_2025/core/network_clients/abstract_client.dart';
 
 abstract class UsersRemote {
@@ -6,10 +7,9 @@ abstract class UsersRemote {
       {String? path});
   Future<Map<String, dynamic>> logIn(Map<String, dynamic> requestbody,
       {String? path});
-  Future<Map<String, dynamic>> verifyEmail(Map<String, dynamic> requestbody,
-      {String? path});
-  Future<Response> resendVerification(
-      String path, Map<String, dynamic> requestbody);
+  Future<Map<String, dynamic>> verifyEmail(Map<String, dynamic> requestbody,);
+  Future<Map<String, dynamic>> resendVerification(
+Map<String, dynamic> requestbody);
   //TODO: to be continued
 }
 
@@ -26,10 +26,8 @@ class UsersRemoteImpl implements UsersRemote {
         'register',
         data: requestbody,
       );
-      // print('response ---------->: ${response}');
       return {
         'statusCode': response.statusCode,
-        'data': response.data,
       };
     } catch (e, stackTrace) {
       print(stackTrace);
@@ -45,10 +43,21 @@ class UsersRemoteImpl implements UsersRemote {
         'login',
         data: requestbody,
       );
-      return {
-        'statusCode': response.statusCode,
-        'data': response.data,
-      };
+      if (response.statusCode == 201) {
+        final accessToken = response.data['data']['accessToken'];
+        final refreshToken = response.data['data']['refreshToken'];
+        // this the token caching
+        await TokenManager.saveTokens(accessToken, refreshToken);
+        return {
+          'statusCode': response.statusCode,
+          'accessToken': accessToken,
+          'refreshToken': refreshToken,
+        };
+      } else {
+        return {
+          'statusCode': response.statusCode,
+        };
+      }
     } catch (e, stackTrace) {
       print(stackTrace);
       return Future.error(e);
@@ -56,28 +65,29 @@ class UsersRemoteImpl implements UsersRemote {
   }
 
   @override
-  Future<Map<String, dynamic>> verifyEmail(Map<String, dynamic> requestbody,
-      {String? path}) async {
-    try {
+  Future<Map<String, dynamic>> verifyEmail(Map<String, dynamic> requestbody
+      ) async {
+    return await verificationSend(requestbody, 'verify-email');
+  }
+
+
+  @override
+  Future<Map<String, dynamic>> resendVerification(
+      Map<String, dynamic> requestbody) async {
+    return await verificationSend(requestbody , 'resend-verification');
+  }
+  Future<Map<String, dynamic>> verificationSend(Map<String, dynamic> requestbody , String path) async {
+     try {
       final response = await fakeUsersClient.post(
-        'verify-email',
+        path,
         data: requestbody,
       );
-
       return {
         'statusCode': response.statusCode,
-        'data': response.data,
       };
     } catch (e, stackTrace) {
       print(stackTrace);
       return Future.error(e);
     }
-  }
-
-  @override
-  Future<Response> resendVerification(
-      String path, Map<String, dynamic> requestbody) {
-    // TODO: implement resendVerification
-    throw UnimplementedError();
   }
 }

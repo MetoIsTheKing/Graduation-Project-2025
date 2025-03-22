@@ -44,8 +44,8 @@ class SearchCustomTile extends StatelessWidget {
       onTap: onTap,
       leading: SvgPicture.asset(
         tileIconPath,
-        height: deviceInfo.screenHeight * 0.03,
-        width: deviceInfo.screenHeight * 0.03,
+        height: deviceInfo.screenHeight * 0.04,
+        width: deviceInfo.screenHeight * 0.04,
       ),
       title: Text(
         title,
