@@ -10,6 +10,8 @@ class CustomCountryPickerField extends StatelessWidget {
   final String hint;
   final Country? selectedCountry;
   final Function(Country selectedCountry) onCountrySelected;
+  final FocusNode focusNode;
+  final FocusNode? nextFocusNode;
 
   const CustomCountryPickerField({
     super.key,
@@ -18,20 +20,51 @@ class CustomCountryPickerField extends StatelessWidget {
     required this.hint,
     required this.selectedCountry,
     required this.onCountrySelected,
+    required this.focusNode,
+    this.nextFocusNode,
   });
 
   void _openCountryPicker(BuildContext context) {
     showCountryPicker(
-      searchAutofocus: true,
+      searchAutofocus: false,
       context: context,
       showSearch: true,
-      showPhoneCode: false,
-      onSelect: onCountrySelected,
+      showPhoneCode: true,
+      onSelect: (Country country) {
+        onCountrySelected(country);
+        if (nextFocusNode != null) {
+          FocusScope.of(context).requestFocus(nextFocusNode);
+        }
+      },
       countryListTheme: CountryListThemeData(
         bottomSheetHeight: deviceInfo.screenHeight * 0.5,
         textStyle: TextStyles.mediumDark16.copyWith(
           fontSize: deviceInfo.screenWidth * 0.03,
           color: Colors.black,
+        ),
+        backgroundColor: AppColors.appLighterGrey,
+        //       borderRadius: BorderRadius.circular(deviceInfo.screenHeight * 0.055),
+        inputDecoration: InputDecoration(
+          filled: true,
+          fillColor: AppColors.appLighterGrey,
+          border: OutlineInputBorder(
+            borderRadius:
+                BorderRadius.circular(deviceInfo.screenHeight * 0.055),
+            borderSide: BorderSide(color: Colors.transparent),
+          ),
+          disabledBorder: OutlineInputBorder(
+            borderRadius:
+                BorderRadius.circular(deviceInfo.screenHeight * 0.055),
+            borderSide: BorderSide(color: Colors.transparent),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius:
+                BorderRadius.circular(deviceInfo.screenHeight * 0.055),
+            borderSide: BorderSide(color: Colors.blue, width: 2),
+          ),
+          hintText: "Search country...",
+          hintStyle: TextStyles.mediumDark16.copyWith(
+              fontSize: deviceInfo.screenWidth * 0.03, color: Colors.grey),
         ),
       ),
     );
@@ -39,22 +72,18 @@ class CustomCountryPickerField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /////////
-    final double borderRaduis = deviceInfo.screenHeight * 0.055;
-    final TextStyle hintTextStyle = TextStyles.mediumDark16
-        .copyWith(fontSize: deviceInfo.screenWidth * 0.03, color: Colors.grey);
-    final TextStyle inputTextStyle = TextStyles.mediumDark16
-        .copyWith(fontSize: deviceInfo.screenWidth * 0.04, color: Colors.black);
-    //////////
     return GestureDetector(
-      onTap: () => _openCountryPicker(context),
+      onTap: () {
+        focusNode.requestFocus();
+        _openCountryPicker(context);
+      },
       child: Container(
         height: deviceInfo.screenHeight > deviceInfo.screenWidth
             ? deviceInfo.screenHeight * 0.06
             : deviceInfo.screenWidth * 0.079,
         decoration: BoxDecoration(
           color: AppColors.appGrey,
-          borderRadius: BorderRadius.circular(borderRaduis),
+          borderRadius: BorderRadius.circular(deviceInfo.screenHeight * 0.055),
           border: Border.all(color: AppColors.appGrey, width: 2),
         ),
         padding: EdgeInsets.symmetric(
@@ -67,10 +96,10 @@ class CustomCountryPickerField extends StatelessWidget {
               width: deviceInfo.screenWidth * 0.285,
               child: Row(
                 children: [
-                  Text(
-                    prefix,
-                    style: hintTextStyle,
-                  ),
+                  Text(prefix,
+                      style: TextStyles.mediumDark16.copyWith(
+                          fontSize: deviceInfo.screenWidth * 0.03,
+                          color: Colors.grey)),
                   const Spacer(),
                   Text("|",
                       textAlign: TextAlign.center,
@@ -84,16 +113,17 @@ class CustomCountryPickerField extends StatelessWidget {
             Expanded(
               child: Text(
                 selectedCountry != null ? selectedCountry!.name : hint,
-                style: selectedCountry != null ? inputTextStyle : hintTextStyle,
+                style: selectedCountry != null
+                    ? TextStyles.mediumDark16.copyWith(
+                        fontSize: deviceInfo.screenWidth * 0.035,
+                        color: Colors.black)
+                    : TextStyles.mediumDark16.copyWith(
+                        fontSize: deviceInfo.screenWidth * 0.03,
+                        color: Colors.grey),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            Container(
-              child: const Icon(
-                Icons.arrow_drop_down,
-                color: Colors.grey,
-              ),
-            ),
+            const Icon(Icons.arrow_drop_down, color: Colors.grey),
           ],
         ),
       ),

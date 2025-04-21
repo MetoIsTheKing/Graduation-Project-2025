@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
+import 'package:graduation_project_2025/features/auth/presentation/pages/change_password_screen.dart';
 import 'package:graduation_project_2025/features/auth/presentation/pages/forgetpassword_screen.dart';
 import 'package:graduation_project_2025/features/auth/presentation/pages/login_screen.dart';
 import 'package:graduation_project_2025/features/auth/presentation/pages/signup_screen.dart';
@@ -25,6 +26,13 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) => LoginScreen());
       case Routes.forgetpassword:
         return MaterialPageRoute(builder: (context) => ForgetpasswordScreen());
+      case Routes.changePassword:
+        return MaterialPageRoute(builder: (context) => ChangePasswordScreen());
+      case Routes.resetPassword:
+        return MaterialPageRoute(
+            builder: (context) => ChangePasswordScreen(
+                  isReset: true,
+                ));
       case Routes.signUp:
         return MaterialPageRoute(builder: (context) => SignupScreen());
       case Routes.mainHome:
