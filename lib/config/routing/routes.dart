@@ -8,4 +8,6 @@ class Routes {
   static const String onBoarding = '/onBoarding';
   static const String codeVerification = '/codeVerification';
   static const String forgetpassword = '/forgetpassword';
+  static const String changePassword = '/changePassword';
+  static const String resetPassword = '/resetPassword';
 }

@@ -1,6 +1,8 @@
-import 'package:country_picker/country_picker.dart';
+import 'dart:developer' as dev;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_2025/config/theming/paddings.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
@@ -15,7 +17,8 @@ import 'package:graduation_project_2025/features/auth/presentation/widgets/share
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/divider.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_header.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/error_toast.dart';
-import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/country_picker.dart';
+import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/auth_phone_widget.dart';
+import 'package:intl_phone_field/countries.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -25,12 +28,12 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  FocusNode firstNameFocus = FocusNode();
-  FocusNode lastNameFocus = FocusNode();
-  FocusNode emailFocus = FocusNode();
-  FocusNode passwordFocus = FocusNode();
-  FocusNode confirmPasswordFocus = FocusNode();
-  FocusNode phoneFocus = FocusNode();
+  final FocusNode firstNameFocus = FocusNode();
+  final FocusNode lastNameFocus = FocusNode();
+  final FocusNode emailFocus = FocusNode();
+  final FocusNode passwordFocus = FocusNode();
+  final FocusNode confirmPasswordFocus = FocusNode();
+  final FocusNode phoneFocus = FocusNode();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -38,11 +41,15 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  Country? selectedCountry;
-  DateTime? selectedDate;
-  
+  Country selectedCountry = countries.firstWhere(
+    (country) =>
+        country.code == 'EG', // Change 'US' to your desired country code
+    orElse: () => countries.first, // Fallback to the first country if not found
+  );
+  final _formKey = GlobalKey<FormState>();
 
   bool _passwordObsecurity = true;
+  // bool enablePhoneField = false;
 
   @override
   void dispose() {
@@ -58,6 +65,7 @@ class _SignupScreenState extends State<SignupScreen> {
     passwordController.dispose();
     confirmPasswordController.dispose();
     phoneController.dispose();
+
     super.dispose();
   }
 
@@ -73,15 +81,9 @@ class _SignupScreenState extends State<SignupScreen> {
         });
   }
 
-  void onCountrySelected(Country selectedCountry) {
+  void onCountryChanged(Country country) {
     setState(() {
-      this.selectedCountry = selectedCountry;
-    });
-  }
-
-  void onDateSelected(DateTime? selectedDate) {
-    setState(() {
-      this.selectedDate = selectedDate;
+      selectedCountry = country;
     });
   }
 
@@ -101,10 +103,7 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
           body: SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: deviceInfo.screenHeight * 0.01,
-                horizontal: deviceInfo.screenWidth * 0.04,
-              ),
+              padding: Paddings.authMainPagePadding(deviceInfo),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -116,6 +115,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     SizedBox(height: deviceInfo.screenHeight * 0.045),
                     Form(
+                      key: _formKey,
                       child: Column(
                         children: [
                           AuthTextField(
@@ -124,7 +124,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             keyboardType: TextInputType.name,
                             focusNode: firstNameFocus,
                             needValidation: true,
-                            nextFocusNode: emailFocus,
+                            nextFocusNode: lastNameFocus,
                             controller: firstNameController,
                           ),
                           SizedBox(height: fieldsSpacing),
@@ -168,33 +168,38 @@ class _SignupScreenState extends State<SignupScreen> {
                             PasswordSuffixIcon: passwordSuffixIcon(),
                             needValidation: true,
                             focusNode: confirmPasswordFocus,
+                            nextFocusNode: phoneFocus,
                             controller: confirmPasswordController,
+                            isConfirmPassword: true,
+                            passwordController: passwordController,
                           ),
                           SizedBox(height: fieldsSpacing),
-                          AuthTextField(
-                            prefix: 'Phone',
-                            hint: 'Enter Phone number',
-                            keyboardType: TextInputType.phone,
-                            needValidation: true,
+                          // CustomCountryPickerField(
+                          //   deviceInfo: deviceInfo,
+                          //   prefix: 'location',
+                          //   hint: 'Choose Country',
+                          //   onCountrySelected: onCountrySelected,
+                          //   selectedCountry: selectedCountry,
+                          //   nextFocusNode: phoneFocus,
+                          //   focusNode: countryFocus,
+                          // ),
+                          // SizedBox(height: fieldsSpacing),
+                          // AuthTextField(
+                          //   prefix: 'Phone',
+                          //   hint: 'Enter Phone number',
+                          //   keyboardType: TextInputType.phone,
+                          //   needValidation: true,
+                          //   focusNode: phoneFocus,
+                          //   controller: phoneController,
+                          //   isPhoneField: true,
+                          //   enablePhoneField: enablePhoneField,
+                          // ),
+                          AuthPhoneWidget(
                             focusNode: phoneFocus,
                             controller: phoneController,
+                            onCountryChanged: onCountryChanged,
+                            initialCountry: selectedCountry,
                           ),
-                          SizedBox(height: fieldsSpacing),
-                          CustomCountryPickerField(
-                            deviceInfo: deviceInfo,
-                            prefix: 'location',
-                            hint: 'Choose Country',
-                            onCountrySelected: onCountrySelected,
-                            selectedCountry: selectedCountry,
-                          ),
-                          //SizedBox(height: fieldsSpacing),
-                          // CustomDatePickerField(
-                          //   deviceInfo: deviceInfo,
-                          //   prefix: "Birth Date",
-                          //   hint: "Select Date",
-                          //   onDateSelected: onDateSelected,
-                          //   selectedDate: selectedDate,
-                          // ),
                           SizedBox(height: fieldsSpacing),
                           BlocConsumer<AuthCubit, AuthState>(
                             listener: (context, state) {
@@ -205,7 +210,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                         description: (state).message)
                                     .show(context);
                               } else if (state is SignUpFailed) {
-                                print('im from  sign up failed');
+                                print('im from sign up failed');
                                 errorToast(
                                         title: 'Error',
                                         description: (state).message)
@@ -242,21 +247,24 @@ class _SignupScreenState extends State<SignupScreen> {
                                       'password : ${passwordController.text}');
                                   print(
                                       'confirm password : ${confirmPasswordController.text}');
-                                  print('phone : ${phoneController.text}');
-                                  print('country : ${selectedCountry?.name}');
+                                  print(
+                                      'Phone : +${selectedCountry.dialCode}${phoneController.text}');
+                                  print('Country : ${selectedCountry.name}');
                                   final requestBody = {
                                     'firstName': firstNameController.text,
                                     'lastName': lastNameController.text,
                                     'email': emailController.text,
                                     'password': passwordController.text,
                                     'phoneNumber': phoneController.text,
-                                    'country': selectedCountry?.name,
                                   };
                                   print('this is requetBody : $requestBody');
 
-                                  context
-                                      .read<AuthCubit>()
-                                      .register(requestBody);
+                                  if (_formKey.currentState!.validate() &&
+                                      phoneController.text.isNotEmpty) {
+                                    context
+                                        .read<AuthCubit>()
+                                        .register(requestBody);
+                                  }
 
                                   //email :
                                   //code    :
@@ -291,7 +299,9 @@ class _SignupScreenState extends State<SignupScreen> {
                             deviceInfo: deviceInfo,
                             label: 'Sign Up with Google',
                             backgroundColor: AppColors.appBlue,
-                            onPressed: () {},
+                            onPressed: () {
+                              dev.log(selectedCountry.name);
+                            },
                             textColor: Colors.white,
                             assetIcon: 'assets/images/google_icon.png',
                           ),
@@ -328,3 +338,22 @@ class _SignupScreenState extends State<SignupScreen> {
     });
   }
 }
+
+// class FixedTextController extends TextEditingController {
+//   final int fixedTextLength;
+
+//   FixedTextController({required String? fixedText})
+//       : fixedTextLength = fixedText == null ? 0 : fixedText.length,
+//         super(text: fixedText);
+
+//   @override
+//   set value(TextEditingValue newValue) {
+//     // Ensure cursor stays after the fixed text
+//     if (newValue.selection.start < fixedTextLength) {
+//       newValue = newValue.copyWith(
+//         selection: TextSelection.collapsed(offset: fixedTextLength),
+//       );
+//     }
+//     super.value = newValue;
+//   }
+// }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
+import 'package:graduation_project_2025/config/theming/paddings.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
@@ -43,10 +44,7 @@ class _ForgetpasswordState extends State<ForgetpasswordScreen> {
           ),
           body: SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: deviceInfo.screenHeight * 0.01,
-                horizontal: deviceInfo.screenWidth * 0.04,
-              ),
+              padding: Paddings.authMainPagePadding(deviceInfo),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
