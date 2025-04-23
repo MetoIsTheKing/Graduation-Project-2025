@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
@@ -10,7 +12,9 @@ class AuthTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final bool isPassword;
   final bool needValidation;
+  final bool isConfirmPassword;
   final FocusNode? focusNode;
+  final TextEditingController? passwordController;
   final FocusNode? nextFocusNode;
   final Widget? PasswordSuffixIcon;
   final TextEditingController controller;
@@ -26,24 +30,39 @@ class AuthTextField extends StatelessWidget {
     this.nextFocusNode,
     this.PasswordSuffixIcon,
     required this.controller,
-  }) : assert(!isPassword || PasswordSuffixIcon != null,
-            'onToggleObscure is required when isPassword is true');
+    this.isConfirmPassword = false,
+    this.passwordController,
+  }) {
+    // if (fixedPhoneCode != null &&
+    //     !controller.text.startsWith(fixedPhoneCode!)) {
+    //   controller.text =
+    //       fixedPhoneCode!; // Ensure it always starts with the fixed code
+    //   controller.selection = TextSelection.fromPosition(
+    //     TextPosition(offset: controller.text.length),
+    //   );
+    // }
+  }
 
   // instance of DeviceInfo
   final deviceInfo = getIt<DeviceInfo>();
 
   String? _validateInput(String? value) {
-    if (!needValidation) return null;
     if (value == null || value.isEmpty) return '$prefix is required';
-
+    if (!needValidation) return null;
     if (keyboardType == TextInputType.emailAddress) {
       final emailRegex =
           RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
       if (!emailRegex.hasMatch(value)) return 'Enter a valid email';
     }
 
-    if (keyboardType == TextInputType.visiblePassword) {
-      if (value.length < 10) return 'Password must be at least 8 characters';
+    if (isConfirmPassword && passwordController != null) {
+      if (passwordController!.text != value) {
+        return '''Password doesn't match''';
+      }
+    }
+
+    if (keyboardType == TextInputType.visiblePassword && !isConfirmPassword) {
+      if (value.length < 10) return 'Password must be at least 10 characters';
       if (!RegExp(r'[A-Z]').hasMatch(value)) {
         return 'Must contain at least one uppercase letter';
       }
@@ -81,8 +100,9 @@ class AuthTextField extends StatelessWidget {
         }
       },
       decoration: InputDecoration(
+        errorStyle: hintTextStyle.copyWith(color: Colors.red),
         filled: true,
-        fillColor: AppColors.appGrey,
+        fillColor: AppColors.appLighterGrey,
         prefixIcon: Padding(
           padding:
               EdgeInsets.symmetric(horizontal: deviceInfo.screenWidth * 0.04),
@@ -131,6 +151,24 @@ class AuthTextField extends StatelessWidget {
         suffixIcon: PasswordSuffixIcon,
       ),
       style: inputTextStyle,
+      cursorColor: AppColors.appBlue,
     );
   }
 }
+
+// class MinLengthTextInputFormatter extends TextInputFormatter {
+//   final int minLength;
+
+//   MinLengthTextInputFormatter(this.minLength);
+
+//   @override
+//   TextEditingValue formatEditUpdate(
+//     TextEditingValue oldValue,
+//     TextEditingValue newValue,
+//   ) {
+//     if (newValue.text.length < minLength) {
+//       return oldValue; // Prevent deletion if text is below minLength
+//     }
+//     return newValue;
+//   }
+// }
