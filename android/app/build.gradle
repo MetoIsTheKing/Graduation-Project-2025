@@ -19,7 +19,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.flutter_base_version"
+        applicationId = "com.metotravel.taierapp"
         minSdk = 21  // Minimum SDK (change if needed)
         targetSdk = 34
         versionCode = 1
