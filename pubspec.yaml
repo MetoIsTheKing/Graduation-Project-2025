@@ -21,6 +21,7 @@ dependencies:
   device_preview: ^1.2.0
   timelines_plus: ^1.0.6
   otp_resend_timer: ^1.0.0
+
   dio: ^5.8.0+1
   dot_curved_bottom_nav: ^0.0.2
   flutter:
@@ -39,7 +40,9 @@ dependencies:
   logger: ^2.5.0
   shared_preferences: ^2.5.2
   smooth_page_indicator: ^1.2.0+3
-  intl_phone_field: ^3.1.0
+  intl_phone_field:
+    git:
+      url: https://github.com/Alaa7Hany/intl_phone_field.git
 
 dev_dependencies:
   flutter_lints: ^5.0.0

@@ -106,4 +106,48 @@ class AuthCubit extends Cubit<AuthState> {
       emit(stateConstructor(isLoading: false, error: e.toString()));
     }
   }
+
+  Future<void> requestResetPassword(Map<String, dynamic> requestbody) async {
+    emit(RequestPassResetIsLoading());
+    print('state now is : $state');
+    try {
+      final response = await userRepo.requestResetPassword(requestbody);
+      if (response['statusCode'] == 201) {
+        emit(RequestPassResetSuccess());
+        print('state now is : $state');
+      } else {
+        emit(RequestPassResetFailed(
+          message: 'An Error Occured , Please Try Again Later',
+        ));
+        print('state now is in try : $state');
+      }
+    } catch (e) {
+      emit(RequestPassResetFailed(
+        message: e.toString(),
+      ));
+      print('state now is in catch : $state');
+    }
+  }
+
+  Future<void> resetPassword(Map<String, dynamic> requestbody) async {
+    emit(RequestPassResetIsLoading());
+    print('state now is : $state');
+    try {
+      final response = await userRepo.resetPassword(requestbody);
+      if (response['statusCode'] == 201) {
+        emit(ResetPassSuccess());
+        print('state now is : $state');
+      } else {
+        emit(ResetPassFailed(
+          message: 'An Error Occured , Please Try Again Later',
+        ));
+        print('state now is in try : $state');
+      }
+    } catch (e) {
+      emit(ResetPassFailed(
+        message: e.toString(),
+      ));
+      print('state now is in catch : $state');
+    }
+  }
 }

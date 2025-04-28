@@ -194,6 +194,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           //   isPhoneField: true,
                           //   enablePhoneField: enablePhoneField,
                           // ),
+
                           AuthPhoneWidget(
                             focusNode: phoneFocus,
                             controller: phoneController,

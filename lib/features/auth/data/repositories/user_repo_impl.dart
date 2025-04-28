@@ -14,17 +14,29 @@ class UserRepoImpl implements UserRepo {
   @override
   Future<Map<String, dynamic>> verifyEmail(
       Map<String, dynamic> requestBody) async {
-   return await usersRemote.verifyEmail(requestBody);
+    return await usersRemote.verifyEmail(requestBody);
   }
 
   @override
   Future<Map<String, dynamic>> login(Map<String, dynamic> requestbody) async {
-   return await usersRemote.logIn(requestbody);
+    return await usersRemote.logIn(requestbody);
   }
 
   @override
   Future<Map<String, dynamic>> resendVerification(
       Map<String, dynamic> requestbody) async {
     return await usersRemote.resendVerification(requestbody);
+  }
+
+  @override
+  Future<Map<String, dynamic>> requestResetPassword(
+      Map<String, dynamic> requestbody) async {
+    return await usersRemote.requestResetPassword(requestbody);
+  }
+
+  @override
+  Future<Map<String, dynamic>> resetPassword(
+      Map<String, dynamic> requestbody) async {
+    return await usersRemote.resetPassword(requestbody);
   }
 }

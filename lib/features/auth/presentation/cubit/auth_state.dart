@@ -76,3 +76,27 @@ class ResendVerificationStates extends AuthState {
     );
   }
 }
+
+//-------->> request-password-reset
+class RequestPassResetInit extends AuthState {}
+
+class RequestPassResetIsLoading extends AuthState {}
+
+class RequestPassResetSuccess extends AuthState {}
+
+class RequestPassResetFailed extends AuthState {
+  final String message;
+  RequestPassResetFailed({required this.message});
+}
+
+//---------> > reset-password
+class ResetPassInit extends AuthState {}
+
+class ResetPassIsLoading extends AuthState {}
+
+class ResetPassSuccess extends AuthState {}
+
+class ResetPassFailed extends AuthState {
+  final String message;
+  ResetPassFailed({required this.message});
+}

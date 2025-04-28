@@ -1,13 +1,18 @@
 import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/paddings.dart';
+import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
+import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_header.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_textfield.dart';
+import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/error_toast.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   final bool isReset;
@@ -27,6 +32,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final FocusNode confirmFocus = FocusNode();
   bool _passwordObsecurity = true;
   final _formKey = GlobalKey<FormState>();
+  String resetCode = "WA5EO";
 
   Widget passwordSuffixIcon() {
     return IconButton(
@@ -45,7 +51,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   void onResetPasswordPressed() {
-    dev.log('Reset Password');
+    //context.pushReplacementNamed(Routes.mainHome);
+
+    final requestBody = {"code": resetCode, 'newPassword': newController.text};
+    print('this is requetBody : $requestBody');
+
+    if (_formKey.currentState!.validate()) {
+      context.read<AuthCubit>().resetPassword(requestBody);
+    }
   }
 
   @override
@@ -131,18 +144,39 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         SizedBox(
                           height: fieldsSpacing,
                         ),
-                        CustomRoundedButton(
-                          deviceInfo: deviceInfo,
-                          label: widget.isReset ? 'Reset' : 'Change',
-                          backgroundColor: AppColors.appBlue,
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              widget.isReset
-                                  ? onResetPasswordPressed()
-                                  : onChangePasswordPressed();
+                        BlocConsumer<AuthCubit, AuthState>(
+                          listener: (context, state) {
+                            if (state is ResetPassFailed) {
+                              errorToast(
+                                      title: 'Error',
+                                      description: (state).message)
+                                  .show(context);
+                            } else if (state is ResetPassSuccess) {
+                              successToast(
+                                      title: 'Success',
+                                      description:
+                                          'Password Reseted successfully')
+                                  .show(context);
+                              Future.delayed(const Duration(seconds: 1));
+                              context.pushReplacementNamed(Routes.logIn);
                             }
                           },
-                          textColor: Colors.white,
+                          builder: (context, state) {
+                            return CustomRoundedButton(
+                              isLoading: state is ResetPassIsLoading,
+                              deviceInfo: deviceInfo,
+                              label: widget.isReset ? 'Reset' : 'Change',
+                              backgroundColor: AppColors.appBlue,
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  widget.isReset
+                                      ? onResetPasswordPressed()
+                                      : onChangePasswordPressed();
+                                }
+                              },
+                              textColor: Colors.white,
+                            );
+                          },
                         )
                       ],
                     ),

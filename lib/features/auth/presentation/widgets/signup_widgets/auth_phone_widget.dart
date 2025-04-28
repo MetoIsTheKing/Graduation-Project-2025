@@ -72,6 +72,7 @@ class AuthPhoneWidget extends StatelessWidget {
       ),
     );
     /////////
+
     return IntlPhoneField(
       validator: _validateInput,
       controller: controller,
