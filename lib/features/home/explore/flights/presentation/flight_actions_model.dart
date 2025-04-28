@@ -2,7 +2,7 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 
 class FlightActionsModel {
   final Function(FlightModel flightModel) onChangePressed;
-  final Function(FlightModel flightModel) onTravellersFieldTapped;
+  final Function() onTravellersFieldTapped;
   final void Function(FlightModel flightModel) onToFieldTapped;
   final void Function(FlightModel flightModel) onFromFieldTaped;
   final Future<void> Function({

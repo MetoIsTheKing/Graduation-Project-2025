@@ -1,6 +1,7 @@
 import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/theming/paddings.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
@@ -33,11 +34,13 @@ class _SignupScreenState extends State<SignupScreen> {
   final FocusNode emailFocus = FocusNode();
   final FocusNode passwordFocus = FocusNode();
   final FocusNode confirmPasswordFocus = FocusNode();
+  final FocusNode birthFocus = FocusNode();
   final FocusNode phoneFocus = FocusNode();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController birthController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -102,6 +105,7 @@ class _SignupScreenState extends State<SignupScreen> {
             onPressed: () => context.pop(),
           ),
           body: SafeArea(
+            bottom: false,
             child: Padding(
               padding: Paddings.authMainPagePadding(deviceInfo),
               child: SingleChildScrollView(
@@ -168,10 +172,22 @@ class _SignupScreenState extends State<SignupScreen> {
                             PasswordSuffixIcon: passwordSuffixIcon(),
                             needValidation: true,
                             focusNode: confirmPasswordFocus,
-                            nextFocusNode: phoneFocus,
+                            nextFocusNode: birthFocus,
                             controller: confirmPasswordController,
                             isConfirmPassword: true,
                             passwordController: passwordController,
+                          ),
+                          SizedBox(height: fieldsSpacing),
+
+                          AuthTextField(
+                            prefix: 'Birth Date',
+                            hint: 'Enter your birth date',
+                            keyboardType: TextInputType.text,
+                            needValidation: true,
+                            focusNode: birthFocus,
+                            nextFocusNode: phoneFocus,
+                            controller: birthController,
+                            isConfirmPassword: false,
                           ),
                           SizedBox(height: fieldsSpacing),
                           // CustomCountryPickerField(
@@ -255,7 +271,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                     'lastName': lastNameController.text,
                                     'email': emailController.text,
                                     'password': passwordController.text,
-                                    'phoneNumber': phoneController.text,
+                                    'country': selectedCountry.name,
+                                    'birthdate': birthController.text,
+                                    'phoneNumber':
+                                        "+${selectedCountry.dialCode}${phoneController.text}",
                                   };
                                   print('this is requetBody : $requestBody');
 

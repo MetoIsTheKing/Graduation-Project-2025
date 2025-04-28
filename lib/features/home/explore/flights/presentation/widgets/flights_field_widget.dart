@@ -52,8 +52,8 @@ class FlightsFieldWidget extends StatelessWidget {
                 ),
                 child: Image.asset(
                   prefixIcon,
-                  fit: BoxFit.cover,
-                  width: deviceInfo.screenWidth * 0.05, // Replace this line
+                  fit: BoxFit.scaleDown,
+                  scale: deviceInfo.screenWidth * 0.002,
                 ),
               ),
             )),

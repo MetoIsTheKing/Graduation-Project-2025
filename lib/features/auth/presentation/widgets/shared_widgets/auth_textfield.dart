@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
@@ -17,6 +18,7 @@ class AuthTextField extends StatelessWidget {
   final TextEditingController? passwordController;
   final FocusNode? nextFocusNode;
   final Widget? PasswordSuffixIcon;
+  final List<TextInputFormatter>? inputFormatters;
   final TextEditingController controller;
 
   AuthTextField({
@@ -31,7 +33,7 @@ class AuthTextField extends StatelessWidget {
     this.PasswordSuffixIcon,
     required this.controller,
     this.isConfirmPassword = false,
-    this.passwordController,
+    this.passwordController, this.inputFormatters,
   }) {
     // if (fixedPhoneCode != null &&
     //     !controller.text.startsWith(fixedPhoneCode!)) {
@@ -58,6 +60,15 @@ class AuthTextField extends StatelessWidget {
     if (isConfirmPassword && passwordController != null) {
       if (passwordController!.text != value) {
         return '''Password doesn't match''';
+      }
+    }
+    if (keyboardType == TextInputType.number) {
+      if (int.parse(value) < 18) {
+        return "Age must be greater than 18";
+      } else if (value.length > 2) {
+        return "Age must be less than 3 digits";
+      } else if (value.isEmpty) {
+        return "Age is required";
       }
     }
 
@@ -151,6 +162,7 @@ class AuthTextField extends StatelessWidget {
         suffixIcon: PasswordSuffixIcon,
       ),
       style: inputTextStyle,
+      inputFormatters: inputFormatters,
       cursorColor: AppColors.appBlue,
     );
   }

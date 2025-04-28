@@ -4,6 +4,8 @@ import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_actions_model.dart';
 
@@ -17,9 +19,11 @@ class FlightsFormWidget extends StatelessWidget {
     required this.flightActionsModel,
     this.isTwoWay = false,
     this.buttonPressed = false,
-    this.isMultiCity = false,
+    this.isMultiCity = false, required this.dataCubit, required this.searchFlightsCubit,
   });
 
+  final FlightsDataCubit dataCubit;
+  final SearchFlightsCubit searchFlightsCubit;
   final FlightModel flightModel;
   final FlightActionsModel flightActionsModel;
   final bool isTwoWay;
@@ -160,7 +164,7 @@ class FlightsFormWidget extends StatelessWidget {
           prefixIcon: 'assets/images/flights_traveller.png',
           label: 'select travellers',
           onTap: () {
-            flightActionsModel.onTravellersFieldTapped(flightModel);
+            flightActionsModel.onTravellersFieldTapped();
           },
         ),
         SizedBox(

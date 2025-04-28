@@ -20,16 +20,18 @@ class AirportTextInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FocusNode focusNode = FocusNode();
     //TODO: refactor text style , handle on change
-
+    final FocusNode focusNode = FocusNode();
     return Padding(
       padding: EdgeInsets.symmetric(vertical: deviceInfo.screenHeight * 0.02),
       child: TextField(
+        textInputAction: TextInputAction.done,
         focusNode: focusNode,
         controller: airportConteroller,
         cursorColor: AppColors.appBlue,
-        onTapOutside: (event) => focusNode.unfocus(),
+        onTapOutside: (_) {
+          focusNode.unfocus();
+        },
         onChanged: onChanged,
         style: TextStyles.medium16(deviceInfo, AppColors.appDarkBlue),
         decoration: InputDecoration(
@@ -54,9 +56,9 @@ class AirportTextInput extends StatelessWidget {
             ),
             prefixIcon: SvgPicture.asset(
               iconPath,
-              fit: BoxFit.fitHeight,
-              height: deviceInfo.screenHeight * 0.005,
-              width: deviceInfo.screenHeight * 0.005,
+              fit: BoxFit.scaleDown,
+              //width: deviceInfo.screenHeight * 0.01,
+              //height: deviceInfo.screenHeight * 0.01,
             )),
       ),
     );

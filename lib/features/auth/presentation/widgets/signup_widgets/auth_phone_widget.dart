@@ -1,6 +1,7 @@
 import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
@@ -76,6 +77,10 @@ class AuthPhoneWidget extends StatelessWidget {
       validator: _validateInput,
       controller: controller,
       focusNode: focusNode,
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+      ],
+      keyboardType: TextInputType.number,
       textInputAction:
           nextFocusNode != null ? TextInputAction.next : TextInputAction.done,
       flagsButtonPadding: EdgeInsets.symmetric(
@@ -83,10 +88,11 @@ class AuthPhoneWidget extends StatelessWidget {
       ),
       cursorColor: AppColors.appBlue,
       style: inputTextStyle,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      //autovalidateMode: AutovalidateMode.onUserInteraction,
       dropdownIcon:
           Icon(Icons.arrow_drop_down, size: deviceInfo.screenWidth * 0.07),
       dropdownTextStyle: inputTextStyle,
+
       pickerDialogStyle: PickerDialogStyle(
         backgroundColor: Colors.white,
         countryCodeStyle: inputTextStyle,

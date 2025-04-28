@@ -23,7 +23,7 @@ class UsersRemoteImpl implements UsersRemote {
       {String? path}) async {
     try {
       final response = await fakeUsersClient.post(
-        'register',
+        'users/register',
         data: requestbody,
       );
       return {
@@ -40,7 +40,7 @@ class UsersRemoteImpl implements UsersRemote {
       {String? path}) async {
     try {
       final response = await fakeUsersClient.post(
-        'login',
+        'users/login',
         data: requestbody,
       );
       if (response.statusCode == 201) {
@@ -67,14 +67,14 @@ class UsersRemoteImpl implements UsersRemote {
   @override
   Future<Map<String, dynamic>> verifyEmail(Map<String, dynamic> requestbody
       ) async {
-    return await verificationSend(requestbody, 'verify-email');
+    return await verificationSend(requestbody, 'users/verify-email');
   }
 
 
   @override
   Future<Map<String, dynamic>> resendVerification(
       Map<String, dynamic> requestbody) async {
-    return await verificationSend(requestbody , 'resend-verification');
+    return await verificationSend(requestbody , 'users/resend-verification');
   }
   Future<Map<String, dynamic>> verificationSend(Map<String, dynamic> requestbody , String path) async {
      try {

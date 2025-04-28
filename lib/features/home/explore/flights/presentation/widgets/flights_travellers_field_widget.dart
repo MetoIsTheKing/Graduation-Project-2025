@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
+import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_custom_tile.dart';
 
 class FlightsTravellersFieldWidget extends StatelessWidget {
   const FlightsTravellersFieldWidget(
@@ -20,6 +21,8 @@ class FlightsTravellersFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceInfo = getIt<DeviceInfo>(); // Get device info here
+
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: deviceInfo.screenWidth * 0.03,
