@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
+import 'package:graduation_project_2025/config/routing/arguments.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/features/auth/presentation/pages/change_password_screen.dart';
 import 'package:graduation_project_2025/features/auth/presentation/pages/forgetpassword_screen.dart';
@@ -9,6 +10,7 @@ import 'package:graduation_project_2025/features/auth/presentation/pages/signup_
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/flights_screen.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_airport.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/pages/explore_screen.dart';
 import 'package:graduation_project_2025/features/home/main_home_screen.dart';
 import 'package:graduation_project_2025/features/on_boarding/presentation/cubit/on_boarding_cubit.dart';
@@ -16,6 +18,7 @@ import 'package:graduation_project_2025/features/on_boarding/presentation/pages/
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
+    final args = settings.arguments;
     switch (settings.name) {
       case Routes.splash:
         return MaterialPageRoute(
@@ -44,17 +47,22 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) => ExploreScreen());
       case Routes.flights:
         return MaterialPageRoute(
-            builder: (context) => MultiBlocProvider(
-                  providers: [
-                    BlocProvider(
-                      create: (context) => getIt<FlightsDataCubit>(),
-                    ),
-                    BlocProvider(
-                      create: (context) => getIt<SearchFlightsCubit>(),
-                    ),
-                  ],
-                  child: FlightsScreen(),
-                ));
+            builder: (context) => MultiBlocProvider(providers: [
+                  BlocProvider(create: (context) => getIt<FlightsDataCubit>()),
+                  BlocProvider.value(
+                  value: getIt<SearchFlightsCubit>()),
+                ], child: FlightsScreen()));
+
+      // here is how to pass the args to the destination screen
+      case Routes.searchAirports:
+        return MaterialPageRoute(builder: (context) {
+          final argss = args as SearchAirportArguments;
+          final searchFlightCubit = getIt<SearchFlightsCubit>();
+
+          return SearchAirport(
+            searchFlightsCubit: searchFlightCubit,
+            args: argss);
+        });
       case Routes.onBoarding:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
@@ -68,6 +76,7 @@ class AppRouter {
     }
   }
 
+// how ot access the args inside hte destination screen ? and would it be nessesary to declare those args in the constructor of the destination screen ?
   static Route<dynamic> undefinedRoute() {
     return MaterialPageRoute(
       builder: (context) => const Scaffold(

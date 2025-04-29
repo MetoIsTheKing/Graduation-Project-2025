@@ -3,6 +3,7 @@ import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
+import 'package:graduation_project_2025/config/routing/arguments.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
@@ -38,14 +39,18 @@ class _FlightsScreenState extends State<FlightsScreen> {
   late final FlightActionsModel flightActionsModel;
 
   //////
-  late final SearchFlightsCubit searchFlightsCubit ;
+
+  //this suppose to initiate that cubit👇
+  late FlightsDataCubit flightsDataCubit;
+  late SearchFlightsCubit searchFlightCubit;
 
   List<FlightModel> multiCityList = [];
 
   @override
   void initState() {
     super.initState();
-    searchFlightsCubit = context.read<SearchFlightsCubit>();
+    flightsDataCubit = getIt<FlightsDataCubit>();
+    searchFlightCubit = getIt<SearchFlightsCubit>();
     flightActionsModel = FlightActionsModel(
       onAddAnotherFlightPressed: onaddAnotherFlightPressed,
       onSearchFlightsPressed: onSearchFlightsPressed,
@@ -63,6 +68,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
   @override
   void dispose() {
     _pageController.dispose();
+
     for (var flight in multiCityList) {
       if (flight != context.read<FlightsDataCubit>().state) {
         flight.dispose();
@@ -184,13 +190,13 @@ class _FlightsScreenState extends State<FlightsScreen> {
   }
 
   void onChangeButtonPressed(FlightModel selectedFlightModel) {
-    final cubit = context.read<FlightsDataCubit>();
-    final currentState = cubit.state;
+    //final cubit = context.read<FlightsDataCubit>();
+    final currentState = flightsDataCubit.state;
 
     setState(() {
       // Swap values in the cubit
-      cubit.updateFrom(currentState.toController.text);
-      cubit.updateTo(currentState.fromController.text);
+      flightsDataCubit.updateFrom(currentState.toController.text);
+      flightsDataCubit.updateTo(currentState.fromController.text);
 
       // Update local controller texts
       selectedFlightModel.fromController.text = currentState.toController.text;
@@ -211,37 +217,32 @@ class _FlightsScreenState extends State<FlightsScreen> {
 
   ///////////////////////////////// Fields onTap functions //////////////////////////////
   void onFromFieldTaped(FlightModel selectedFlightModel) {
-    final cubit = context.read<FlightsDataCubit>();
-
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => BlocProvider.value(
-          value: searchFlightsCubit,
-          child: SearchAirport(
-            cubit: cubit,
-            flightModel: cubit.state,
-            isOrigin: true,
-            appBarTitle: 'Search Origin',
-            onBack: context.pop,
-          ),
+        builder: (context) => SearchAirport(
+          searchFlightsCubit: searchFlightCubit,
+          args: SearchAirportArguments(
+              cubit: flightsDataCubit,
+              appBarTitle: 'Search Origin',
+              isOrigin: true,
+              flightModel: flightsDataCubit.state,
+              onBack: context.pop),
         ),
       ),
     );
   }
 
   void onToFieldTaped(FlightModel selectedFlightModel) {
-    final cubit = context.read<FlightsDataCubit>();
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => BlocProvider.value(
-          value: searchFlightsCubit,
-          child: SearchAirport(
-            cubit: cubit,
-            flightModel: cubit.state,
-            isOrigin: false,
-            appBarTitle: 'Search Destination',
-            onBack: context.pop,
-          ),
+        builder: (context) => SearchAirport(
+          searchFlightsCubit: searchFlightCubit,
+          args: SearchAirportArguments(
+              cubit: flightsDataCubit,
+              appBarTitle: 'Search Destination',
+              isOrigin: false,
+              flightModel: flightsDataCubit.state,
+              onBack: context.pop),
         ),
       ),
     );
@@ -377,7 +378,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                             size: deviceInfo.screenWidth * 0.04,
                           ),
                           onPressed: () {
-                            context.pushReplacementNamed(Routes.mainHome);
+                            context.pushReplacementNamed(Routes.explore);
                           },
                         ),
                         title: Text(
@@ -448,8 +449,6 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                                 NeverScrollableScrollPhysics(),
                                             children: [
                                               FlightsFormWidget(
-                                                searchFlightsCubit: context
-                                                    .read<SearchFlightsCubit>(),
                                                 dataCubit: context
                                                     .read<FlightsDataCubit>(),
                                                 flightModel: context
@@ -459,8 +458,6 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                                     flightActionsModel,
                                               ),
                                               FlightsFormWidget(
-                                                searchFlightsCubit:
-                                                    getIt<SearchFlightsCubit>(),
                                                 dataCubit: context
                                                     .read<FlightsDataCubit>(),
                                                 flightModel: flightModel,

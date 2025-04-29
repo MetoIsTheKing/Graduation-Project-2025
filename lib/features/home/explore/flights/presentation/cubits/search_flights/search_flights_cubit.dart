@@ -6,18 +6,17 @@ part 'search_flights_state.dart';
 
 class SearchFlightsCubit extends Cubit<SearchFlightsState> {
   final SearchAirportsRepo searchAirportsRepo;
-  SearchFlightsCubit({required this.searchAirportsRepo})
-      : super(SearchFlightsInitial());
+  SearchFlightsCubit({required this.searchAirportsRepo}) : super(SearchFlightsInitial()) {
+     print('Cubit created!');
+  }
 
+  
   Future<void> searchAirports(String query) async {
     emit(AirportsIsLoading());
     try {
       final response = await searchAirportsRepo.searchAirports(query);
       if (response['statusCode'] == 200) {
-        final List<AirportModel> airports = (response['airports'] as List)
-            .map((airport) => AirportModel.fromJson(airport))
-            .toList();
-        emit(AirportsLoaded(airports: airports));
+        emit(AirportsLoaded(airports: response['airports']));
       } else {
         emit(AirportsOnError(errorMessage: 'Error fetching airports'));
       }

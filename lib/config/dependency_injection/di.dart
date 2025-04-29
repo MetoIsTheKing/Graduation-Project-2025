@@ -33,23 +33,29 @@ Future<void> initDependencies() async {
   }
 
   // ------- dio client -------
-  getIt.registerLazySingleton<DioNetworkClient>(() => FakeUsersClient()
-  ,instanceName: DiInstances.dioUserClient);
-  getIt.registerLazySingleton<DioNetworkClient>(() => AmadeusApiClient(
-    apiKey: dotenv.env['AMADEUS_API_KEY'] ?? 'your_api_key',
-    apiSecret: dotenv.env['AMADEUS_API_SECRET'] ?? 'your_api_secret',
-  ),
-  instanceName: DiInstances.amadeusClient);
+  getIt.registerLazySingleton<DioNetworkClient>(() => FakeUsersClient(),
+      instanceName: DiInstances.dioUserClient);
+  getIt.registerLazySingleton<DioNetworkClient>(
+      () => AmadeusApiClient(
+            apiKey: dotenv.env['AMADEUS_API_KEY'] ?? 'your_api_key',
+            apiSecret: dotenv.env['AMADEUS_API_SECRET'] ?? 'your_api_secret',
+          ),
+      instanceName: DiInstances.amadeusClient);
 
   //------------ data sources ------------
 
   // UserRemote
   getIt.registerLazySingleton<UsersRemote>(
-    () => UsersRemoteImpl(fakeUsersClient: getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient)),
+    () => UsersRemoteImpl(
+        fakeUsersClient:
+            getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient)),
   );
   // SearchAirportsRemote
   getIt.registerLazySingleton<SearchAirportsRemoteDataSource>(
-    () => SearchAirportsRemoteDataSourceImpl(amadeusApiClient: getIt<DioNetworkClient>(instanceName: DiInstances.amadeusClient),),
+    () => SearchAirportsRemoteDataSourceImpl(
+      amadeusApiClient:
+          getIt<DioNetworkClient>(instanceName: DiInstances.amadeusClient),
+    ),
   );
 
   //------------ repositories ------------
@@ -59,22 +65,22 @@ Future<void> initDependencies() async {
     () => UserRepoImpl(getIt<UsersRemote>()),
   );
   // SearchAirportsRepo
- // Change this line:
-getIt.registerLazySingleton<SearchAirportsRepo>(
-  () => SearchAirportsRepo(remoteDataSource: getIt<SearchAirportsRemoteDataSource>()),
-);
+  getIt.registerLazySingleton<SearchAirportsRepo>(
+    () => SearchAirportsRepo(
+        remoteDataSource: getIt<SearchAirportsRemoteDataSource>()),
+  );
   //------------ cubits ------------
 
   // SearchFlightsCubits
   getIt.registerSingleton<SearchFlightsCubit>(
-     SearchFlightsCubit(searchAirportsRepo: getIt<SearchAirportsRepo>()),
+    SearchFlightsCubit(searchAirportsRepo: getIt<SearchAirportsRepo>()),
   );
-  getIt.registerSingleton<FlightsDataCubit>(
-     FlightsDataCubit(),
+  getIt.registerLazySingleton<FlightsDataCubit>(
+    () => FlightsDataCubit(),
   );
-  
+
   //AuthCubit
   getIt.registerSingleton<AuthCubit>(
-     AuthCubit(getIt<UserRepo>()),
+    AuthCubit(getIt<UserRepo>()),
   );
 }
