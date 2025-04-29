@@ -6,7 +6,8 @@ import 'package:graduation_project_2025/features/auth/presentation/widgets/share
 import 'package:intl/intl.dart';
 
 class TripHeader extends StatelessWidget {
-  const TripHeader({super.key});
+  const TripHeader({super.key, this.oneWay = true});
+  final bool oneWay;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class TripHeader extends StatelessWidget {
                 '3h 30m',
                 style: TextStyles.medium12(
                   deviceInfo,
-                  AppColors.appBlack,
+                  AppColors.appDarkBlack,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -54,7 +55,9 @@ class TripHeader extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(child: _textColumn('New York', DateTime.now())),
-                SvgPicture.asset('assets/images/one_way_trip.svg'),
+                SvgPicture.asset(oneWay
+                    ? 'assets/images/one_way_trip.svg'
+                    : 'assets/images/two_way_trip.svg'),
                 Expanded(child: _textColumn('New York', DateTime.now())),
               ],
             ),
@@ -69,13 +72,13 @@ class TripHeader extends StatelessWidget {
       children: [
         Text(
           place,
-          style: TextStyles.semiBold20(deviceInfo, AppColors.appBlack)
+          style: TextStyles.semiBold20(deviceInfo, AppColors.appDarkBlack)
               .copyWith(fontSize: deviceInfo.screenWidth * 0.05),
           overflow: TextOverflow.ellipsis,
         ),
         Text(
           DateFormat('d MMM, yy').format(time),
-          style: TextStyles.medium12(deviceInfo, AppColors.appBlack),
+          style: TextStyles.medium12(deviceInfo, AppColors.appDarkBlack),
           overflow: TextOverflow.ellipsis,
         ),
       ],

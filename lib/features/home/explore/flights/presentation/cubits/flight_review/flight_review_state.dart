@@ -5,4 +5,4 @@ sealed class FlightReviewState {}
 
 final class FlightReviewInitial extends FlightReviewState {}
 
-final class FlightReviewTextState extends FlightReviewState {}
+final class BaggageSelectedState extends FlightReviewState {}

@@ -11,36 +11,36 @@ environment:
 dependencies:
   bloc: ^9.0.0
   build_runner: ^2.4.15
-  toggle_switch: ^2.3.0
-  flutter_animate: ^4.5.2
+  cherry_toast: ^1.12.0
   connectivity_plus: ^6.1.3
   country_picker: ^2.0.27
   cupertino_icons: ^1.0.8
   dartz: ^0.10.1
-  cherry_toast: ^1.12.0
   device_preview: ^1.2.0
-  timelines_plus: ^1.0.6
-  otp_resend_timer: ^1.0.0
   dio: ^5.8.0+1
   dot_curved_bottom_nav: ^0.0.2
   flutter:
     sdk: flutter
+  flutter_animate: ^4.5.2
   flutter_bloc: ^9.0.0
+  flutter_carousel_widget: ^3.1.0
   flutter_dotenv: ^5.2.1
-  flutter_secure_storage: ^9.2.4
   flutter_native_splash: ^2.4.4
+  flutter_secure_storage: ^9.2.4
   flutter_svg: ^2.0.17
   get_it: ^8.0.3
-
   intl: 0.19.0
+  intl_phone_field: ^3.1.0
   json_annotation: ^4.9.0
   json_serializable: ^6.9.4
   jwt_decoder: ^2.0.1
   logger: ^2.5.0
+  meta: ^1.16.0
+  otp_resend_timer: ^1.0.0
   shared_preferences: ^2.5.2
   smooth_page_indicator: ^1.2.0+3
-  intl_phone_field: ^3.1.0
-  meta: ^1.16.0
+  timelines_plus: ^1.0.6
+  toggle_switch: ^2.3.0
 
 dev_dependencies:
   flutter_lints: ^5.0.0

@@ -6,10 +6,10 @@ part 'flight_review_state.dart';
 class FlightReviewCubit extends Cubit<FlightReviewState> {
   FlightReviewCubit() : super(FlightReviewInitial());
   static FlightReviewCubit get(context) => BlocProvider.of(context);
-  String text = 'jjjj';
+  int selectedBaggage = 1;
 
-  void onCurrency() {
-    text = 'qqqqqqqqq';
-    emit(FlightReviewTextState());
+  void onBaggageSelected(int i) {
+    selectedBaggage = i;
+    emit(BaggageSelectedState());
   }
 }
