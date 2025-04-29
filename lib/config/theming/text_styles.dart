@@ -108,6 +108,15 @@ class TextStyles {
     );
   }
 
+  static TextStyle bold20(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenHeight * 0.03,
+      fontFamily: 'Poppins',
+      color: color,
+      fontWeight: FontWeight.bold,
+    );
+  }
+
   static TextStyle bold34(DeviceInfo deviceInfo, Color color) {
     return TextStyle(
       fontSize: deviceInfo.screenHeight * 0.04,

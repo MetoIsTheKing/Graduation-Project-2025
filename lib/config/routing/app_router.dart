@@ -8,6 +8,7 @@ import 'package:graduation_project_2025/features/auth/presentation/pages/login_s
 import 'package:graduation_project_2025/features/auth/presentation/pages/signup_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/flight_review_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/flights_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/pages/explore_screen.dart';
 import 'package:graduation_project_2025/features/home/main_home_screen.dart';
@@ -42,6 +43,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) => MainHomeScreen());
       case Routes.explore:
         return MaterialPageRoute(builder: (context) => ExploreScreen());
+      case Routes.flightReview:
+        return MaterialPageRoute(builder: (context) => FlightReviewScreen());
       case Routes.flights:
         return MaterialPageRoute(
             builder: (context) => MultiBlocProvider(

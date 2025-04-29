@@ -6,7 +6,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graduation_project_2025/app.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/core/helpers/bloc_observer.dart';
-import 'package:graduation_project_2025/core/responsive/Models/device_info.dart'as my_device_info;
+import 'package:graduation_project_2025/core/responsive/Models/device_info.dart'
+    as my_device_info;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +19,8 @@ void main() async {
     DevicePreview(
       enabled: !kReleaseMode,
       builder: (context) {
-        getIt<my_device_info.DeviceInfo>().updateFromContext(context); // Update singleton here
+        getIt<my_device_info.DeviceInfo>()
+            .updateFromContext(context); // Update singleton here
         return MyApp();
       },
     ),
