@@ -107,7 +107,7 @@ class FlightSearchResultsScreen extends StatelessWidget {
                               stopsNumber: 0,
                               departureTime: '10:00 AM',
                               arrivalTime: '12:00 PM',
-                              price: '4000',
+                              price:'4000',
                               airlineName: 'Qatar Airways',
                               airlineLogo: 'assets/images/airline_logo.png',
                               originCity: 'New York',

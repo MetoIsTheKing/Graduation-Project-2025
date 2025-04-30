@@ -1,0 +1,630 @@
+=> EXAMPLE
+https://test.api.amadeus.com/v2/shopping/flight-offers?
+originLocationCode=SYD&
+destinationLocationCode=BKK&
+departureDate=2025-05-02&
+adults=1&
+travelClass=ECONOMY&
+nonStop=true&
+max=250
+
+# queryParams
+- originLocationCode
+- destinationLocationCode
+- departureDate (2023-02-01) 
+- returnDate (2023-02-01) {optional}
+- adults 
+- children {optional}
+- infants {optional}
+- travelClass {optional} {ECONOMY, PREMIUM_ECONOMY, BUSINESS, FIRST}
+- nonStop {always true}
+- max {250 default} {optional}
+- currencyCode {optional "USD"}
+- maxPrice
+
+xxxxx there is no oneWay or roundTrip or multiCity
+
+==> RESPONSE
+{
+  "meta": {
+    "count": 4,
+    "links": {
+      "self": "https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=SYD&destinationLocationCode=BKK&departureDate=2025-05-02&adults=1&travelClass=ECONOMY&nonStop=true&max=250"
+    }
+  },
+  "data": [
+    //////////////////////////////////////////////////////////////////////////
+    {
+      "type": "flight-offer",
+      "id": "1",☝
+      "source": "GDS",
+      "instantTicketingRequired": false,
+      "nonHomogeneous": false,
+      "oneWay": false,
+      "isUpsellOffer": false,
+      "lastTicketingDate": "2025-05-02",
+      "lastTicketingDateTime": "2025-05-02",
+      "numberOfBookableSeats": 9, ☝
+      "itineraries": [
+        {
+          "duration": "PT9H20M", ☝
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "SYD",
+                "terminal": "1", ☝
+                "at": "2025-05-02T10:00:00" ☝
+              },
+              "arrival": {
+                "iataCode": "BKK",
+                "at": "2025-05-02T16:20:00" ☝
+              },
+              "carrierCode": "TG",
+              "number": "476",
+              "aircraft": {
+                "code": "359" ☝
+              },
+              "operating": {
+                "carrierCode": "TG"
+              },
+              "duration": "PT9H20M",
+              "id": "1",
+              "numberOfStops": 0, ☝
+              "blacklistedInEU": false
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR", ☝
+        "total": "297.01", ☝
+        "base": "230.00",
+        "fees": [
+          {
+            "amount": "0.00",
+            "type": "SUPPLIER"
+          },
+          {
+            "amount": "0.00",
+            "type": "TICKETING"
+          }
+        ],
+        "grandTotal": "297.01"
+      },
+      "pricingOptions": {
+        "fareType": [
+          "PUBLISHED"
+        ],
+        "includedCheckedBagsOnly": true
+      },
+      "validatingAirlineCodes": [
+        "TG"
+      ],
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "297.01",
+            "base": "230.00"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "fareBasis": "WLOSV7D",
+              "brandedFare": "ECOSV1",
+              "brandedFareLabel": "ECOSAVE1",
+              "class": "W",
+              "includedCheckedBags": {
+                "weight": 23,
+                "weightUnit": "KG"
+              },
+              "includedCabinBags": {
+                "weight": 7,
+                "weightUnit": "KG"
+              },
+              "amenities": [
+                {
+                  "description": "EXTRA BAGGAGE PER ONE KILOGRAM",
+                  "isChargeable": true,
+                  "amenityType": "BAGGAGE",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "PRE RESERVED SEAT ASSIGNMENT",
+                  "isChargeable": true,
+                  "amenityType": "PRE_RESERVED_SEAT",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "HOT MEAL",
+                  "isChargeable": false,
+                  "amenityType": "MEAL",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "NAME CORRECTION",
+                  "isChargeable": true,
+                  "amenityType": "TRAVEL_SERVICES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "BASIC SEAT",
+                  "isChargeable": false,
+                  "amenityType": "BRANDED_FARES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "CHANGEABLE TICKET",
+                  "isChargeable": true,
+                  "amenityType": "BRANDED_FARES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "25 PERCENT MILES EARNED",
+                  "isChargeable": false,
+                  "amenityType": "BRANDED_FARES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    //////////////////////////////////////////////////////////////////////////
+    {
+      "type": "flight-offer",
+      "id": "2",
+      "source": "GDS",
+      "instantTicketingRequired": false,
+      "nonHomogeneous": false,
+      "oneWay": false,
+      "isUpsellOffer": false,
+      "lastTicketingDate": "2025-05-02",
+      "lastTicketingDateTime": "2025-05-02",
+      "numberOfBookableSeats": 9,
+      "itineraries": [
+        {
+          "duration": "PT9H20M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "SYD",
+                "terminal": "1",
+                "at": "2025-05-02T14:50:00"
+              },
+              "arrival": {
+                "iataCode": "BKK",
+                "at": "2025-05-02T21:10:00"
+              },
+              "carrierCode": "TG",
+              "number": "472",
+              "aircraft": {
+                "code": "359"
+              },
+              "operating": {
+                "carrierCode": "TG"
+              },
+              "duration": "PT9H20M",
+              "id": "2",
+              "numberOfStops": 0,
+              "blacklistedInEU": false
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "297.01",
+        "base": "230.00",
+        "fees": [
+          {
+            "amount": "0.00",
+            "type": "SUPPLIER"
+          },
+          {
+            "amount": "0.00",
+            "type": "TICKETING"
+          }
+        ],
+        "grandTotal": "297.01"
+      },
+      "pricingOptions": {
+        "fareType": [
+          "PUBLISHED"
+        ],
+        "includedCheckedBagsOnly": true
+      },
+      "validatingAirlineCodes": [
+        "TG"
+      ],
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "297.01",
+            "base": "230.00"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "2",
+              "cabin": "ECONOMY",
+              "fareBasis": "WLOSV7D",
+              "brandedFare": "ECOSV1",
+              "brandedFareLabel": "ECOSAVE1",
+              "class": "W",
+              "includedCheckedBags": {
+                "weight": 23,
+                "weightUnit": "KG"
+              },
+              "includedCabinBags": {
+                "weight": 7,
+                "weightUnit": "KG"
+              },
+              "amenities": [
+                {
+                  "description": "EXTRA BAGGAGE PER ONE KILOGRAM",
+                  "isChargeable": true,
+                  "amenityType": "BAGGAGE",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "PRE RESERVED SEAT ASSIGNMENT",
+                  "isChargeable": true,
+                  "amenityType": "PRE_RESERVED_SEAT",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "HOT MEAL",
+                  "isChargeable": false,
+                  "amenityType": "MEAL",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "NAME CORRECTION",
+                  "isChargeable": true,
+                  "amenityType": "TRAVEL_SERVICES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "BASIC SEAT",
+                  "isChargeable": false,
+                  "amenityType": "BRANDED_FARES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "CHANGEABLE TICKET",
+                  "isChargeable": true,
+                  "amenityType": "BRANDED_FARES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "25 PERCENT MILES EARNED",
+                  "isChargeable": false,
+                  "amenityType": "BRANDED_FARES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+  ]
+}
+-----------------------------------------------------------------------------------------------
+
+https://test.api.amadeus.com/v2/shopping/flight-offers?
+originLocationCode=SYD&
+destinationLocationCode=BKK&
+departureDate=2025-05-02&
+adults=1&
+travelClass=ECONOMY&
+nonStop=true&
+max=250&
+currencyCode=USD&
+returnDate=2025-05-10
+
+
+{
+  "meta": {
+    "count": 9,
+    "links": {
+      "self": "https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=SYD&destinationLocationCode=BKK&departureDate=2025-05-02&adults=1&travelClass=ECONOMY&nonStop=true&max=250&currencyCode=USD&returnDate=2025-05-10"
+    }
+  },
+  "data": [
+    {
+      "type": "flight-offer",
+      "id": "1",
+      "source": "GDS",
+      "instantTicketingRequired": false,
+      "nonHomogeneous": false,
+      "oneWay": false,
+      "isUpsellOffer": false,
+      "lastTicketingDate": "2025-05-02",
+      "lastTicketingDateTime": "2025-05-02",
+      "numberOfBookableSeats": 9,
+      "itineraries": [
+        {
+          "duration": "PT9H20M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "SYD",
+                "terminal": "1",
+                "at": "2025-05-02T10:00:00"
+              },
+              "arrival": {
+                "iataCode": "BKK",
+                "at": "2025-05-02T16:20:00"
+              },
+              "carrierCode": "TG",
+              "number": "476",
+              "aircraft": {
+                "code": "359"
+              },
+              "operating": {
+                "carrierCode": "TG"
+              },
+              "duration": "PT9H20M",
+              "id": "1",
+              "numberOfStops": 0,
+              "blacklistedInEU": false
+            }
+          ]
+        },
+        {
+          "duration": "PT9H",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "BKK",
+                "at": "2025-05-10T08:30:00"
+              },
+              "arrival": {
+                "iataCode": "SYD",
+                "terminal": "1",
+                "at": "2025-05-10T20:30:00"
+              },
+              "carrierCode": "TG",
+              "number": "475",
+              "aircraft": {
+                "code": "359"
+              },
+              "operating": {
+                "carrierCode": "TG"
+              },
+              "duration": "PT9H",
+              "id": "5",
+              "numberOfStops": 0,
+              "blacklistedInEU": false
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "USD",
+        "total": "708.30",
+        "base": "589.00",
+        "fees": [
+          {
+            "amount": "0.00",
+            "type": "SUPPLIER"
+          },
+          {
+            "amount": "0.00",
+            "type": "TICKETING"
+          }
+        ],
+        "grandTotal": "708.30"
+      },
+      "pricingOptions": {
+        "fareType": [
+          "PUBLISHED"
+        ],
+        "includedCheckedBagsOnly": true
+      },
+      "validatingAirlineCodes": [
+        "TG"
+      ],
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "USD",
+            "total": "708.30",
+            "base": "589.00"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "fareBasis": "WLRSV21D",
+              "brandedFare": "ECOSV1",
+              "brandedFareLabel": "ECOSAVE1",
+              "class": "W",
+              "includedCheckedBags": {
+                "weight": 23,
+                "weightUnit": "KG"
+              },
+              "includedCabinBags": {
+                "weight": 7,
+                "weightUnit": "KG"
+              },
+              "amenities": [
+                {
+                  "description": "EXTRA BAGGAGE PER ONE KILOGRAM",
+                  "isChargeable": true,
+                  "amenityType": "BAGGAGE",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "PRE RESERVED SEAT ASSIGNMENT",
+                  "isChargeable": true,
+                  "amenityType": "PRE_RESERVED_SEAT",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "HOT MEAL",
+                  "isChargeable": false,
+                  "amenityType": "MEAL",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "NAME CORRECTION",
+                  "isChargeable": true,
+                  "amenityType": "TRAVEL_SERVICES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "BASIC SEAT",
+                  "isChargeable": false,
+                  "amenityType": "BRANDED_FARES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "CHANGEABLE TICKET",
+                  "isChargeable": true,
+                  "amenityType": "BRANDED_FARES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "25 PERCENT MILES EARNED",
+                  "isChargeable": false,
+                  "amenityType": "BRANDED_FARES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                }
+              ]
+            },
+            {
+              "segmentId": "5",
+              "cabin": "ECONOMY",
+              "fareBasis": "WLRSV21D",
+              "brandedFare": "ECOSV1",
+              "brandedFareLabel": "ECOSAVE1",
+              "class": "W",
+              "includedCheckedBags": {
+                "weight": 23,
+                "weightUnit": "KG"
+              },
+              "includedCabinBags": {
+                "weight": 7,
+                "weightUnit": "KG"
+              },
+              "amenities": [
+                {
+                  "description": "EXTRA BAGGAGE PER ONE KILOGRAM",
+                  "isChargeable": true,
+                  "amenityType": "BAGGAGE",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "PRE RESERVED SEAT ASSIGNMENT",
+                  "isChargeable": true,
+                  "amenityType": "PRE_RESERVED_SEAT",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "HOT MEAL",
+                  "isChargeable": false,
+                  "amenityType": "MEAL",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "NAME CORRECTION",
+                  "isChargeable": true,
+                  "amenityType": "TRAVEL_SERVICES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "BASIC SEAT",
+                  "isChargeable": false,
+                  "amenityType": "BRANDED_FARES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "CHANGEABLE TICKET",
+                  "isChargeable": true,
+                  "amenityType": "BRANDED_FARES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                },
+                {
+                  "description": "25 PERCENT MILES EARNED",
+                  "isChargeable": false,
+                  "amenityType": "BRANDED_FARES",
+                  "amenityProvider": {
+                    "name": "BrandedFare"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+  ]
+}

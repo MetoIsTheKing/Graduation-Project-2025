@@ -6,32 +6,36 @@ class FlightsDataCubit extends Cubit<FlightModel> {
 
   // Helper method to create a new state with all values copied
   FlightModel _copyStateWith({
-  DateTime? departureDate,
-  DateTime? returnDate,
-  String? flightClass,
-  Map<String, int>? travellers,
-  String? fromText,
-  String? toText,
-  String? departureDateText,
-  String? returnDateText,
-  String? travellersText,
-}) {
-  final newModel = FlightModel(
-    departureDate: departureDate ?? state.departureDate,
-    returnDate: returnDate ?? state.returnDate,
-    flightClass: flightClass ?? state.flightClass,
-    travellers: travellers ?? Map<String, int>.from(state.travellers),
-  );
-  
-  // Copy all controller values with potential overrides
-  newModel.fromController.text = fromText ?? state.fromController.text;
-  newModel.toController.text = toText ?? state.toController.text;
-  newModel.departureDateController.text = departureDateText ?? state.departureDateController.text;
-  newModel.returnDateController.text = returnDateText ?? state.returnDateController.text;
-  newModel.travellersController.text = travellersText ?? state.travellersController.text;
-  
-  return newModel;
-}
+    DateTime? departureDate,
+    DateTime? returnDate,
+    String? flightClass,
+    Map<String, int>? travellers,
+    String? fromText,
+    String? toText,
+    String? departureDateText,
+    String? returnDateText,
+    String? travellersText = "1 Traveller , Economy",
+  }) {
+    final newModel = FlightModel(
+      departureDate: departureDate ?? state.departureDate,
+      returnDate: returnDate ?? state.returnDate,
+      flightClass: flightClass ?? state.flightClass,
+      travellers: travellers ?? Map<String, int>.from(state.travellers),
+    );
+
+    // Copy all controller values with potential overrides
+    newModel.fromController.text = fromText ?? state.fromController.text;
+    newModel.toController.text = toText ?? state.toController.text;
+    newModel.departureDateController.text =
+        departureDateText?.substring(0, 10) ??
+            state.departureDateController.text;
+    newModel.returnDateController.text =
+        returnDateText?.substring(0, 10) ?? state.returnDateController.text;
+    newModel.travellersController.text =
+        travellersText ?? state.travellersController.text;
+
+    return newModel;
+  }
 
   // Update departure location
   void updateFrom(String value) {
@@ -68,12 +72,11 @@ class FlightsDataCubit extends Cubit<FlightModel> {
   void updateTravellers(String type, int count) {
     final updatedTravellers = Map<String, int>.from(state.travellers);
     updatedTravellers[type] = count;
-    
-    final travellersText = 
-      'Adults: ${updatedTravellers['adults']}, '
-      'Children: ${updatedTravellers['children']}, '
-      'Infants: ${updatedTravellers['infants']}';
-    
+
+    final travellersText = 'Adults: ${updatedTravellers['adults']}, '
+        'Children: ${updatedTravellers['children']}, '
+        'Infants: ${updatedTravellers['infants']}';
+
     emit(_copyStateWith(
       travellers: updatedTravellers,
       travellersText: travellersText,

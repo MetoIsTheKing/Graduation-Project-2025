@@ -1,5 +1,4 @@
 import 'dart:developer' as dev;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
@@ -161,26 +160,37 @@ class _FlightsScreenState extends State<FlightsScreen> {
       final cubit = context.read<FlightsDataCubit>();
       if (!isReturnDate) {
         cubit.updateDepartureDate(pickedDate);
-        selecteFlightModel.departureDateController.text =
-            DateFormat("MMMM d, yyyy").format(pickedDate);
+        dev.log('dep date inside cubit = $pickedDate');
+        // selecteFlightModel.departureDateController.text =
+        //     DateFormat("MMMM d, yyyy").format(pickedDate);
       } else {
         cubit.updateReturnDate(pickedDate);
-        selecteFlightModel.returnDateController.text =
-            DateFormat("MMMM d, yyyy").format(pickedDate);
+        // selecteFlightModel.returnDateController.text =
+        //     DateFormat("MMMM d, yyyy").format(pickedDate);
       }
     }
   }
 
   ///////////////////////////////// Buttons onPress functions //////////////////////////////
   void onSearchFlightsPressed(FlightModel selectedFlightModel) {
-    dev.log('''************flightModel = *********
-      From: ${selectedFlightModel.fromController.text}
-      To: ${selectedFlightModel.toController.text}
-      Departure Date: ${selectedFlightModel.departureDateController.text}
-      Return Date: ${selectedFlightModel.returnDateController.text}
-      Travellers: ${selectedFlightModel.travellers.toString()}
-      Flight Class: ${selectedFlightModel.flightClass}
-    ''');
+    final queryParams = {
+      "originLocationCode": flightsDataCubit.state.fromController.text,
+      "destinationLocationCode": flightsDataCubit.state.toController.text,
+      if (flightsDataCubit.state.departureDateController.text.isNotEmpty)
+        "departureDate": flightsDataCubit.state.departureDateController.text
+            .substring(0, 10),
+      if (flightsDataCubit.state.returnDateController.text.isNotEmpty)
+        "returnDate":
+            flightsDataCubit.state.returnDateController.text.substring(0, 10),
+      "adults": flightsDataCubit.state.travellers['adults'],
+      "children": flightsDataCubit.state.travellers['children'],
+      "infants": flightsDataCubit.state.travellers['infants'],
+      "travelClass": flightsDataCubit.state.flightClass,
+      "nonStop": true,
+      "max": 250,
+      "currencyCode": "USD",
+    };
+    dev.log("thsi is queryParams : $queryParams");
   }
 
   void onaddAnotherFlightPressed() {
@@ -283,23 +293,17 @@ class _FlightsScreenState extends State<FlightsScreen> {
                       onAddTraveller: (String travellerType) {
                         final updatedTravellers =
                             Map<String, int>.from(cubit.state.travellers);
-                        dev.log(
-                            'listOFTravellers inside cuibt: $updatedTravellers');
                         updatedTravellers[travellerType] =
                             (updatedTravellers[travellerType] ?? 0) + 1;
                         setModalState(() {
                           cubit.updateTravellers(
                               travellerType, updatedTravellers[travellerType]!);
                         });
-                        dev.log(
-                            'updatedTravellers inside cuibt: ${cubit.state.travellers}');
-                        //setModalState(() {});
                       },
                       onremoveTraveller: (String travellerType) {
                         final updatedTravellers =
                             Map<String, int>.from(cubit.state.travellers);
-                        dev.log(
-                            'listOFTravellers inside cuibt before remove: $updatedTravellers');
+                        
                         if (updatedTravellers[travellerType] != null &&
                             updatedTravellers[travellerType]! > 0) {
                           updatedTravellers[travellerType] =
@@ -308,9 +312,6 @@ class _FlightsScreenState extends State<FlightsScreen> {
                           cubit.updateTravellers(
                               travellerType, updatedTravellers[travellerType]!);
                         }
-                        //setModalState(() {});
-                        dev.log(
-                            'listOFTravellers inside cuibt after remove: $updatedTravellers');
                       },
                     ),
                     FlightsClassCardWidget(
@@ -410,7 +411,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                             Flexible(
                               child: Container(
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: deviceInfo.screenWidth * 0.02,
+                                  horizontal: deviceInfo.screenWidth * 0.01,
                                   vertical: deviceInfo.screenHeight * 0.001,
                                 ),
                                 width: double.infinity,
@@ -423,122 +424,119 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                         deviceInfo.screenHeight * 0.05),
                                   ),
                                 ),
-                                child: Form(
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        width: deviceInfo.screenWidth * 0.85,
-                                        child: RadioTilesRow(
-                                          selectedFlightType:
-                                              selectedFlightType,
-                                          onSelectedFlightType:
-                                              onSelectedFlightType,
-                                        ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      width: deviceInfo.screenWidth * 0.85,
+                                      child: RadioTilesRow(
+                                        selectedFlightType: selectedFlightType,
+                                        onSelectedFlightType:
+                                            onSelectedFlightType,
                                       ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                deviceInfo.screenWidth * 0.05,
-                                            vertical:
-                                                deviceInfo.screenHeight * 0.005,
-                                          ),
-                                          child: PageView(
-                                            controller: _pageController,
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            children: [
-                                              FlightsFormWidget(
-                                                dataCubit: context
-                                                    .read<FlightsDataCubit>(),
-                                                flightModel: context
-                                                    .read<FlightsDataCubit>()
-                                                    .state,
-                                                flightActionsModel:
-                                                    flightActionsModel,
-                                              ),
-                                              FlightsFormWidget(
-                                                dataCubit: context
-                                                    .read<FlightsDataCubit>(),
-                                                flightModel: flightModel,
-                                                flightActionsModel:
-                                                    flightActionsModel,
-                                                isTwoWay: true,
-                                              ),
-                                              SingleChildScrollView(
-                                                child: Column(
-                                                  children: [
-                                                    ListView.builder(
-                                                      physics:
-                                                          NeverScrollableScrollPhysics(),
-                                                      shrinkWrap: true,
-                                                      itemCount:
-                                                          multiCityList.length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        final FlightModel
-                                                            flightCardModel =
-                                                            index == 0
-                                                                ? flightModel
-                                                                : multiCityList[
-                                                                    index];
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              deviceInfo.screenWidth * 0.05,
+                                          vertical:
+                                              deviceInfo.screenHeight * 0.005,
+                                        ),
+                                        child: PageView(
+                                          controller: _pageController,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          children: [
+                                            FlightsFormWidget(
+                                              dataCubit: context
+                                                  .read<FlightsDataCubit>(),
+                                              flightModel: context
+                                                  .read<FlightsDataCubit>()
+                                                  .state,
+                                              flightActionsModel:
+                                                  flightActionsModel,
+                                            ),
+                                            FlightsFormWidget(
+                                              dataCubit: context
+                                                  .read<FlightsDataCubit>(),
+                                              flightModel: flightModel,
+                                              flightActionsModel:
+                                                  flightActionsModel,
+                                              isTwoWay: true,
+                                            ),
+                                            SingleChildScrollView(
+                                              child: Column(
+                                                children: [
+                                                  ListView.builder(
+                                                    physics:
+                                                        NeverScrollableScrollPhysics(),
+                                                    shrinkWrap: true,
+                                                    itemCount:
+                                                        multiCityList.length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      final FlightModel
+                                                          flightCardModel =
+                                                          index == 0
+                                                              ? flightModel
+                                                              : multiCityList[
+                                                                  index];
 
-                                                        return FlightCardWidget(
-                                                          cubit: context.read<
-                                                              FlightsDataCubit>(),
-                                                          flightModel:
-                                                              flightCardModel,
-                                                          flightActionsModel:
-                                                              flightActionsModel,
-                                                          onDeleteCardPressed:
-                                                              onDeleteCardPressed,
-                                                          index: index,
-                                                        );
-                                                      },
-                                                    ),
-                                                    selectedFlightType ==
-                                                            'option3'
-                                                        ? CustomRoundedButton(
-                                                            deviceInfo:
-                                                                deviceInfo,
-                                                            label:
-                                                                'add another flight ?',
-                                                            backgroundColor:
-                                                                Colors.white,
-                                                            onPressed:
-                                                                flightActionsModel
-                                                                    .onAddAnotherFlightPressed,
-                                                            textColor: AppColors
-                                                                .appBlue,
-                                                          )
-                                                        : SizedBox(),
-                                                    CustomRoundedButton(
-                                                      deviceInfo: deviceInfo,
-                                                      label: 'Search Flights',
-                                                      backgroundColor:
-                                                          AppColors.appBlue,
-                                                      onPressed: () {
-                                                        final cubit = context.read<
-                                                            FlightsDataCubit>();
-                                                        onSearchFlightsPressed(
-                                                            cubit.state);
-                                                      },
-                                                      textColor: Colors.white,
-                                                    ),
-                                                    SizedBox(
-                                                      height: deviceInfo
-                                                              .screenHeight *
-                                                          0.03,
-                                                    )
-                                                  ],
-                                                ),
+                                                      return FlightCardWidget(
+                                                        cubit: context.read<
+                                                            FlightsDataCubit>(),
+                                                        flightModel:
+                                                            flightCardModel,
+                                                        flightActionsModel:
+                                                            flightActionsModel,
+                                                        onDeleteCardPressed:
+                                                            onDeleteCardPressed,
+                                                        index: index,
+                                                      );
+                                                    },
+                                                  ),
+                                                  selectedFlightType ==
+                                                          'option3'
+                                                      ? CustomRoundedButton(
+                                                          deviceInfo:
+                                                              deviceInfo,
+                                                          label:
+                                                              'add another flight ?',
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          onPressed:
+                                                              flightActionsModel
+                                                                  .onAddAnotherFlightPressed,
+                                                          textColor:
+                                                              AppColors.appBlue,
+                                                        )
+                                                      : SizedBox(),
+                                                  CustomRoundedButton(
+                                                    deviceInfo: deviceInfo,
+                                                    label: 'Search Flights',
+                                                    backgroundColor:
+                                                        AppColors.appBlue,
+                                                    onPressed: () {
+                                                      final cubit = context.read<
+                                                          FlightsDataCubit>();
+                                                      onSearchFlightsPressed(
+                                                          cubit.state);
+                                                    },
+                                                    textColor: Colors.white,
+                                                  ),
+                                                  SizedBox(
+                                                    height: deviceInfo
+                                                            .screenHeight *
+                                                        0.03,
+                                                  )
+                                                ],
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),

@@ -44,6 +44,8 @@ class FlightsFormWidget extends StatelessWidget {
           height: deviceInfo.screenHeight * 0.01,
         ),
         FlightsFieldWidget(
+              isTravellers: false,
+
           deviceInfo: deviceInfo,
           controller: flightModel.fromController,
           prefixIcon: 'assets/images/flight_from.png',
@@ -53,38 +55,43 @@ class FlightsFormWidget extends StatelessWidget {
           },
         ),
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: deviceInfo.screenHeight * 0.01),
-              child: Text(
-                'To',
-                style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
-                    .copyWith(
-                        fontSize:
-                            deviceInfo.screenWidth * 0.03), // Replace this line
-              ),
-            ),
-            FittedBox(
-              child: IconButton(
-                onPressed: () {
-                  flightActionsModel.onChangePressed(flightModel);
-                },
-                icon: Image.asset(
-                  'assets/images/flights_change.png',
-                  width: deviceInfo.screenWidth * 0.04,
-                  height: deviceInfo.screenHeight * 0.04,
+        IntrinsicHeight(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Padding(
+                padding:
+                    EdgeInsets.only(bottom: deviceInfo.screenHeight * 0.01),
+                child: Text(
+                  'To',
+                  style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
+                      .copyWith(
+                          fontSize: deviceInfo.screenWidth *
+                              0.03), // Replace this line
                 ),
               ),
-            ),
-          ],
+              FittedBox(
+                child: IconButton(
+                  onPressed: () {
+                    flightActionsModel.onChangePressed(flightModel);
+                  },
+                  icon: Image.asset(
+                    'assets/images/flights_change.png',
+                    width: deviceInfo.screenWidth * 0.06,
+                    height: deviceInfo.screenHeight * 0.03,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         // SizedBox(
         //   height: deviceInfo.screenHeight * 0.005,
         // ),
         FlightsFieldWidget(
+              isTravellers: false,
+
           deviceInfo: deviceInfo,
           controller: flightModel.toController,
           prefixIcon: 'assets/images/flight_to.png',
@@ -94,59 +101,65 @@ class FlightsFormWidget extends StatelessWidget {
           },
         ),
         SizedBox(
-          height: deviceInfo.screenHeight * 0.03,
+          height: deviceInfo.screenHeight * 0.01,
         ),
         Text(
-          'Select Date',
+          'Departure Date',
           style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack).copyWith(
               fontSize: deviceInfo.screenWidth * 0.03), // Replace this line
         ),
         SizedBox(
           height: deviceInfo.screenHeight * 0.01,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(right: deviceInfo.screenWidth * 0.02),
-                child: FlightsFieldWidget(
-                  deviceInfo: deviceInfo,
-                  controller: flightModel.departureDateController,
-                  prefixIcon: 'assets/images/flights_calender.png',
-                  label: 'select departure date',
-                  onTap: () {
-                    flightActionsModel.onDatePickerTapped(
-                        selecteFlightModel: flightModel);
-                  },
-                ),
-              ),
-            ),
-            isTwoWay
-                ? Expanded(
-                    child: Padding(
-                      padding:
-                          EdgeInsets.only(left: deviceInfo.screenWidth * 0.02),
-                      child: FlightsFieldWidget(
-                        deviceInfo: deviceInfo,
-                        controller: flightModel.returnDateController,
-                        prefixIcon: 'assets/images/flights_calender.png',
-                        label: 'select return date',
-                        onTap: () {
-                          flightActionsModel.onDatePickerTapped(
-                              selecteFlightModel: flightModel,
-                              isReturnDate: true);
-                        },
-                      ),
-                    ),
-                  )
-                : SizedBox(),
-          ],
+        FlightsFieldWidget(
+              isTravellers: false,
+
+          deviceInfo: deviceInfo,
+          controller: flightModel.departureDateController,
+          prefixIcon: 'assets/images/flights_calender.png',
+          label: 'select departure date',
+          onTap: () {
+            flightActionsModel.onDatePickerTapped(
+                selecteFlightModel: flightModel);
+          },
         ),
+        Visibility(
+          visible: isTwoWay,
+          child: SizedBox(
+            height: deviceInfo.screenHeight * 0.01,
+          ),
+        ),
+        Visibility(
+          visible: isTwoWay,
+          child: Text(
+            'Return Date',
+            style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
+                .copyWith(
+                    fontSize:
+                        deviceInfo.screenWidth * 0.03), // Replace this line
+          ),
+        ),
+        SizedBox(
+          height: deviceInfo.screenHeight * 0.01,
+        ),
+        isTwoWay
+            ? FlightsFieldWidget(
+              isTravellers: false,
+                deviceInfo: deviceInfo,
+                controller: flightModel.returnDateController,
+                prefixIcon: 'assets/images/flights_calender.png',
+                label: 'select return date',
+                onTap: () {
+                  flightActionsModel.onDatePickerTapped(
+                      selecteFlightModel: flightModel, isReturnDate: true);
+                },
+              )
+            : SizedBox(),
 
         SizedBox(
-          height: deviceInfo.screenHeight * 0.03,
+          height: deviceInfo.screenHeight * 0.01,
         ),
+
         Text(
           'Travelers',
           style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack).copyWith(
@@ -157,6 +170,7 @@ class FlightsFormWidget extends StatelessWidget {
         ),
 
         FlightsFieldWidget(
+          isTravellers: true,
           deviceInfo: deviceInfo,
           controller: flightModel.travellersController,
           prefixIcon: 'assets/images/flights_traveller.png',
@@ -166,7 +180,7 @@ class FlightsFormWidget extends StatelessWidget {
           },
         ),
         SizedBox(
-          height: deviceInfo.screenHeight * 0.03,
+          height: deviceInfo.screenHeight * 0.01,
         ),
         isMultiCity
             ? SizedBox()
