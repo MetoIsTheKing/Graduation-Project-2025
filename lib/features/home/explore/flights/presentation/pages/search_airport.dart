@@ -1,7 +1,7 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/routing/arguments.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
@@ -10,7 +10,6 @@ import 'package:graduation_project_2025/core/responsive/ui_component/info_widget
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/airport_text_input.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/flight_search_results_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_custom_tile.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/curved_appbar.dart';
 
@@ -19,7 +18,8 @@ class SearchAirport extends StatelessWidget {
   final SearchFlightsCubit searchFlightsCubit;
   const SearchAirport({
     super.key,
-    required this.args, required this.searchFlightsCubit,
+    required this.args,
+    required this.searchFlightsCubit,
   });
 
   @override
@@ -38,7 +38,7 @@ class SearchAirport extends StatelessWidget {
                 args.appBarTitle,
                 style: TextStyles.medium20(deviceinfo, Colors.white),
               ),
-              onBack: args.onBack,
+              onBack: () => context.pop(),
             ),
             body: SafeArea(
               child: SingleChildScrollView(
@@ -79,16 +79,11 @@ class SearchAirport extends StatelessWidget {
                         },
                       ),
                       SearchCustomTile(
-                        title: "use current location",
-                        tileIconPath: 'assets/images/location_pin.svg',
-                        tileBorderColor: Colors.grey,
-                        tileFillColor: Colors.white,
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  const FlightSearchResultsScreen()));
-                        },
-                      ),
+                          title: "use current location",
+                          tileIconPath: 'assets/images/location_pin.svg',
+                          tileBorderColor: Colors.grey,
+                          tileFillColor: Colors.white,
+                          onTap: null),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: deviceinfo.screenHeight * 0.02),
@@ -133,34 +128,25 @@ class SearchAirport extends StatelessWidget {
                                         if (args.isOrigin == true) {
                                           args.cubit.updateFrom(
                                               airports[index].iataCode);
-                                          log('origin airport is : ${args.flightModel.fromController.text}');
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SearchAirport(
-                                                    searchFlightsCubit: searchFlightsCubit,
-                                                    args: SearchAirportArguments(
-                                                      cubit: args.cubit,
-                                                      appBarTitle:
-                                                          'Select Destination',
-                                                      isOrigin: false,
-                                                      flightModel:
-                                                          args.flightModel,
-                                                      onBack: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                  ),
-                                            ),
-                                          );
+                                          context.pushReplacementNamed(
+                                              Routes.flights,
+                                              arguments: getIt<AirportsDetails>()
+                                                ..arrAirportsDetails = {
+                                                  "airportName":airports[index].name,
+                                                  "cityName":airports[index].cityName,
+                                                  "countryName":airports[index].countryName,
+                                                });
                                         } else {
                                           args.cubit.updateTo(
                                               airports[index].iataCode);
-                                          log('destination airport is : ${args.flightModel.toController.text}');
-
                                           context.pushReplacementNamed(
-                                              Routes.flights);
+                                              Routes.flights,
+                                              arguments: getIt<AirportsDetails>()
+                                                ..depAirportsDetails = {
+                                                  "airportName":airports[index].name,
+                                                  "cityName":airports[index].cityName,
+                                                  "countryName":airports[index].countryName,
+                                                });
                                         }
                                       },
                                       title: airports[index].name,

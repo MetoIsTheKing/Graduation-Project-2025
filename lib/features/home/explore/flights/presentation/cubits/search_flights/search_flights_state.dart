@@ -11,6 +11,9 @@ class AirportsOnError extends SearchFlightsState {
   AirportsOnError({required this.errorMessage});
 }
 class AirportsLoaded extends SearchFlightsState {
+  
   final List<AirportModel> airports;
-  AirportsLoaded({required this.airports});
+  AirportsLoaded(  {
+    required this.airports,
+    });
 }

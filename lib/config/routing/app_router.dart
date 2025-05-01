@@ -9,6 +9,7 @@ import 'package:graduation_project_2025/features/auth/presentation/pages/login_s
 import 'package:graduation_project_2025/features/auth/presentation/pages/signup_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/flight_search_results_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/flights_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_airport.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/pages/explore_screen.dart';
@@ -46,12 +47,19 @@ class AppRouter {
       case Routes.explore:
         return MaterialPageRoute(builder: (context) => ExploreScreen());
       case Routes.flights:
-        return MaterialPageRoute(
-            builder: (context) => MultiBlocProvider(providers: [
-                  BlocProvider(create: (context) => getIt<FlightsDataCubit>()),
-                  BlocProvider.value(
-                  value: getIt<SearchFlightsCubit>()),
-                ], child: FlightsScreen()));
+        return MaterialPageRoute(builder: (context) {
+          final airportArgs = args as AirportsDetails;
+          
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => getIt<FlightsDataCubit>()),
+              BlocProvider.value(value: getIt<SearchFlightsCubit>()),
+            ],
+            child: FlightsScreen(
+              airportsDetails: airportArgs,
+            ),
+          );
+        });
 
       // here is how to pass the args to the destination screen
       case Routes.searchAirports:
@@ -60,9 +68,15 @@ class AppRouter {
           final searchFlightCubit = getIt<SearchFlightsCubit>();
 
           return SearchAirport(
-            searchFlightsCubit: searchFlightCubit,
-            args: argss);
+              searchFlightsCubit: searchFlightCubit, args: argss);
         });
+      case Routes.searchFlightResults:
+        return MaterialPageRoute(
+          builder: (context) => FlightSearchResultsScreen(
+            searchFlightsCubit: getIt<SearchFlightsCubit>(),
+            searchQuery: {},
+          ),
+        );
       case Routes.onBoarding:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(

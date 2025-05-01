@@ -21,10 +21,10 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_form_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_travellers_card_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/radio_tiles_row.dart';
-import 'package:intl/intl.dart';
 
 class FlightsScreen extends StatefulWidget {
-  const FlightsScreen({super.key});
+  final AirportsDetails? airportsDetails;
+  const FlightsScreen({super.key, this.airportsDetails});
 
   @override
   State<FlightsScreen> createState() => _FlightsScreenState();
@@ -191,6 +191,9 @@ class _FlightsScreenState extends State<FlightsScreen> {
       "currencyCode": "USD",
     };
     dev.log("thsi is queryParams : $queryParams");
+    dev.log(getIt<AirportsDetails>().arrAirportsDetails.toString());
+    dev.log(getIt<AirportsDetails>().depAirportsDetails.toString());
+    context.pushNamed(Routes.searchFlightResults, arguments: queryParams);
   }
 
   void onaddAnotherFlightPressed() {
@@ -303,7 +306,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                       onremoveTraveller: (String travellerType) {
                         final updatedTravellers =
                             Map<String, int>.from(cubit.state.travellers);
-                        
+
                         if (updatedTravellers[travellerType] != null &&
                             updatedTravellers[travellerType]! > 0) {
                           updatedTravellers[travellerType] =

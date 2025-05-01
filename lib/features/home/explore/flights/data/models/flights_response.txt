@@ -437,7 +437,7 @@ returnDate=2025-05-10
             }
           ]
         }
-      ],
+      ], *OK*
       "price": {
         "currency": "USD",
         "total": "708.30",
@@ -451,7 +451,7 @@ returnDate=2025-05-10
             "amount": "0.00",
             "type": "TICKETING"
           }
-        ],
+        ], *OK*
         "grandTotal": "708.30"
       },
       "pricingOptions": {
@@ -627,4 +627,37 @@ returnDate=2025-05-10
       ]
     },
   ]
+}
+
+
+
+well now let's focus on the modeling with an Intermediate example 
+
+let's say that we have a json like:
+{
+  "idd":"std123",
+   "student_name":"ahmed",
+   "age":20,
+   "nationality":null,
+   "hobbies":[
+    {
+      'hobbyName':'football',
+      "hrsOfPractise":"10hrs",
+      "scaleOfLove":4.5,
+    },
+    {
+      'hobbyName':'swimming',
+      "hrsOfPractise":"5hrs",
+      "scaleOfLove":3,
+    },
+   ],
+   "address": {
+      "numOfBuilding": 15,
+      "st" : "mohamed ali",
+      "reigon": "hussien",
+      "origin":{
+        "state" : "cairo",
+        "country": 'egypt',
+      }
+   }
 }

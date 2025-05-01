@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/config/routing/arguments.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
@@ -63,7 +64,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         icon: 'assets/images/flight_icon.png',
                         dimension: deviceInfo.screenHeight * 0.14,
                         onPressed: () {
-                          context.pushReplacementNamed(Routes.flights);
+                          context.pushReplacementNamed(Routes.flights,
+                              arguments: AirportsDetails(
+                                arrAirportsDetails: {},
+                                depAirportsDetails: {},
+                              ));
                           print('flight clicked');
                         }),
                     QuickActionButton(

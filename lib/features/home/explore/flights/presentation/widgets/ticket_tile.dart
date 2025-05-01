@@ -2,46 +2,25 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_result_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/recommendation_tag.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 class TicketTile extends StatelessWidget {
-  final String originAirport;
-  final String destinationAirport;
-  final String originCity;
-  final String destinationCity;
-  final String departureTime;
-  final String arrivalTime;
-  final String departureDate;
-  final String arrivalDate;
-  final String airlineName;
-  final String airlineLogo;
-  final String flightDuration;
-  final int stopsNumber;
-  final String price;
+  final FlightResultModel flight;
+  final String arrivalAirportName;
+  final String departureAirportName;
   final String baggageAvailability;
   final String tagData;
   final double? scaleFactor;
-  final bool isRecommended;
+  final bool? isRecommended;
   const TicketTile({
     super.key,
-    required this.originAirport,
-    required this.destinationAirport,
-    required this.originCity,
-    required this.destinationCity,
-    required this.departureTime,
-    required this.arrivalTime,
-    required this.departureDate,
-    required this.arrivalDate,
-    required this.airlineName,
-    required this.airlineLogo,
-    required this.price,
-    required this.stopsNumber,
-    required this.flightDuration,
     required this.baggageAvailability,
     required this.tagData,
     this.scaleFactor,
-    required this.isRecommended,
+    this.isRecommended,
+    required this.flight, required this.arrivalAirportName, required this.departureAirportName,
   });
 
   @override
@@ -68,9 +47,9 @@ class TicketTile extends StatelessWidget {
                     : deviceInfo.screenWidth * 0.9,
               ),
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius:
-                      BorderRadius.circular(deviceInfo.screenWidth * 0.05),
+                color: Colors.white,
+                borderRadius:
+                    BorderRadius.circular(deviceInfo.screenWidth * 0.05),
               ),
               child: LayoutBuilder(builder: (context, constrain) {
                 final TextStyle medium20 = TextStyle(
@@ -101,7 +80,8 @@ class TicketTile extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            originAirport,
+                            flight
+                                .itineraries[0].segments[0].departure.iataCode,
                             style: medium20,
                           ),
                           FixedTimeline(
@@ -115,17 +95,20 @@ class TicketTile extends StatelessWidget {
                                 oppositeContents: Padding(
                                   padding: EdgeInsets.only(
                                       bottom: constraints.maxWidth * 0.005),
+                                  ///////////////////////// need logic function
                                   child: Text(
-                                    '$stopsNumber Stops',
+                                    '${flight.itineraries.length} Stops',
                                     style: medium12.copyWith(
                                       color: AppColors.appDarkBlue,
                                     ),
                                   ),
                                 ),
+                                /////////////////////////////// need logic to get total and parsing
                                 contents: Padding(
                                   padding: EdgeInsets.only(
                                       top: constraints.maxWidth * 0.005),
-                                  child: Text(flightDuration,
+                                  child: Text(
+                                      flight.itineraries[0].totalFlightDuration,
                                       style: medium12.copyWith(
                                           color: AppColors.appDarkBlue)),
                                 ),
@@ -153,7 +136,12 @@ class TicketTile extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            destinationAirport,
+                            flight
+                                .itineraries[0]
+                                .segments[
+                                    flight.itineraries[0].segments.length - 1]
+                                .arrival
+                                .iataCode,
                             style: medium20,
                           ),
                         ],
@@ -163,12 +151,13 @@ class TicketTile extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          ////////////////////////// should be passed to it
                           Text(
-                            originCity,
+                            arrivalAirportName,
                             style: medium12,
                           ),
                           Text(
-                            destinationCity,
+                            departureAirportName,
                             style: medium12,
                           ),
                         ],
@@ -179,16 +168,40 @@ class TicketTile extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(departureTime, style: medium20),
-                          Text(arrivalTime, style: medium20),
+                          Text(
+                              flight.itineraries[0].segments[0].departure
+                                  .departureDateTime
+                                  .substring(12),
+                              style: medium20),
+                          Text(
+                              flight
+                                  .itineraries[0]
+                                  .segments[
+                                      flight.itineraries[0].segments.length - 1]
+                                  .arrival
+                                  .arrivalDateTime
+                                  .substring(12),
+                              style: medium20),
                         ],
                       ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(departureDate, style: medium12),
-                        Text(arrivalDate, style: medium12),
+                        Text(
+                            flight.itineraries[0].segments[0].departure
+                                .departureDateTime
+                                .substring(0, 10),
+                            style: medium12),
+                        Text(
+                            flight
+                                .itineraries[0]
+                                .segments[
+                                    flight.itineraries[0].segments.length - 1]
+                                .arrival
+                                .arrivalDateTime
+                                .substring(0, 10),
+                            style: medium12),
                       ],
                     ),
                     SizedBox(height: deviceInfo.screenHeight * 0.01),
@@ -199,28 +212,19 @@ class TicketTile extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        IntrinsicWidth(
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                    deviceInfo.screenWidth * 0.05),
-                                clipBehavior: Clip.antiAlias,
-                                child: Image.asset(
-                                  airlineLogo,
-                                  height: deviceInfo.screenHeight * 0.04,
-                                ),
-                              ),
-                              Text(airlineName, style: medium12),
-                            ],
-                          ),
+                        RecommendationTag(
+                          constraints: constrain,
+                          deviceInfo: deviceInfo,
+                          tagColor: Colors.redAccent,
+                          tagData: '${flight.numberOfBookableSeats} seats left',
+                          medium12: medium12,
                         ),
                         IntrinsicHeight(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text('Starts from', style: medium10),
-                              Text('$price \$', style: medium20),
+                              Text('${flight.price} \$', style: medium20),
                             ],
                           ),
                         ),
@@ -230,7 +234,7 @@ class TicketTile extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           vertical: deviceInfo.screenHeight * 0.008),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CircleAvatar(
                             radius: deviceInfo.screenWidth * 0.01,
@@ -244,28 +248,28 @@ class TicketTile extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Visibility(
-                      visible: isRecommended,
-                      child: IntrinsicHeight(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            RecommendationTag(
-                                tagColor: AppColors.appBlue,
-                                deviceInfo: deviceInfo,
-                                constraints: constrain,
-                                tagData: tagData,
-                                medium12: medium12),
-                            RecommendationTag(
-                                tagColor: Colors.green,
-                                deviceInfo: deviceInfo,
-                                constraints: constrain,
-                                tagData: tagData,
-                                medium12: medium12),
-                          ],
-                        ),
-                      ),
-                    )
+                    // Visibility(
+                    //   visible: isRecommended,
+                    //   child: IntrinsicHeight(
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.start,
+                    //       children: [
+                    //         RecommendationTag(
+                    //             tagColor: AppColors.appBlue,
+                    //             deviceInfo: deviceInfo,
+                    //             constraints: constrain,
+                    //             tagData: tagData,
+                    //             medium12: medium12),
+                    //         RecommendationTag(
+                    //             tagColor: Colors.green,
+                    //             deviceInfo: deviceInfo,
+                    //             constraints: constrain,
+                    //             tagData: tagData,
+                    //             medium12: medium12),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 );
               }),

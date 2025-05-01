@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         builder: DevicePreview.appBuilder,
         debugShowCheckedModeBanner: false,
         onGenerateRoute: AppRouter().generateRoute,
-        initialRoute: Routes.flights,
+        initialRoute: Routes.mainHome,
       ),
     );
   }

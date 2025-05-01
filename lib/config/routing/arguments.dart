@@ -16,3 +16,13 @@ class SearchAirportArguments {
     required this.onBack,
   });
 }
+
+class AirportsDetails{
+  Map<String, dynamic>? arrAirportsDetails;
+  Map<String, dynamic>? depAirportsDetails;
+
+  AirportsDetails({
+     this.arrAirportsDetails,
+     this.depAirportsDetails,
+  });
+}

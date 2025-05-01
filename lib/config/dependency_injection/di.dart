@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di_instances.dart';
+import 'package:graduation_project_2025/config/routing/arguments.dart';
 import 'package:graduation_project_2025/core/network_clients/abstract_client.dart';
 import 'package:graduation_project_2025/core/network_clients/clients/fake_users_client.dart';
 import 'package:graduation_project_2025/core/network_clients/clients/search_airports_client.dart';
@@ -31,6 +32,13 @@ Future<void> initDependencies() async {
       ),
     );
   }
+
+  // AirportDetails
+  getIt.registerSingleton<AirportsDetails>(
+    AirportsDetails(
+      arrAirportsDetails: {},
+      depAirportsDetails: {},
+    ),);
 
   // ------- dio client -------
   getIt.registerLazySingleton<DioNetworkClient>(() => FakeUsersClient(),
