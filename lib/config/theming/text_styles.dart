@@ -3,6 +3,11 @@ import 'package:flutter/rendering.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 
+////////////////❌❌❌❌❌❌❌❌❌///////////////////
+//ToDo: Some Sizes are with screenWidth and some are with screenHeight
+//This causes some issues with different models like Ipad
+///////////////////////////////
+
 class TextStyles {
   static final TextStyle semiBoldDark32 = TextStyle(
     fontSize: 32,

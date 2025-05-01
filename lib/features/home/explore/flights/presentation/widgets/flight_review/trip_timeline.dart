@@ -10,12 +10,15 @@ class TripTimeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int itemCount = 2;
+    double extent = deviceInfo.screenHeight * 0.15;
     return Container(
-      height: itemCount * deviceInfo.screenHeight * 0.17,
+      //   height: itemCount * deviceInfo.screenHeight * 0.18,
+      clipBehavior: Clip.antiAlias,
       width: double.infinity,
       padding: EdgeInsets.symmetric(
-          vertical: deviceInfo.screenHeight * 0.02,
-          horizontal: deviceInfo.screenWidth * 0.01),
+        vertical: deviceInfo.screenHeight * 0.02,
+        horizontal: deviceInfo.screenWidth * 0.01,
+      ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(deviceInfo.screenWidth * 0.05),
@@ -25,23 +28,23 @@ class TripTimeline extends StatelessWidget {
           contentsAlign: ContentsAlign.reverse,
           firstConnectorStyle: ConnectorStyle.dashedLine,
           lastConnectorStyle: ConnectorStyle.dashedLine,
-
           // determines where the timeline stands horizontally
           nodePositionBuilder: (context, index) =>
-              deviceInfo.screenWidth * 0.0008,
+              deviceInfo.screenHeight * 0.00035,
 
-          // determines the position of the node
+          //  determines the position of the node
           indicatorPositionBuilder: (context, index) {
             if (index == 0) {
-              return deviceInfo.screenWidth * 0.00001;
+              return deviceInfo.screenHeight * 0.00000;
             }
+            // this may cause some isuues in different models 🤷‍♂️
             if (index == itemCount - 1) {
-              return deviceInfo.screenWidth * 0.0025;
+              return extent * 0.0075;
             }
-            return deviceInfo.screenHeight * 0.0005;
+            return deviceInfo.screenHeight * 0.0007;
           },
 
-          // determines the vertica space for each content
+          // determines the vertical space for each content
           itemExtentBuilder: (context, index) => deviceInfo.screenHeight * 0.15,
           oppositeContentsBuilder: (context, index) =>
               _dateColumn(itemCount, index),
@@ -56,7 +59,7 @@ class TripTimeline extends StatelessWidget {
 
   Widget _airportColumn(itemCount, index) {
     return SizedBox(
-      height: deviceInfo.screenHeight * 0.2,
+      //  height: deviceInfo.screenHeight * 0.2,
       width: double.infinity,
       child: Column(
         mainAxisAlignment: _mainAxisAlignment(itemCount, index),
@@ -78,7 +81,7 @@ class TripTimeline extends StatelessWidget {
 
   Widget _dateColumn(itemCount, index) {
     return Container(
-      height: deviceInfo.screenHeight * 0.2,
+      //height: deviceInfo.screenHeight * 0.2,
       width: double.infinity,
       padding: EdgeInsets.symmetric(
         horizontal: deviceInfo.screenWidth * 0.02,

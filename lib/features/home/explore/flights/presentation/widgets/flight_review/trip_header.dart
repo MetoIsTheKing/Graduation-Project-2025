@@ -69,6 +69,7 @@ class TripHeader extends StatelessWidget {
 
   Widget _textColumn(String place, DateTime time) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           place,

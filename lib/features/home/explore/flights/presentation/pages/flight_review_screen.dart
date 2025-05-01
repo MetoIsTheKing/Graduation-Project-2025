@@ -1,3 +1,4 @@
+import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -73,7 +74,17 @@ class _FlightReviewScreenState extends State<FlightReviewScreen> {
                         'assets/images/currency.svg',
                         width: deviceInfo.screenWidth * 0.06,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        showCurrencyPicker(
+                          context: context,
+                          showFlag: true,
+                          showCurrencyName: true,
+                          showCurrencyCode: true,
+                          onSelect: (Currency currency) {
+                            print('Select currency: ${currency.name}');
+                          },
+                        );
+                      },
                     ),
                   ],
                 ),
