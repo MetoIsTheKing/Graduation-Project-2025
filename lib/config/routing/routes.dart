@@ -7,6 +7,7 @@ class Routes {
   static const String flights = 'explore/flights';
   static const String searchAirports = 'explore/flights/searchAirports';
   static const String searchFlightResults = 'explore/flights/searchFlightResults';
+  static const String bookingApplication = 'explore/flights/searchFlightResults/bookingApplication';
   static const String onBoarding = '/onBoarding';
   static const String codeVerification = '/codeVerification';
   static const String forgetpassword = '/forgetpassword';

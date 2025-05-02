@@ -9,6 +9,7 @@ import 'package:graduation_project_2025/features/auth/presentation/pages/login_s
 import 'package:graduation_project_2025/features/auth/presentation/pages/signup_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/booking_application_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/flight_search_results_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/flights_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_airport.dart';
@@ -78,6 +79,12 @@ class AppRouter {
             searchFlightsCubit: getIt<SearchFlightsCubit>(),
             searchQuery: args,
           );}
+        );
+      case Routes.bookingApplication:
+        return MaterialPageRoute(
+          builder: (context) { 
+            return const BookingApplicationScreen()
+          ;}
         );
       case Routes.onBoarding:
         return MaterialPageRoute(

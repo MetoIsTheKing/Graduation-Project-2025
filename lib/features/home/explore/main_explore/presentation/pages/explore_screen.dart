@@ -76,7 +76,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         icon: 'assets/images/hotel_icon.png',
                         dimension: deviceInfo.screenHeight * 0.11,
                         onPressed: () {
-                          print('activity clicked');
+                          context.pushNamed(Routes.bookingApplication);
                         }),
                   ],
                 ),
