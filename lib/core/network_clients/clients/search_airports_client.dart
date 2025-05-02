@@ -110,7 +110,7 @@ class AmadeusApiClient extends DioNetworkClient {
     ));
 
     final response = await tokenDio.post<String>(
-      '/security/oauth2/token',
+      'v1/security/oauth2/token',
       data: {
         'grant_type': 'client_credentials',
         'client_id': apiKey,

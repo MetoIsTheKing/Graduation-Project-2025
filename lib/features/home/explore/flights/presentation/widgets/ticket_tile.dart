@@ -1,9 +1,10 @@
+
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
+import 'package:graduation_project_2025/core/shared_functions/mapping_airlines_codes.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_result_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/recommendation_tag.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 class TicketTile extends StatelessWidget {
@@ -20,7 +21,9 @@ class TicketTile extends StatelessWidget {
     required this.tagData,
     this.scaleFactor,
     this.isRecommended,
-    required this.flight, required this.arrivalAirportName, required this.departureAirportName,
+    required this.flight,
+    required this.arrivalAirportName,
+    required this.departureAirportName,
   });
 
   @override
@@ -37,7 +40,7 @@ class TicketTile extends StatelessWidget {
             clipper: TicketClipper(),
             child: Container(
               padding: EdgeInsets.symmetric(
-                horizontal: deviceInfo.screenWidth * 0.08,
+                horizontal: deviceInfo.screenWidth * 0.06,
                 vertical: deviceInfo.screenHeight * 0.015,
               ),
               clipBehavior: Clip.antiAlias,
@@ -97,7 +100,7 @@ class TicketTile extends StatelessWidget {
                                       bottom: constraints.maxWidth * 0.005),
                                   ///////////////////////// need logic function
                                   child: Text(
-                                    '${flight.itineraries.length} Stops',
+                                    '${flight.itineraries[0].segments.length - 1} Stops',
                                     style: medium12.copyWith(
                                       color: AppColors.appDarkBlue,
                                     ),
@@ -108,7 +111,9 @@ class TicketTile extends StatelessWidget {
                                   padding: EdgeInsets.only(
                                       top: constraints.maxWidth * 0.005),
                                   child: Text(
-                                      flight.itineraries[0].totalFlightDuration,
+                                      flight.itineraries[0].totalFlightDuration
+                                          .substring(2)
+                                          .replaceAll("H", 'H '),
                                       style: medium12.copyWith(
                                           color: AppColors.appDarkBlue)),
                                 ),
@@ -151,14 +156,15 @@ class TicketTile extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ////////////////////////// should be passed to it
                           Text(
                             arrivalAirportName,
                             style: medium12,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           Text(
                             departureAirportName,
                             style: medium12,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
@@ -212,42 +218,62 @@ class TicketTile extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        RecommendationTag(
-                          constraints: constrain,
-                          deviceInfo: deviceInfo,
-                          tagColor: Colors.redAccent,
-                          tagData: '${flight.numberOfBookableSeats} seats left',
-                          medium12: medium12,
+                        IntrinsicWidth(
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    right: deviceInfo.screenWidth * 0.01),
+                                child: Image.asset(
+                                  'assets/images/airport_logo_ic.png',
+                                  scale: deviceInfo.screenWidth * 0.004,
+                                ),
+                              ),
+                              SizedBox(
+                                width: constraints.maxWidth * 0.4,
+                                child: Text(
+                                  getAirlineName(flight.itineraries[0]
+                                          .segments[0].carrierCode)
+                                      .toString(),
+                                  style: medium12,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         IntrinsicHeight(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text('Starts from', style: medium10),
-                              Text('${flight.price} \$', style: medium20),
+                              Text('${flight.price.total} \$', style: medium20),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: deviceInfo.screenHeight * 0.008),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: deviceInfo.screenWidth * 0.01,
-                            backgroundColor: AppColors.appYellow,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: deviceInfo.screenWidth * 0.012),
-                            child: Text(baggageAvailability, style: medium10),
-                          ),
-                        ],
-                      ),
-                    ),
+                    //? this is the baggage availability tag --------------------
+                    // Padding(
+                    //   padding: EdgeInsets.symmetric(
+                    //       vertical: deviceInfo.screenHeight * 0.008),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       CircleAvatar(
+                    //         radius: deviceInfo.screenWidth * 0.01,
+                    //         backgroundColor: AppColors.appYellow,
+                    //       ),
+                    //       Padding(
+                    //         padding: EdgeInsets.only(
+                    //             left: deviceInfo.screenWidth * 0.012),
+                    //         child: Text(baggageAvailability, style: medium10),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    //? this is the recommendation tag ----------------------
                     // Visibility(
                     //   visible: isRecommended,
                     //   child: IntrinsicHeight(

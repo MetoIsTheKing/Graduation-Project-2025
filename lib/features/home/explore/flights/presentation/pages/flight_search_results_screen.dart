@@ -1,13 +1,15 @@
+import 'dart:developer';
+
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:graduation_project_2025/config/dependency_injection/di.dart';
+import 'package:graduation_project_2025/config/routing/arguments.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_result_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/curved_appbar.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/ticket_tile.dart';
@@ -16,7 +18,7 @@ class FlightSearchResultsScreen extends StatelessWidget {
   final SearchFlightsCubit searchFlightsCubit;
   final Map<String, dynamic> searchQuery;
   const FlightSearchResultsScreen(
-      {super.key, required this.searchFlightsCubit,required this.searchQuery});
+      {super.key, required this.searchFlightsCubit, required this.searchQuery});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,7 @@ class FlightSearchResultsScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          searchQuery?["originLocationCode"] ?? 'error',
+                          searchQuery["originLocationCode"] ?? 'error',
                           style: TextStyles.medium20(
                               deviceInfo, AppColors.appDarkBlue),
                         ),
@@ -63,7 +65,7 @@ class FlightSearchResultsScreen extends StatelessWidget {
                               deviceInfo, AppColors.appYellow),
                         ),
                         Text(
-                          searchQuery?["destinationLocationCode"] ?? 'error',
+                          searchQuery["destinationLocationCode"] ?? 'error',
                           style: TextStyles.medium20(
                               deviceInfo, AppColors.appDarkBlue),
                         ),
@@ -71,7 +73,7 @@ class FlightSearchResultsScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${searchQuery?["departureDate"]}',
+                    '${searchQuery["departureDate"]}',
                     style:
                         TextStyles.regular14(deviceInfo, AppColors.appDarkBlue),
                   )
@@ -104,23 +106,94 @@ class FlightSearchResultsScreen extends StatelessWidget {
                           horizontal: deviceInfo.screenWidth * 0.05,
                           vertical: deviceInfo.screenHeight * 0.01),
                       child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Transform.scale(
-                            //   scale: scaleFactor,
-                            //   child: TicketTile(
-                            //     flight: FlightResultModel(
-                            //         ),
-                            //     arrivalAirportName: '',
-                            //     departureAirportName: '',
-                            //     isRecommended: true,
-                            //     scaleFactor: scaleFactor,
-                            //     baggageAvailability: 'has more baggage options',
-                            //     tagData: 'Best Price',
-                            //   ),
-                            // ),
-                          ],
+                        child:
+                            BlocBuilder<SearchFlightsCubit, SearchFlightsState>(
+                          builder: (context, state) {
+                            if (state is FlightsIsLoading) {
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                    top: deviceInfo.screenHeight * 0.4),
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.appYellow,
+                                    strokeWidth: deviceInfo.screenWidth * 0.01,
+                                  ),
+                                ),
+                              );
+                            } else if (state is FlightsLoaded &&
+                                state.flights.isEmpty) {
+                              return Center(
+                                child: Text(
+                                  'No flights found',
+                                  style: TextStyles.medium20(
+                                      deviceInfo, Colors.white),
+                                ),
+                              );
+                            } else if (state is FlightsOnNetworkError) {
+                              return Center(
+                                child: Text(
+                                  state.errorMessage,
+                                  style: TextStyles.medium20(
+                                      deviceInfo, Colors.white),
+                                ),
+                              );
+                            } else if (state is FlightsOnError) {
+                              return Center(
+                                child: Text(
+                                  state.errorMessage,
+                                  style: TextStyles.medium20(
+                                      deviceInfo, Colors.white),
+                                ),
+                              );
+                            } else if (state is FlightsLoaded) {
+                              final flightsResults = state.flights;
+
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ListView.builder(
+                                    itemCount: flightsResults.length,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      //log('list of Carrier codes : ${getAirlineName(flightsResults[index].itineraries[0].segments[0].carrierCode).toString()}');
+
+                                      return Transform.scale(
+                                        scale: scaleFactor,
+                                        child: TicketTile(
+                                          flight: flightsResults[index],
+                                          arrivalAirportName:
+                                              getIt<AirportsDetails>()
+                                                          .arrAirportsDetails?[
+                                                      'airportName'] ??
+                                                  'error',
+                                          departureAirportName:
+                                              getIt<AirportsDetails>()
+                                                          .depAirportsDetails?[
+                                                      'airportName'] ??
+                                                  'error',
+                                          isRecommended: true,
+                                          scaleFactor: scaleFactor,
+                                          baggageAvailability:
+                                              'has more baggage options',
+                                          tagData: 'Best Price',
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              );
+                            } else {
+                              return Center(
+                                child: Text(
+                                  'something went wrong',
+                                  style: TextStyles.medium20(
+                                      deviceInfo, Colors.white),
+                                ),
+                              );
+                            }
+                          },
                         ),
                       ),
                     ),

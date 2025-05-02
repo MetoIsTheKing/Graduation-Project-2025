@@ -1,11 +1,11 @@
 import 'dart:developer';
 
-import 'package:graduation_project_2025/features/home/explore/flights/data/data_sources/search_airports_remote.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/data/data_sources/search_flights_remote.dart';
 
-class SearchAirportsRepo {
-  final SearchAirportsRemoteDataSource remoteDataSource;
+class SearchFlightsRepo {
+  final SearchFlightssRemoteDataSource remoteDataSource;
 
-  SearchAirportsRepo({required this.remoteDataSource});
+  SearchFlightsRepo({required this.remoteDataSource});
 
   Future<Map<String, dynamic>> searchAirports(String query) async {
     try {
@@ -13,6 +13,16 @@ class SearchAirportsRepo {
       return response;
     } catch (e) {
       log('Error in SearchAirportsRepo: $e');
+      return Future.error(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> searchFlights(Map<String, dynamic> query) async {
+    try {
+      final response = await remoteDataSource.searchFlights(query);
+      return response;
+    } catch (e) {
+      log('Error in SearchFlightsRepo: $e');
       return Future.error(e);
     }
   }

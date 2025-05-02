@@ -8,7 +8,7 @@ part of 'flight_result_model.dart';
 
 FlightResultModel _$FlightResultModelFromJson(Map<String, dynamic> json) =>
     FlightResultModel(
-      flightId: (json['id'] as num).toInt(),
+      flightId: json['id'] as String,
       price: Price.fromJson(json['price'] as Map<String, dynamic>),
       travelerPricings: (json['travelerPricings'] as List<dynamic>)
           .map((e) => TravellersInfo.fromJson(e as Map<String, dynamic>))
@@ -43,12 +43,14 @@ Map<String, dynamic> _$ItineraryToJson(Itinerary instance) => <String, dynamic>{
 Segment _$SegmentFromJson(Map<String, dynamic> json) => Segment(
       departure: Departure.fromJson(json['departure'] as Map<String, dynamic>),
       arrival: Arrival.fromJson(json['arrival'] as Map<String, dynamic>),
+      carrierCode: json['carrierCode'] as String,
       segmentDuration: json['duration'] as String,
     );
 
 Map<String, dynamic> _$SegmentToJson(Segment instance) => <String, dynamic>{
       'departure': instance.departure,
       'arrival': instance.arrival,
+      'carrierCode': instance.carrierCode,
       'duration': instance.segmentDuration,
     };
 
@@ -78,8 +80,8 @@ Map<String, dynamic> _$ArrivalToJson(Arrival instance) => <String, dynamic>{
 
 Price _$PriceFromJson(Map<String, dynamic> json) => Price(
       currency: json['currency'] as String,
-      total: (json['total'] as num).toDouble(),
-      base: (json['base'] as num).toDouble(),
+      total: Price._valueToString(json['total']),
+      base: Price._valueToString(json['base']),
     );
 
 Map<String, dynamic> _$PriceToJson(Price instance) => <String, dynamic>{
@@ -90,8 +92,8 @@ Map<String, dynamic> _$PriceToJson(Price instance) => <String, dynamic>{
 
 TravellersInfo _$TravellersInfoFromJson(Map<String, dynamic> json) =>
     TravellersInfo(
-      travelerId: json['travelerId'] as String,
-      travelerType: json['travelerType'] as String,
+      travelerId: json['travelerId'] as String? ?? 'N/A',
+      travelerType: json['travelerType'] as String? ?? 'N/A',
       price: TravelerCost.fromJson(json['price'] as Map<String, dynamic>),
       fareDetailsBySegment: (json['fareDetailsBySegment'] as List<dynamic>)
           .map((e) => FareDetailsBySegment.fromJson(e as Map<String, dynamic>))
@@ -118,9 +120,10 @@ FareDetailsBySegment _$FareDetailsBySegmentFromJson(
           ? null
           : IncludedCabinBags.fromJson(
               json['includedCabinBags'] as Map<String, dynamic>),
-      amenities: (json['amenities'] as List<dynamic>)
-          .map((e) => Amenity.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      amenities: (json['amenities'] as List<dynamic>?)
+              ?.map((e) => Amenity.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
 
 Map<String, dynamic> _$FareDetailsBySegmentToJson(
@@ -133,7 +136,7 @@ Map<String, dynamic> _$FareDetailsBySegmentToJson(
     };
 
 Amenity _$AmenityFromJson(Map<String, dynamic> json) => Amenity(
-      description: json['description'] as String,
+      description: json['description'] as String? ?? 'N/A',
       isChargeable: json['isChargeable'] as bool,
     );
 
@@ -144,7 +147,7 @@ Map<String, dynamic> _$AmenityToJson(Amenity instance) => <String, dynamic>{
 
 IncludedCabinBags _$IncludedCabinBagsFromJson(Map<String, dynamic> json) =>
     IncludedCabinBags(
-      weight: json['weight'] as String,
+      weight: json['weight'] ?? 'N/A',
     );
 
 Map<String, dynamic> _$IncludedCabinBagsToJson(IncludedCabinBags instance) =>
@@ -154,7 +157,7 @@ Map<String, dynamic> _$IncludedCabinBagsToJson(IncludedCabinBags instance) =>
 
 IncludedCheckedBags _$IncludedCheckedBagsFromJson(Map<String, dynamic> json) =>
     IncludedCheckedBags(
-      weight: json['weight'] as String,
+      weight: json['weight'] ?? 'N/A',
     );
 
 Map<String, dynamic> _$IncludedCheckedBagsToJson(
@@ -164,8 +167,8 @@ Map<String, dynamic> _$IncludedCheckedBagsToJson(
     };
 
 TravelerCost _$TravelerCostFromJson(Map<String, dynamic> json) => TravelerCost(
-      total: json['total'] as String,
-      base: json['base'] as String,
+      total: TravelerCost._valueToString(json['total']),
+      base: TravelerCost._valueToString(json['base']),
     );
 
 Map<String, dynamic> _$TravelerCostToJson(TravelerCost instance) =>

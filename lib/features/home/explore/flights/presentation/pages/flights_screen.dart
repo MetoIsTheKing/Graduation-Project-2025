@@ -132,6 +132,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                 ),
               ),
               CalendarDatePicker(
+                currentDate: DateTime.now(),
                 initialDate: tempPickedDate ?? DateTime.now(),
                 firstDate: DateTime.now(),
                 lastDate: DateTime(2030),
@@ -183,16 +184,19 @@ class _FlightsScreenState extends State<FlightsScreen> {
         "returnDate":
             flightsDataCubit.state.returnDateController.text.substring(0, 10),
       "adults": flightsDataCubit.state.travellers['adults'],
-      "children": flightsDataCubit.state.travellers['children'],
-      "infants": flightsDataCubit.state.travellers['infants'],
+      if (flightsDataCubit.state.travellers['children'] != (0))
+        "children": flightsDataCubit.state.travellers['children'],
+      if (flightsDataCubit.state.travellers['infants'] != (0))
+        "infants": flightsDataCubit.state.travellers['infants'],
       "travelClass": flightsDataCubit.state.flightClass,
-      "nonStop": true,
+      "nonStop": false,
       "max": 250,
       "currencyCode": "USD",
     };
     dev.log("thsi is queryParams : $queryParams");
     dev.log(getIt<AirportsDetails>().arrAirportsDetails.toString());
     dev.log(getIt<AirportsDetails>().depAirportsDetails.toString());
+    searchFlightCubit.searchFlights(queryParams);
     context.pushNamed(Routes.searchFlightResults, arguments: queryParams);
   }
 

@@ -72,10 +72,12 @@ class AppRouter {
         });
       case Routes.searchFlightResults:
         return MaterialPageRoute(
-          builder: (context) => FlightSearchResultsScreen(
+          builder: (context) { 
+            final args = settings.arguments as Map<String, dynamic>;
+            return FlightSearchResultsScreen(
             searchFlightsCubit: getIt<SearchFlightsCubit>(),
-            searchQuery: {},
-          ),
+            searchQuery: args,
+          );}
         );
       case Routes.onBoarding:
         return MaterialPageRoute(

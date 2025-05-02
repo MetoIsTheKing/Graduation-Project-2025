@@ -5,7 +5,7 @@ part 'flight_result_model.g.dart';
 @JsonSerializable()
 class FlightResultModel {
   @JsonKey(name: 'id')
-  final int flightId;
+  final String flightId;
   final int numberOfBookableSeats;
   final List<Itinerary> itineraries;
   final Price price;
@@ -39,12 +39,14 @@ class Itinerary {
 class Segment {
   final Departure departure;
   final Arrival arrival;
+  final String carrierCode;
   @JsonKey(name: 'duration')
   final String segmentDuration;
 
   Segment(
       {required this.departure,
       required this.arrival,
+      required this.carrierCode,
       required this.segmentDuration});
 
   factory Segment.fromJson(Map<String, dynamic> json) =>
@@ -91,10 +93,17 @@ class Arrival {
 @JsonSerializable()
 class Price {
   final String currency;
-  final double total;
-  final double base;
+  @JsonKey(fromJson: _valueToString)
+  final String total;
+  @JsonKey(fromJson: _valueToString)
+  final String base;
 
   Price({required this.currency, required this.total, required this.base});
+
+  static String _valueToString(dynamic value) {
+    if (value == null) return 'N/A';
+    return value.toString();
+  }
 
   factory Price.fromJson(Map<String, dynamic> json) =>
       _$PriceFromJson(json);
@@ -103,7 +112,9 @@ class Price {
 
 @JsonSerializable()
 class TravellersInfo {
+  @JsonKey(defaultValue: 'N/A')
   final String travelerId;
+  @JsonKey(defaultValue: 'N/A')
   final String travelerType;
   final TravelerCost price;
   final List<FareDetailsBySegment> fareDetailsBySegment;
@@ -124,6 +135,7 @@ class FareDetailsBySegment {
   final String segmentId;
   final IncludedCheckedBags? includedCheckedBags;
   final IncludedCabinBags? includedCabinBags;
+  @JsonKey(defaultValue: [])
   final List<Amenity> amenities;
 
   FareDetailsBySegment(
@@ -139,6 +151,7 @@ class FareDetailsBySegment {
 
 @JsonSerializable()
 class Amenity {
+  @JsonKey(defaultValue: 'N/A')
   final String description;
   final bool isChargeable;
 
@@ -151,7 +164,8 @@ class Amenity {
 
 @JsonSerializable()
 class IncludedCabinBags {
-  final String weight;
+  @JsonKey(defaultValue: 'N/A')
+  final dynamic weight;
 
   IncludedCabinBags({required this.weight});
 
@@ -162,7 +176,8 @@ class IncludedCabinBags {
 
 @JsonSerializable()
 class IncludedCheckedBags {
-  final String weight;
+  @JsonKey(defaultValue: 'N/A')
+  final dynamic weight;
 
   IncludedCheckedBags({required this.weight});
 
@@ -173,10 +188,17 @@ class IncludedCheckedBags {
 
 @JsonSerializable()
 class TravelerCost {
+  @JsonKey(fromJson: _valueToString)
   final String total;
+  @JsonKey(fromJson: _valueToString)
   final String base;
 
   TravelerCost({required this.total, required this.base});
+  
+  static String _valueToString(dynamic value) {
+    if (value == null) return 'N/A';
+    return value.toString();
+  }
 
   factory TravelerCost.fromJson(Map<String, dynamic> json) =>
       _$TravelerCostFromJson(json);
