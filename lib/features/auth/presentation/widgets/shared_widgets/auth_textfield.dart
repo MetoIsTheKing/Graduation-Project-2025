@@ -33,10 +33,11 @@ class AuthTextField extends StatelessWidget {
     this.PasswordSuffixIcon,
     required this.controller,
     this.isConfirmPassword = false,
-    this.passwordController, this.inputFormatters,
+    this.passwordController,
+    this.inputFormatters,
   }) {
     // if (fixedPhoneCode != null &&
-    //     !controller.text.startsWith(fixedPhoneCode!)) {
+    //     controller.text.startsWith(fixedPhoneCode!)) {
     //   controller.text =
     //       fixedPhoneCode!; // Ensure it always starts with the fixed code
     //   controller.selection = TextSelection.fromPosition(
@@ -97,6 +98,7 @@ class AuthTextField extends StatelessWidget {
         fontSize: deviceInfo.screenWidth * 0.035, color: Colors.black);
     /////////
     return TextFormField(
+      onTapOutside: (event) => FocusScope.of(context).unfocus(),
       controller: controller,
       focusNode: focusNode,
       keyboardType: keyboardType,
@@ -122,9 +124,12 @@ class AuthTextField extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  prefix,
-                  style: hintTextStyle,
+                SizedBox(
+                  width: deviceInfo.screenWidth * 0.22,
+                  child: Text(
+                    prefix,
+                    style: hintTextStyle,
+                  ),
                 ),
                 const Spacer(),
                 Text(

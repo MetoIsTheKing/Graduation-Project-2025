@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
-import 'package:intl/intl.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
+import 'package:table_calendar/table_calendar.dart';
 
-class CustomDatePickerField extends StatelessWidget {
+class CustomDatePickerField extends StatefulWidget {
   final DeviceInfo deviceInfo;
   final String prefix;
   final String hint;
@@ -20,6 +20,11 @@ class CustomDatePickerField extends StatelessWidget {
     required this.onDateSelected,
   });
 
+  @override
+  State<CustomDatePickerField> createState() => _CustomDatePickerFieldState();
+}
+
+class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
   void _openDatePicker(BuildContext context) async {
     DateTime? pickedDate;
 
@@ -40,14 +45,33 @@ class CustomDatePickerField extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: deviceInfo.screenHeight * 0.5,
-                child: CalendarDatePicker(
-                  initialDate: selectedDate ?? DateTime.now(),
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime(2100),
-                  onDateChanged: (date) {
-                    pickedDate = date;
+                height: widget.deviceInfo.screenHeight * 0.5,
+                child: TableCalendar(
+                  firstDay: DateTime(1900),
+                  lastDay: DateTime(2100),
+                  focusedDay: widget.selectedDate ?? DateTime.now(),
+                  selectedDayPredicate: (day) {
+                    return isSameDay(widget.selectedDate, day);
                   },
+                  onDaySelected: (selectedDay, focusedDay) {
+                    setState(() {
+                      pickedDate = selectedDay;
+                    });
+                  },
+                  calendarStyle: CalendarStyle(
+                    todayDecoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border:
+                          Border.all(color: AppColors.appDarkBlue, width: 2),
+                    ),
+                    todayTextStyle: TextStyle(color: AppColors.appDarkBlue),
+                    selectedDecoration: BoxDecoration(
+                      color: AppColors.appBlue,
+                      shape: BoxShape.circle,
+                    ),
+                    selectedTextStyle: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
@@ -63,7 +87,7 @@ class CustomDatePickerField extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       if (pickedDate != null) {
-                        onDateSelected(pickedDate!);
+                        widget.onDateSelected(pickedDate!);
                       }
                       Navigator.pop(context);
                     },
@@ -85,35 +109,35 @@ class CustomDatePickerField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /////////
-    final double borderRaduis = deviceInfo.screenHeight * 0.055;
-    final TextStyle hintTextStyle = TextStyles.mediumDark16
-        .copyWith(fontSize: deviceInfo.screenWidth * 0.03, color: Colors.grey);
+    final double borderRaduis = widget.deviceInfo.screenHeight * 0.055;
+    final TextStyle hintTextStyle = TextStyles.mediumDark16.copyWith(
+        fontSize: widget.deviceInfo.screenWidth * 0.03, color: Colors.grey);
     final TextStyle inputTextStyle = TextStyles.mediumDark16.copyWith(
-        fontSize: deviceInfo.screenWidth * 0.04, color: AppColors.appBlue);
+        fontSize: widget.deviceInfo.screenWidth * 0.03,
+        color: AppColors.appDarkBlue);
     //////////
     return GestureDetector(
       onTap: () => _openDatePicker(context),
       child: Container(
-        height: deviceInfo.screenHeight > deviceInfo.screenWidth
-            ? deviceInfo.screenHeight * 0.06
-            : deviceInfo.screenWidth * 0.079,
+        height: widget.deviceInfo.screenHeight > widget.deviceInfo.screenWidth
+            ? widget.deviceInfo.screenHeight * 0.06
+            : widget.deviceInfo.screenWidth * 0.079,
         decoration: BoxDecoration(
-          color: AppColors.appGrey,
+          color: AppColors.appLighterGrey,
           borderRadius: BorderRadius.circular(borderRaduis),
-          border: Border.all(color: AppColors.appGrey, width: 2),
         ),
         padding: EdgeInsets.symmetric(
-          horizontal: deviceInfo.screenWidth * 0.04,
+          horizontal: widget.deviceInfo.screenWidth * 0.04,
         ),
         width: double.infinity,
         child: Row(
           children: [
             SizedBox(
-              width: deviceInfo.screenWidth * 0.285,
+              width: widget.deviceInfo.screenWidth * 0.285,
               child: Row(
                 children: [
                   Text(
-                    prefix,
+                    widget.prefix,
                     style: hintTextStyle,
                   ),
                   const Spacer(),
@@ -121,25 +145,25 @@ class CustomDatePickerField extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.grey,
-                          fontSize: deviceInfo.screenWidth * 0.06)),
-                  SizedBox(width: deviceInfo.screenWidth * 0.04),
+                          fontSize: widget.deviceInfo.screenWidth * 0.06)),
+                  SizedBox(width: widget.deviceInfo.screenWidth * 0.04),
                 ],
               ),
             ),
             Expanded(
               child: Text(
-                selectedDate != null
-                    ? DateFormat("dd/MM/yyyy").format(selectedDate!)
-                    : hint,
-                style: selectedDate != null ? inputTextStyle : hintTextStyle,
+                widget.selectedDate != null
+                    ? widget.selectedDate.toString().substring(0, 10)
+                    : widget.hint,
+                style: widget.selectedDate != null
+                    ? inputTextStyle
+                    : hintTextStyle,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            Container(
-              child: const Icon(
-                Icons.calendar_month,
-                color: Colors.grey,
-              ),
+            const Icon(
+              Icons.calendar_month,
+              color: Colors.grey,
             ),
           ],
         ),

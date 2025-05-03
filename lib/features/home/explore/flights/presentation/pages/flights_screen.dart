@@ -196,6 +196,13 @@ class _FlightsScreenState extends State<FlightsScreen> {
     dev.log("thsi is queryParams : $queryParams");
     dev.log(getIt<AirportsDetails>().arrAirportsDetails.toString());
     dev.log(getIt<AirportsDetails>().depAirportsDetails.toString());
+    final travelersMap = {
+      "adults": flightsDataCubit.state.travellers['adults'],
+      if (flightsDataCubit.state.travellers['children'] != (0))
+        "children": flightsDataCubit.state.travellers['children'],
+      if (flightsDataCubit.state.travellers['infants'] != (0))
+        "infants": flightsDataCubit.state.travellers['infants'],
+    };
     searchFlightCubit.searchFlights(queryParams);
     context.pushNamed(Routes.searchFlightResults, arguments: queryParams);
   }
