@@ -83,7 +83,13 @@ class AppRouter {
       case Routes.bookingApplication:
         return MaterialPageRoute(
           builder: (context) { 
-            return const BookingApplicationScreen()
+            return const BookingApplicationScreen(
+              travelers: {
+                'adults': 1,
+                'children': 2,
+                'infants': 1,
+              },
+            )
           ;}
         );
       case Routes.onBoarding:

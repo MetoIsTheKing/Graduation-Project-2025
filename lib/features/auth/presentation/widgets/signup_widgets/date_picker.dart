@@ -48,6 +48,9 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
                 height: widget.deviceInfo.screenHeight * 0.5,
                 child: TableCalendar(
                   firstDay: DateTime(1900),
+                  weekNumbersVisible: false,
+                  headerStyle: HeaderStyle(formatButtonVisible: false),
+                  sixWeekMonthsEnforced: false,
                   lastDay: DateTime(2100),
                   focusedDay: widget.selectedDate ?? DateTime.now(),
                   selectedDayPredicate: (day) {
@@ -55,6 +58,8 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
                   },
                   onDaySelected: (selectedDay, focusedDay) {
                     setState(() {
+                      selectedDay = selectedDay;
+                      focusedDay = focusedDay;
                       pickedDate = selectedDay;
                     });
                   },
@@ -105,6 +110,8 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
       },
     );
   }
+
+ 
 
   @override
   Widget build(BuildContext context) {

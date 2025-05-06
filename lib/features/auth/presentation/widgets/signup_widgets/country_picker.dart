@@ -18,7 +18,7 @@ class CustomCountryPickerField extends StatelessWidget {
     required this.deviceInfo,
     required this.prefix,
     required this.hint,
-    required this.selectedCountry,
+    this.selectedCountry,
     required this.onCountrySelected,
     required this.focusNode,
     this.nextFocusNode,
@@ -29,7 +29,7 @@ class CustomCountryPickerField extends StatelessWidget {
       searchAutofocus: false,
       context: context,
       showSearch: true,
-      showPhoneCode: true,
+      showPhoneCode: false,
       onSelect: (Country country) {
         onCountrySelected(country);
         if (nextFocusNode != null) {
@@ -82,7 +82,7 @@ class CustomCountryPickerField extends StatelessWidget {
             ? deviceInfo.screenHeight * 0.06
             : deviceInfo.screenWidth * 0.079,
         decoration: BoxDecoration(
-          color: AppColors.appGrey,
+          color: AppColors.appLighterGrey,
           borderRadius: BorderRadius.circular(deviceInfo.screenHeight * 0.055),
           border: Border.all(color: AppColors.appGrey, width: 2),
         ),
@@ -93,7 +93,7 @@ class CustomCountryPickerField extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              width: deviceInfo.screenWidth * 0.285,
+              width: deviceInfo.screenWidth * 0.32,
               child: Row(
                 children: [
                   Text(prefix,

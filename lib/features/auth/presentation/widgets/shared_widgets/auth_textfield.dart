@@ -20,6 +20,7 @@ class AuthTextField extends StatelessWidget {
   final Widget? PasswordSuffixIcon;
   final List<TextInputFormatter>? inputFormatters;
   final TextEditingController controller;
+  final void Function(String)? onChanged;
 
   AuthTextField({
     super.key,
@@ -29,6 +30,7 @@ class AuthTextField extends StatelessWidget {
     this.isPassword = false,
     this.needValidation = false,
     this.focusNode,
+    this.onChanged,
     this.nextFocusNode,
     this.PasswordSuffixIcon,
     required this.controller,
@@ -98,6 +100,7 @@ class AuthTextField extends StatelessWidget {
         fontSize: deviceInfo.screenWidth * 0.035, color: Colors.black);
     /////////
     return TextFormField(
+      onChanged: onChanged,
       onTapOutside: (event) => FocusScope.of(context).unfocus(),
       controller: controller,
       focusNode: focusNode,

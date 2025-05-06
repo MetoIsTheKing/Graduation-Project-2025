@@ -1,14 +1,23 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_textfield.dart';
+import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/country_picker.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/date_picker.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/traveler_info_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/airport_text_input.dart';
+import 'package:country_picker/country_picker.dart';
 
 class TravelerInfoTile extends StatefulWidget {
-  const TravelerInfoTile({super.key});
+  final TravelerInfoModel travelerInfoModel;
+  final Function(TravelerInfoModel) onDataChanged;
+  const TravelerInfoTile(
+      {super.key,
+      required this.travelerInfoModel,
+      required this.onDataChanged});
 
   @override
   State<TravelerInfoTile> createState() => _TravelerInfoTileState();
@@ -21,22 +30,42 @@ class _TravelerInfoTileState extends State<TravelerInfoTile> {
   final FocusNode _fullNameFocusNode = FocusNode();
 
   final TextEditingController _birhtDateController = TextEditingController();
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedBirthDate = DateTime.now();
   final FocusNode _birhtDateFocusNode = FocusNode();
 
   final TextEditingController _nationalityController = TextEditingController();
   final FocusNode _nationalityFocusNode = FocusNode();
+  Country? selectedNationalitytCountry;
 
   final TextEditingController _passportNumController = TextEditingController();
   final FocusNode _passportNumFocusNode = FocusNode();
 
   final TextEditingController _passportExpiryController =
       TextEditingController();
+  DateTime selectedExpiryDate = DateTime.now();
   final FocusNode _passportExpiryFocusNode = FocusNode();
 
   final TextEditingController _issuingCountryController =
       TextEditingController();
   final FocusNode _issuingCountryFocusNode = FocusNode();
+  Country? selectedIssuingCountry;
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _birhtDateController.dispose();
+    _nationalityController.dispose();
+    _passportNumController.dispose();
+    _passportExpiryController.dispose();
+    _issuingCountryController.dispose();
+    _fullNameFocusNode.dispose();
+    _birhtDateFocusNode.dispose();
+    _nationalityFocusNode.dispose();
+    _passportNumFocusNode.dispose();
+    _passportExpiryFocusNode.dispose();
+    _issuingCountryFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +73,7 @@ class _TravelerInfoTileState extends State<TravelerInfoTile> {
       padding: EdgeInsets.only(top: deviceInfo.screenHeight * 0.015),
       child: ExpansionTile(
         title: Text(
-          'Adult 1:',
+          widget.travelerInfoModel.travelerType,
           style: TextStyles.medium20(deviceInfo, expandableTitleColor),
         ),
         backgroundColor: Colors.white,
@@ -105,10 +134,22 @@ class _TravelerInfoTileState extends State<TravelerInfoTile> {
             child: AuthTextField(
               prefix: 'Full Name',
               hint: 'Enter your full name',
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.name,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(
+                  RegExp(r'^[a-zA-Z\s]+$'),
+                ),
+                FilteringTextInputFormatter.deny(
+                  RegExp(r'^[0-9]+$'),
+                ),
+              ],
               controller: _fullNameController,
               focusNode: _fullNameFocusNode,
               nextFocusNode: _birhtDateFocusNode,
+              onChanged: (value) {
+                widget.travelerInfoModel.fullName = _fullNameController.text;
+                widget.onDataChanged(widget.travelerInfoModel);
+              },
             ),
           ),
           Padding(
@@ -119,12 +160,16 @@ class _TravelerInfoTileState extends State<TravelerInfoTile> {
                 deviceInfo: deviceInfo,
                 prefix: 'Birth Date',
                 hint: 'Choose date',
-                selectedDate: selectedDate,
+                selectedDate: selectedBirthDate,
                 onDateSelected: (selectedDate) {
                   setState(() {
-                    this.selectedDate = selectedDate;
+                    selectedBirthDate = selectedDate;
                     _birhtDateController.text =
                         selectedDate.toString().substring(0, 10);
+                    widget.travelerInfoModel.birthDate =
+                        _birhtDateController.text;
+                    widget.onDataChanged(widget.travelerInfoModel);
+
                     log('birhtDate: ${_birhtDateController.text}');
                   });
                 }),
@@ -133,13 +178,24 @@ class _TravelerInfoTileState extends State<TravelerInfoTile> {
             padding: EdgeInsets.only(
               top: deviceInfo.screenHeight * 0.01,
             ),
-            child: AuthTextField(
-              prefix: 'Nationality',
-              hint: 'Choose nationality',
-              keyboardType: TextInputType.text,
-              controller: _nationalityController,
+            child: CustomCountryPickerField(
+              deviceInfo: deviceInfo,
               focusNode: _nationalityFocusNode,
               nextFocusNode: _passportNumFocusNode,
+              selectedCountry: selectedNationalitytCountry,
+              hint: 'Select nationality',
+              onCountrySelected: (selectedCountry) {
+                setState(() {
+                  selectedNationalitytCountry = selectedCountry;
+                  _nationalityController.text = selectedCountry.name;
+                  widget.travelerInfoModel.nationality =
+                      _nationalityController.text;
+                  widget.onDataChanged(widget.travelerInfoModel);
+
+                  log('selectedCountry: ${_nationalityController.text}');
+                });
+              },
+              prefix: "Nationality",
             ),
           ),
           SizedBox(
@@ -158,37 +214,62 @@ class _TravelerInfoTileState extends State<TravelerInfoTile> {
               top: deviceInfo.screenHeight * 0.01,
             ),
             child: AuthTextField(
-              prefix: 'Passport Number',
-              hint: '14 number',
-              keyboardType: TextInputType.text,
-              controller: _passportNumController,
-              focusNode: _passportNumFocusNode,
-              nextFocusNode: _passportExpiryFocusNode,
-            ),
+                prefix: 'Passport Number',
+                hint: 'Enter passport number',
+                keyboardType: TextInputType.text,
+                controller: _passportNumController,
+                focusNode: _passportNumFocusNode,
+                nextFocusNode: _passportExpiryFocusNode,
+                onChanged: (value) {
+                  widget.travelerInfoModel.passportNumber =
+                      _passportNumController.text;
+                  widget.onDataChanged(widget.travelerInfoModel);
+                }),
           ),
           Padding(
             padding: EdgeInsets.only(
               top: deviceInfo.screenHeight * 0.01,
             ),
-            child: AuthTextField(
-              prefix: 'Passport Expiry Date',
-              hint: 'Choose date',
-              keyboardType: TextInputType.text,
-              controller: _passportExpiryController,
-              focusNode: _passportExpiryFocusNode,
-              nextFocusNode: _issuingCountryFocusNode,
-            ),
+            child: CustomDatePickerField(
+
+                deviceInfo: deviceInfo,
+                prefix: 'Expiry Date',
+                hint: 'Choose date',
+                selectedDate: selectedExpiryDate,
+                onDateSelected: (selectedDate) {
+                  setState(() {
+                    selectedExpiryDate = selectedDate;
+                    _passportExpiryController.text =
+                        selectedDate.toString().substring(0, 10);
+                    widget.travelerInfoModel.passportExpiryDate =
+                        _passportExpiryController.text;
+                    widget.onDataChanged(widget.travelerInfoModel);
+
+                    log('expiryDate: ${_passportExpiryController.text}');
+                  });
+                }),
           ),
           Padding(
             padding: EdgeInsets.only(
               top: deviceInfo.screenHeight * 0.01,
             ),
-            child: AuthTextField(
-              prefix: 'Issuing Country',
-              hint: 'Choose country',
-              keyboardType: TextInputType.text,
-              controller: _issuingCountryController,
+            child: CustomCountryPickerField(
+              deviceInfo: deviceInfo,
               focusNode: _issuingCountryFocusNode,
+              selectedCountry: selectedIssuingCountry,
+              hint: 'Select issuing country',
+              onCountrySelected: (selectedCountry) {
+                setState(() {
+                  selectedIssuingCountry = selectedCountry;
+                  _issuingCountryController.text = selectedCountry.name;
+                  widget.travelerInfoModel.issuingCountry =
+                      _issuingCountryController.text;
+                  widget.onDataChanged(widget.travelerInfoModel);
+
+                  log('selectedIssuingCountry: ${_issuingCountryController.text}');
+                });
+              },
+              prefix: "Issuing Country",
             ),
           ),
         ],
