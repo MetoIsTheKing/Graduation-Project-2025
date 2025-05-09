@@ -7,26 +7,26 @@ class RecommendationTag extends StatelessWidget {
     required this.tagData,
     required this.medium12,
     required this.deviceInfo,
-    required this.constraints,
+     this.constraints,
     required this.tagColor,
   });
 
   final String tagData;
   final TextStyle medium12;
   final DeviceInfo deviceInfo;
-  final BoxConstraints constraints;
+  final BoxConstraints? constraints;
   final Color tagColor;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: constraints.maxWidth * 0.02),
+      margin: EdgeInsets.symmetric(horizontal: constraints!.maxWidth * 0.02),
       decoration: BoxDecoration(
         color: tagColor,
         borderRadius: BorderRadius.circular(deviceInfo.screenWidth * 0.05),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: constraints.maxWidth * 0.03),
+        padding: EdgeInsets.symmetric(horizontal: constraints!.maxWidth * 0.03),
         child: Text(
           tagData,
           style: medium12.copyWith(

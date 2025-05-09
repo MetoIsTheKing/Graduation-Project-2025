@@ -11,11 +11,13 @@ class FlightsTravellersFieldWidget extends StatelessWidget {
       required this.subTitle,
       required this.numberOfTravellers,
       required this.onAddTraveller,
-      required this.onRemoveTraveller});
+      required this.onRemoveTraveller,
+      required this.isAdult});
 
   final String title;
   final String subTitle;
   final String numberOfTravellers;
+  final bool isAdult;
   final void Function() onAddTraveller;
   final void Function() onRemoveTraveller;
 
@@ -49,7 +51,10 @@ class FlightsTravellersFieldWidget extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.remove_circle_outline),
                 color: AppColors.appBlue,
-                onPressed: numberOfTravellers == '0' ? null : onRemoveTraveller,
+                onPressed: (numberOfTravellers == '0') ||
+                        (isAdult && int.parse(numberOfTravellers) == 1)
+                    ? null
+                    : onRemoveTraveller,
               ),
               Text(
                 numberOfTravellers,

@@ -19,10 +19,10 @@ class FlightsClassCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceInfo = getIt<DeviceInfo>();
     final List<Map<String, String>> flightClasses = [
-      {'label': 'Economy', 'value': 'economy'},
-      {'label': 'Premium Economy', 'value': 'premium'},
-      {'label': 'Business', 'value': 'business'},
-      {'label': 'First', 'value': 'first'},
+      {'label': 'Economy', 'value': 'ECONOMY'},
+      {'label': 'Premium Economy', 'value': 'PREMIUM_ECONOMY'},
+      {'label': 'Business', 'value': 'BUSINESS'},
+      {'label': 'First', 'value': 'FIRST'},
     ];
 
     return Column(

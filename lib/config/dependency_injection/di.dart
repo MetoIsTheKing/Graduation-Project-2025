@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di_instances.dart';
+import 'package:graduation_project_2025/config/routing/arguments.dart';
 import 'package:graduation_project_2025/core/network_clients/abstract_client.dart';
 import 'package:graduation_project_2025/core/network_clients/clients/fake_users_client.dart';
 import 'package:graduation_project_2025/core/network_clients/clients/search_airports_client.dart';
@@ -12,7 +13,7 @@ import 'package:graduation_project_2025/features/auth/data/datasources/users_rem
 import 'package:graduation_project_2025/features/auth/data/repositories/user_repo_impl.dart';
 import 'package:graduation_project_2025/features/auth/domain/repositories/user_repo.dart';
 import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/data_sources/search_airports_remote.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/data/data_sources/search_flights_remote.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/repository/search_airports_repo.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
@@ -32,24 +33,37 @@ Future<void> initDependencies() async {
     );
   }
 
+  // AirportDetails
+  getIt.registerSingleton<AirportsDetails>(
+    AirportsDetails(
+      arrAirportsDetails: {},
+      depAirportsDetails: {},
+    ),);
+
   // ------- dio client -------
-  getIt.registerLazySingleton<DioNetworkClient>(() => FakeUsersClient()
-  ,instanceName: DiInstances.dioUserClient);
-  getIt.registerLazySingleton<DioNetworkClient>(() => AmadeusApiClient(
-    apiKey: dotenv.env['AMADEUS_API_KEY'] ?? 'your_api_key',
-    apiSecret: dotenv.env['AMADEUS_API_SECRET'] ?? 'your_api_secret',
-  ),
-  instanceName: DiInstances.amadeusClient);
+  getIt.registerLazySingleton<DioNetworkClient>(() => FakeUsersClient(),
+      instanceName: DiInstances.dioUserClient);
+  getIt.registerLazySingleton<DioNetworkClient>(
+      () => AmadeusApiClient(
+            apiKey: dotenv.env['AMADEUS_API_KEY'] ?? 'your_api_key',
+            apiSecret: dotenv.env['AMADEUS_API_SECRET'] ?? 'your_api_secret',
+          ),
+      instanceName: DiInstances.amadeusClient);
 
   //------------ data sources ------------
 
   // UserRemote
   getIt.registerLazySingleton<UsersRemote>(
-    () => UsersRemoteImpl(fakeUsersClient: getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient)),
+    () => UsersRemoteImpl(
+        fakeUsersClient:
+            getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient)),
   );
   // SearchAirportsRemote
-  getIt.registerLazySingleton<SearchAirportsRemoteDataSource>(
-    () => SearchAirportsRemoteDataSourceImpl(amadeusApiClient: getIt<DioNetworkClient>(instanceName: DiInstances.amadeusClient),),
+  getIt.registerLazySingleton<SearchFlightssRemoteDataSource>(
+    () => SearchFlightssRemoteDataSourceImpl(
+      amadeusApiClient:
+          getIt<DioNetworkClient>(instanceName: DiInstances.amadeusClient),
+    ),
   );
 
   //------------ repositories ------------
@@ -59,22 +73,22 @@ Future<void> initDependencies() async {
     () => UserRepoImpl(getIt<UsersRemote>()),
   );
   // SearchAirportsRepo
- // Change this line:
-getIt.registerLazySingleton<SearchAirportsRepo>(
-  () => SearchAirportsRepo(remoteDataSource: getIt<SearchAirportsRemoteDataSource>()),
-);
+  getIt.registerLazySingleton<SearchFlightsRepo>(
+    () => SearchFlightsRepo(
+        remoteDataSource: getIt<SearchFlightssRemoteDataSource>()),
+  );
   //------------ cubits ------------
 
   // SearchFlightsCubits
   getIt.registerSingleton<SearchFlightsCubit>(
-     SearchFlightsCubit(searchAirportsRepo: getIt<SearchAirportsRepo>()),
+    SearchFlightsCubit(searchAirportsRepo: getIt<SearchFlightsRepo>()),
   );
-  getIt.registerSingleton<FlightsDataCubit>(
-     FlightsDataCubit(),
+  getIt.registerLazySingleton<FlightsDataCubit>(
+    () => FlightsDataCubit(),
   );
-  
+
   //AuthCubit
   getIt.registerSingleton<AuthCubit>(
-     AuthCubit(getIt<UserRepo>()),
+    AuthCubit(getIt<UserRepo>()),
   );
 }

@@ -20,6 +20,7 @@ class AuthTextField extends StatelessWidget {
   final Widget? PasswordSuffixIcon;
   final List<TextInputFormatter>? inputFormatters;
   final TextEditingController controller;
+  final void Function(String)? onChanged;
 
   AuthTextField({
     super.key,
@@ -29,14 +30,16 @@ class AuthTextField extends StatelessWidget {
     this.isPassword = false,
     this.needValidation = false,
     this.focusNode,
+    this.onChanged,
     this.nextFocusNode,
     this.PasswordSuffixIcon,
     required this.controller,
     this.isConfirmPassword = false,
-    this.passwordController, this.inputFormatters,
+    this.passwordController,
+    this.inputFormatters,
   }) {
     // if (fixedPhoneCode != null &&
-    //     !controller.text.startsWith(fixedPhoneCode!)) {
+    //     controller.text.startsWith(fixedPhoneCode!)) {
     //   controller.text =
     //       fixedPhoneCode!; // Ensure it always starts with the fixed code
     //   controller.selection = TextSelection.fromPosition(
@@ -97,6 +100,8 @@ class AuthTextField extends StatelessWidget {
         fontSize: deviceInfo.screenWidth * 0.035, color: Colors.black);
     /////////
     return TextFormField(
+      onChanged: onChanged,
+      onTapOutside: (event) => FocusScope.of(context).unfocus(),
       controller: controller,
       focusNode: focusNode,
       keyboardType: keyboardType,
@@ -122,9 +127,12 @@ class AuthTextField extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  prefix,
-                  style: hintTextStyle,
+                SizedBox(
+                  width: deviceInfo.screenWidth * 0.22,
+                  child: Text(
+                    prefix,
+                    style: hintTextStyle,
+                  ),
                 ),
                 const Spacer(),
                 Text(

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:graduation_project_2025/config/token_manager.dart';
 import 'package:graduation_project_2025/features/auth/domain/repositories/user_repo.dart';
 import 'dart:developer';
 part 'auth_state.dart';
@@ -6,6 +7,16 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   final UserRepo userRepo;
   AuthCubit(this.userRepo) : super(AuthInitial());
+
+  Future<bool> isLoggedIn() async {
+    final accessToken = await TokenManager.getAccessToken();
+    final refreshToken = await TokenManager.getRefreshToken();
+    if (accessToken != null && refreshToken != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   Future<void> register(Map<String, dynamic> requestbody) async {
     emit(SignUpIsLoading());

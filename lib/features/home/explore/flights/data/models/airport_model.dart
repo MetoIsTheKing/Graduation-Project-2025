@@ -14,13 +14,15 @@ class AirportModel {
   factory AirportModel.fromJson(Map<String, dynamic> json) {
     try {
       // Extract address data - handles both nested and flat structures
-      final address = json['address'] as Map<String, dynamic>? ?? {};
-      
+      final address = json['address'] as Map<String, dynamic>;
+
       return AirportModel(
-        name: json['name']?.toString() ?? json['detailedName']?.toString() ?? 'Unknown',
+        name: json['name']?.toString() ??
+            json['detailedName']?.toString() ??
+            'Unknown',
         iataCode: json['iataCode']?.toString() ?? '',
-        cityName: address['cityName']?.toString() ?? 'Unknown',
-        countryName: address['countryName']?.toString() ?? 'Unknown',
+        cityName: address['cityName'] ?? "Unknown",
+        countryName: address['countryName'] ?? "Unknown",
       );
     } catch (e) {
       print('Error parsing airport JSON: $e');
@@ -30,9 +32,9 @@ class AirportModel {
   }
 
   Map<String, dynamic> toJson() => {
-    'name': name,
-    'iataCode': iataCode,
-    'cityName': cityName,
-    'countryName': countryName,
-  };
+        'name': name,
+        'iataCode': iataCode,
+        'cityName': cityName,
+        'countryName': countryName,
+      };
 }

@@ -82,6 +82,7 @@ class FlightsTravellersCardWidget extends StatelessWidget {
                     child: Column(
                       children: [
                         FlightsTravellersFieldWidget(
+                          isAdult: true,
                           title: 'Adults',
                           subTitle: 'Age(+12)',
                           numberOfTravellers:
@@ -97,6 +98,7 @@ class FlightsTravellersCardWidget extends StatelessWidget {
                           height: deviceInfo.screenHeight * 0.01,
                         ),
                         FlightsTravellersFieldWidget(
+                          isAdult: false,
                           title: 'Children',
                           subTitle: 'Age(2-11)',
                           numberOfTravellers:
@@ -112,6 +114,7 @@ class FlightsTravellersCardWidget extends StatelessWidget {
                           height: deviceInfo.screenHeight * 0.01,
                         ),
                         FlightsTravellersFieldWidget(
+                          isAdult: false,
                           title: 'Infants',
                           subTitle: 'Under 2 years',
                           numberOfTravellers:

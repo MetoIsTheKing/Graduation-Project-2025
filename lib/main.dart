@@ -14,7 +14,6 @@ void main() async {
   await dotenv.load(fileName: ".env");
   await initDependencies();
   Bloc.observer = MyBlocObserver();
-
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
