@@ -9,20 +9,16 @@ environment:
   sdk: ^3.6.1
 
 dependencies:
+  accordion: ^2.6.0
   bloc: ^9.0.0
   build_runner: ^2.4.15
-  toggle_switch: ^2.3.0
-  accordion: ^2.6.0
-  flutter_animate: ^4.5.2
+  cherry_toast: ^1.12.0
   connectivity_plus: ^6.1.3
   country_picker: ^2.0.27
   cupertino_icons: ^1.0.8
   currency_picker: ^2.0.21
   dartz: ^0.10.1
   device_preview: ^1.2.0
-  timelines_plus: ^1.0.6
-  table_calendar: ^3.0.0
-  otp_resend_timer: ^1.0.0
   dio: ^5.8.0+1
   dot_curved_bottom_nav: ^0.0.2
   flutter:
@@ -45,6 +41,7 @@ dependencies:
   otp_resend_timer: ^1.0.0
   shared_preferences: ^2.5.2
   smooth_page_indicator: ^1.2.0+3
+  table_calendar: ^3.0.0
   timelines_plus: ^1.0.6
   toggle_switch: ^2.3.0
 

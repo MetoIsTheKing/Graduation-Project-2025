@@ -18,6 +18,8 @@ import 'package:graduation_project_2025/features/home/main_home_screen.dart';
 import 'package:graduation_project_2025/features/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:graduation_project_2025/features/on_boarding/presentation/pages/onboarding_screen.dart';
 
+import '../../features/home/explore/flights/presentation/pages/flight_review_screen.dart';
+
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -52,7 +54,7 @@ class AppRouter {
       case Routes.flights:
         return MaterialPageRoute(builder: (context) {
           final airportArgs = args as AirportsDetails;
-          
+
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => getIt<FlightsDataCubit>()),
@@ -74,26 +76,23 @@ class AppRouter {
               searchFlightsCubit: searchFlightCubit, args: argss);
         });
       case Routes.searchFlightResults:
-        return MaterialPageRoute(
-          builder: (context) { 
-            final args = settings.arguments as Map<String, dynamic>;
-            return FlightSearchResultsScreen(
+        return MaterialPageRoute(builder: (context) {
+          final args = settings.arguments as Map<String, dynamic>;
+          return FlightSearchResultsScreen(
             searchFlightsCubit: getIt<SearchFlightsCubit>(),
             searchQuery: args,
-          );}
-        );
+          );
+        });
       case Routes.bookingApplication:
-        return MaterialPageRoute(
-          builder: (context) { 
-            return const BookingApplicationScreen(
-              travelers: {
-                'adults': 1,
-                'children': 2,
-                'infants': 1,
-              },
-            )
-          ;}
-        );
+        return MaterialPageRoute(builder: (context) {
+          return const BookingApplicationScreen(
+            travelers: {
+              'adults': 1,
+              'children': 2,
+              'infants': 1,
+            },
+          );
+        });
       case Routes.onBoarding:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
