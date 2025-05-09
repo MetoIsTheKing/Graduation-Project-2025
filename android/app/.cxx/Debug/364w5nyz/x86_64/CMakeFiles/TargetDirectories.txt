@@ -1,0 +1,2 @@
+C:/Users/hp/Desktop/Grad_Project/Grad_proj2025/Graduation-Project-2025/android/app/.cxx/Debug/364w5nyz/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/hp/Desktop/Grad_Project/Grad_proj2025/Graduation-Project-2025/android/app/.cxx/Debug/364w5nyz/x86_64/CMakeFiles/rebuild_cache.dir
