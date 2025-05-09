@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_review_data_model.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 class TripTimeline extends StatelessWidget {
-  const TripTimeline({super.key});
+  const TripTimeline({super.key, required this.flight});
+  final FlightReviewDataModel flight;
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +49,8 @@ class TripTimeline extends StatelessWidget {
           // determines the vertical space for each content
           itemExtentBuilder: (context, index) => deviceInfo.screenHeight * 0.15,
           oppositeContentsBuilder: (context, index) =>
-              _dateColumn(itemCount, index),
-          contentsBuilder: (context, index) => _airportColumn(itemCount, index),
+              _airportColumn(itemCount, index),
+          contentsBuilder: (context, index) => _dateColumn(itemCount, index),
           connectorStyleBuilder: (context, index) => ConnectorStyle.dashedLine,
           indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
           itemCount: itemCount,
@@ -57,7 +59,16 @@ class TripTimeline extends StatelessWidget {
     );
   }
 
-  Widget _airportColumn(itemCount, index) {
+  Widget _dateColumn(itemCount, index) {
+    late String date;
+    late String time;
+    if (index == 0) {
+      date = flight.departureDate;
+      time = flight.departureDateTime;
+    } else if (index == itemCount - 1) {
+      date = flight.arrivalDate;
+      time = flight.arrivalDateTime;
+    }
     return SizedBox(
       //  height: deviceInfo.screenHeight * 0.2,
       width: double.infinity,
@@ -66,10 +77,10 @@ class TripTimeline extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            '02:30 Am',
+            time,
             style: TextStyles.semiBold12(deviceInfo, AppColors.appDarkBlack),
           ),
-          Text('20 feb',
+          Text(date,
               style: TextStyles.medium12(
                 deviceInfo,
                 AppColors.appDarkGrey,
@@ -79,7 +90,19 @@ class TripTimeline extends StatelessWidget {
     );
   }
 
-  Widget _dateColumn(itemCount, index) {
+  Widget _airportColumn(itemCount, index) {
+    late String airport;
+    late String terminal;
+    late String city;
+    if (index == 0) {
+      airport = flight.departureAirport;
+      terminal = flight.arrivalTerminal;
+      city = 'Cairo , Egypt';
+    } else if (index == itemCount - 1) {
+      airport = flight.arrivalAirport;
+      terminal = flight.departureTerminal;
+      city = 'Riyadh , Saudi Arabia';
+    }
     return Container(
       //height: deviceInfo.screenHeight * 0.2,
       width: double.infinity,
@@ -91,7 +114,7 @@ class TripTimeline extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'King Khaled International Airport (RUH)',
+            airport,
             style: TextStyles.medium12(deviceInfo, AppColors.appDarkBlack),
             textAlign: TextAlign.center,
             maxLines: 2,
@@ -114,7 +137,7 @@ class TripTimeline extends StatelessWidget {
                       BorderRadius.circular(deviceInfo.screenWidth * 0.05),
                 ),
                 child: Text(
-                  'Terminal 1',
+                  'Terminal $terminal',
                   style:
                       TextStyles.medium12(deviceInfo, AppColors.appDarkBlack),
                 ),
@@ -124,7 +147,7 @@ class TripTimeline extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  'Riyadh , Saudi Arabia',
+                  city,
                   style: TextStyles.medium12(
                     deviceInfo,
                     AppColors.appDarkGrey,

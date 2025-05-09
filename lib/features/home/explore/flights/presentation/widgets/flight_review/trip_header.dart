@@ -3,11 +3,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_review_data_model.dart';
 import 'package:intl/intl.dart';
 
 class TripHeader extends StatelessWidget {
-  const TripHeader({super.key, this.oneWay = true});
+  const TripHeader({super.key, this.oneWay = true, required this.flight});
   final bool oneWay;
+  final FlightReviewDataModel flight;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class TripHeader extends StatelessWidget {
                 ),
               ),
               child: Text(
-                '3h 30m',
+                flight.duration,
                 style: TextStyles.medium12(
                   deviceInfo,
                   AppColors.appDarkBlack,
@@ -54,11 +56,14 @@ class TripHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(child: _textColumn('New York', DateTime.now())),
+                Expanded(
+                    child: _textColumn(
+                        flight.departureCode, flight.departureDate)),
                 SvgPicture.asset(oneWay
                     ? 'assets/images/one_way_trip.svg'
                     : 'assets/images/two_way_trip.svg'),
-                Expanded(child: _textColumn('New York', DateTime.now())),
+                Expanded(
+                    child: _textColumn(flight.arrivalCode, flight.arrivalDate)),
               ],
             ),
           )
@@ -67,7 +72,7 @@ class TripHeader extends StatelessWidget {
     );
   }
 
-  Widget _textColumn(String place, DateTime time) {
+  Widget _textColumn(String place, String date) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -78,7 +83,7 @@ class TripHeader extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         Text(
-          DateFormat('d MMM, yy').format(time),
+          date,
           style: TextStyles.medium12(deviceInfo, AppColors.appDarkBlack),
           overflow: TextOverflow.ellipsis,
         ),

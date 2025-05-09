@@ -49,8 +49,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) => MainHomeScreen());
       case Routes.explore:
         return MaterialPageRoute(builder: (context) => ExploreScreen());
-      case Routes.flightReview:
-        return MaterialPageRoute(builder: (context) => FlightReviewScreen());
+      // case Routes.flightReview:
+      //   return MaterialPageRoute(builder: (context) => FlightReviewScreen());
       case Routes.flights:
         return MaterialPageRoute(builder: (context) {
           final airportArgs = args as AirportsDetails;

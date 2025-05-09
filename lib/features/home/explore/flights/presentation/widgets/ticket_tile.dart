@@ -1,4 +1,3 @@
-
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
@@ -15,6 +14,7 @@ class TicketTile extends StatelessWidget {
   final String tagData;
   final double? scaleFactor;
   final bool? isRecommended;
+  final void Function(FlightResultModel flight)? onTap;
   const TicketTile({
     super.key,
     required this.baggageAvailability,
@@ -24,6 +24,7 @@ class TicketTile extends StatelessWidget {
     required this.flight,
     required this.arrivalAirportName,
     required this.departureAirportName,
+    required this.onTap,
   });
 
   @override
@@ -31,154 +32,180 @@ class TicketTile extends StatelessWidget {
     return InfoWidget(
       builder: (context, deviceInfo, constraints) {
         bool isTablet = deviceInfo.deviceType == DeviceType.tablet;
-        return Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: isTablet ? 0 : deviceInfo.screenHeight * 0.01,
-            horizontal: deviceInfo.screenWidth * 0.02,
-          ),
-          child: ClipPath(
-            clipper: TicketClipper(),
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: deviceInfo.screenWidth * 0.06,
-                vertical: deviceInfo.screenHeight * 0.015,
-              ),
-              clipBehavior: Clip.antiAlias,
-              constraints: BoxConstraints(
-                maxWidth: isTablet
-                    ? deviceInfo.screenWidth * 0.75 * scaleFactor!
-                    : deviceInfo.screenWidth * 0.9,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius:
-                    BorderRadius.circular(deviceInfo.screenWidth * 0.05),
-              ),
-              child: LayoutBuilder(builder: (context, constrain) {
-                final TextStyle medium20 = TextStyle(
-                  fontSize: constrain.maxWidth * 0.068,
-                  color: AppColors.appDarkBlue,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Poppins',
-                );
-                final TextStyle medium12 = TextStyle(
-                  fontSize: constrain.maxWidth * 0.05,
-                  color: AppColors.appDarkGrey,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Poppins',
-                );
-                final TextStyle medium10 = TextStyle(
-                  fontSize: constrain.maxWidth * 0.042,
-                  color: AppColors.appDarkBlue,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Poppins',
-                );
+        return InkWell(
+          onTap: () {
+            onTap!(flight);
+          },
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: isTablet ? 0 : deviceInfo.screenHeight * 0.01,
+              horizontal: deviceInfo.screenWidth * 0.02,
+            ),
+            child: ClipPath(
+              clipper: TicketClipper(),
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: deviceInfo.screenWidth * 0.06,
+                  vertical: deviceInfo.screenHeight * 0.015,
+                ),
+                clipBehavior: Clip.antiAlias,
+                constraints: BoxConstraints(
+                  maxWidth: isTablet
+                      ? deviceInfo.screenWidth * 0.75 * scaleFactor!
+                      : deviceInfo.screenWidth * 0.9,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius:
+                      BorderRadius.circular(deviceInfo.screenWidth * 0.05),
+                ),
+                child: LayoutBuilder(builder: (context, constrain) {
+                  final TextStyle medium20 = TextStyle(
+                    fontSize: constrain.maxWidth * 0.068,
+                    color: AppColors.appDarkBlue,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Poppins',
+                  );
+                  final TextStyle medium12 = TextStyle(
+                    fontSize: constrain.maxWidth * 0.05,
+                    color: AppColors.appDarkGrey,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Poppins',
+                  );
+                  final TextStyle medium10 = TextStyle(
+                    fontSize: constrain.maxWidth * 0.042,
+                    color: AppColors.appDarkBlue,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Poppins',
+                  );
 
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IntrinsicHeight(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            flight
-                                .itineraries[0].segments[0].departure.iataCode,
-                            style: medium20,
-                          ),
-                          FixedTimeline(
-                            direction: Axis.horizontal,
-                            children: [
-                              OutlinedDotIndicator(
-                                color: AppColors.appYellow,
-                                size: deviceInfo.screenWidth * 0.03,
-                              ),
-                              TimelineTile(
-                                oppositeContents: Padding(
-                                  padding: EdgeInsets.only(
-                                      bottom: constraints.maxWidth * 0.005),
-                                  ///////////////////////// need logic function
-                                  child: Text(
-                                    '${flight.itineraries[0].segments.length - 1} Stops',
-                                    style: medium12.copyWith(
-                                      color: AppColors.appDarkBlue,
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IntrinsicHeight(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              flight.itineraries[0].segments[0].departure
+                                  .iataCode,
+                              style: medium20,
+                            ),
+                            FixedTimeline(
+                              direction: Axis.horizontal,
+                              children: [
+                                OutlinedDotIndicator(
+                                  color: AppColors.appYellow,
+                                  size: deviceInfo.screenWidth * 0.03,
+                                ),
+                                TimelineTile(
+                                  oppositeContents: Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: constraints.maxWidth * 0.005),
+                                    ///////////////////////// need logic function
+                                    child: Text(
+                                      '${flight.itineraries[0].segments.length - 1} Stops',
+                                      style: medium12.copyWith(
+                                        color: AppColors.appDarkBlue,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                /////////////////////////////// need logic to get total and parsing
-                                contents: Padding(
-                                  padding: EdgeInsets.only(
-                                      top: constraints.maxWidth * 0.005),
-                                  child: Text(
-                                      flight.itineraries[0].totalFlightDuration
-                                          .substring(2)
-                                          .replaceAll("H", 'H '),
-                                      style: medium12.copyWith(
-                                          color: AppColors.appDarkBlue)),
-                                ),
-                                node: SizedBox(
-                                  width: deviceInfo.screenWidth * 0.3,
-                                  child: DecoratedLineConnector(
-                                    thickness: 4,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                        colors: [
-                                          Colors.yellow,
-                                          AppColors.appYellow
-                                        ],
+                                  /////////////////////////////// need logic to get total and parsing
+                                  contents: Padding(
+                                    padding: EdgeInsets.only(
+                                        top: constraints.maxWidth * 0.005),
+                                    child: Text(
+                                        flight
+                                            .itineraries[0].totalFlightDuration
+                                            .substring(2)
+                                            .replaceAll("H", 'H '),
+                                        style: medium12.copyWith(
+                                            color: AppColors.appDarkBlue)),
+                                  ),
+                                  node: SizedBox(
+                                    width: deviceInfo.screenWidth * 0.3,
+                                    child: DecoratedLineConnector(
+                                      thickness: 4,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                            Colors.yellow,
+                                            AppColors.appYellow
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              OutlinedDotIndicator(
-                                color: AppColors.appYellow,
-                                size: deviceInfo.screenWidth * 0.03,
-                              ),
-                            ],
-                          ),
-                          Text(
-                            flight
-                                .itineraries[0]
-                                .segments[
-                                    flight.itineraries[0].segments.length - 1]
-                                .arrival
-                                .iataCode,
-                            style: medium20,
-                          ),
-                        ],
+                                OutlinedDotIndicator(
+                                  color: AppColors.appYellow,
+                                  size: deviceInfo.screenWidth * 0.03,
+                                ),
+                              ],
+                            ),
+                            Text(
+                              flight
+                                  .itineraries[0]
+                                  .segments[
+                                      flight.itineraries[0].segments.length - 1]
+                                  .arrival
+                                  .iataCode,
+                              style: medium20,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    IntrinsicHeight(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            arrivalAirportName,
-                            style: medium12,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            departureAirportName,
-                            style: medium12,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                      IntrinsicHeight(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              arrivalAirportName,
+                              style: medium12,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              departureAirportName,
+                              style: medium12,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: deviceInfo.screenHeight * 0.008),
-                    IntrinsicHeight(
-                      child: Row(
+                      SizedBox(height: deviceInfo.screenHeight * 0.008),
+                      IntrinsicHeight(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                                flight.itineraries[0].segments[0].departure
+                                    .departureDateTime
+                                    .substring(12),
+                                style: medium20),
+                            Text(
+                                flight
+                                    .itineraries[0]
+                                    .segments[
+                                        flight.itineraries[0].segments.length -
+                                            1]
+                                    .arrival
+                                    .arrivalDateTime
+                                    .substring(12),
+                                style: medium20),
+                          ],
+                        ),
+                      ),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                               flight.itineraries[0].segments[0].departure
                                   .departureDateTime
-                                  .substring(12),
-                              style: medium20),
+                                  .substring(0, 10),
+                              style: medium12),
                           Text(
                               flight
                                   .itineraries[0]
@@ -186,119 +213,101 @@ class TicketTile extends StatelessWidget {
                                       flight.itineraries[0].segments.length - 1]
                                   .arrival
                                   .arrivalDateTime
-                                  .substring(12),
-                              style: medium20),
+                                  .substring(0, 10),
+                              style: medium12),
                         ],
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                            flight.itineraries[0].segments[0].departure
-                                .departureDateTime
-                                .substring(0, 10),
-                            style: medium12),
-                        Text(
-                            flight
-                                .itineraries[0]
-                                .segments[
-                                    flight.itineraries[0].segments.length - 1]
-                                .arrival
-                                .arrivalDateTime
-                                .substring(0, 10),
-                            style: medium12),
-                      ],
-                    ),
-                    SizedBox(height: deviceInfo.screenHeight * 0.01),
-                    Divider(
-                      thickness: 2,
-                      color: Colors.grey.shade200,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IntrinsicWidth(
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    right: deviceInfo.screenWidth * 0.01),
-                                child: Image.asset(
-                                  'assets/images/airport_logo_ic.png',
-                                  scale: deviceInfo.screenWidth * 0.004,
+                      SizedBox(height: deviceInfo.screenHeight * 0.01),
+                      Divider(
+                        thickness: 2,
+                        color: Colors.grey.shade200,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IntrinsicWidth(
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      right: deviceInfo.screenWidth * 0.01),
+                                  child: Image.asset(
+                                    'assets/images/airport_logo_ic.png',
+                                    scale: deviceInfo.screenWidth * 0.004,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: constraints.maxWidth * 0.4,
-                                child: Text(
-                                  getAirlineName(flight.itineraries[0]
-                                          .segments[0].carrierCode)
-                                      .toString(),
-                                  style: medium12,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
+                                SizedBox(
+                                  width: constraints.maxWidth * 0.4,
+                                  child: Text(
+                                    getAirlineName(flight.itineraries[0]
+                                            .segments[0].carrierCode)
+                                        .toString(),
+                                    style: medium12,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        IntrinsicHeight(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Starts from', style: medium10),
-                              Text('${flight.price.total} \$', style: medium20),
-                            ],
+                          IntrinsicHeight(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Starts from', style: medium10),
+                                Text('${flight.price.total} \$',
+                                    style: medium20),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    //? this is the baggage availability tag --------------------
-                    // Padding(
-                    //   padding: EdgeInsets.symmetric(
-                    //       vertical: deviceInfo.screenHeight * 0.008),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: [
-                    //       CircleAvatar(
-                    //         radius: deviceInfo.screenWidth * 0.01,
-                    //         backgroundColor: AppColors.appYellow,
-                    //       ),
-                    //       Padding(
-                    //         padding: EdgeInsets.only(
-                    //             left: deviceInfo.screenWidth * 0.012),
-                    //         child: Text(baggageAvailability, style: medium10),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    //? this is the recommendation tag ----------------------
-                    // Visibility(
-                    //   visible: isRecommended,
-                    //   child: IntrinsicHeight(
-                    //     child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.start,
-                    //       children: [
-                    //         RecommendationTag(
-                    //             tagColor: AppColors.appBlue,
-                    //             deviceInfo: deviceInfo,
-                    //             constraints: constrain,
-                    //             tagData: tagData,
-                    //             medium12: medium12),
-                    //         RecommendationTag(
-                    //             tagColor: Colors.green,
-                    //             deviceInfo: deviceInfo,
-                    //             constraints: constrain,
-                    //             tagData: tagData,
-                    //             medium12: medium12),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // )
-                  ],
-                );
-              }),
+                        ],
+                      ),
+                      //? this is the baggage availability tag --------------------
+                      // Padding(
+                      //   padding: EdgeInsets.symmetric(
+                      //       vertical: deviceInfo.screenHeight * 0.008),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       CircleAvatar(
+                      //         radius: deviceInfo.screenWidth * 0.01,
+                      //         backgroundColor: AppColors.appYellow,
+                      //       ),
+                      //       Padding(
+                      //         padding: EdgeInsets.only(
+                      //             left: deviceInfo.screenWidth * 0.012),
+                      //         child: Text(baggageAvailability, style: medium10),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      //? this is the recommendation tag ----------------------
+                      // Visibility(
+                      //   visible: isRecommended,
+                      //   child: IntrinsicHeight(
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.start,
+                      //       children: [
+                      //         RecommendationTag(
+                      //             tagColor: AppColors.appBlue,
+                      //             deviceInfo: deviceInfo,
+                      //             constraints: constrain,
+                      //             tagData: tagData,
+                      //             medium12: medium12),
+                      //         RecommendationTag(
+                      //             tagColor: Colors.green,
+                      //             deviceInfo: deviceInfo,
+                      //             constraints: constrain,
+                      //             tagData: tagData,
+                      //             medium12: medium12),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // )
+                    ],
+                  );
+                }),
+              ),
             ),
           ),
         );

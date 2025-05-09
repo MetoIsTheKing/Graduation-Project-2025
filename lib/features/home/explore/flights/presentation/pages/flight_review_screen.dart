@@ -7,20 +7,32 @@ import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_review_data_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flight_review/flight_review_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_review/baggage_slider.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_review/floating_button.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_review/trip_header.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_review/trip_timeline.dart';
 
+import '../../data/models/flight_result_model.dart';
+
 class FlightReviewScreen extends StatefulWidget {
-  const FlightReviewScreen({super.key});
+  final FlightResultModel flight;
+  const FlightReviewScreen({super.key, required this.flight});
 
   @override
   State<FlightReviewScreen> createState() => _FlightReviewScreenState();
 }
 
 class _FlightReviewScreenState extends State<FlightReviewScreen> {
+  late FlightReviewDataModel flightModel;
+
+  @override
+  void initState() {
+    super.initState();
+    flightModel = FlightReviewDataModel(flight: widget.flight);
+  }
+
   @override
   Widget build(BuildContext context) {
     return InfoWidget(builder: (context, deviceInfo, constrains) {
@@ -57,7 +69,7 @@ class _FlightReviewScreenState extends State<FlightReviewScreen> {
                         size: deviceInfo.screenWidth * 0.06,
                       ),
                       onPressed: () {
-                        context.pushReplacementNamed(Routes.mainHome);
+                        context.pop();
                       },
                     ),
                   ),
@@ -89,7 +101,7 @@ class _FlightReviewScreenState extends State<FlightReviewScreen> {
                   ],
                 ),
                 floatingActionButton: FloatingButton(
-                    Currency: '17,794 EGP',
+                    Currency: flightModel.totalPrice,
                     onPressed: () {
                       context.pushReplacementNamed(Routes.logIn);
                     }),
@@ -104,7 +116,9 @@ class _FlightReviewScreenState extends State<FlightReviewScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TripHeader(),
+                        TripHeader(
+                          flight: flightModel,
+                        ),
                         SizedBox(
                           height: deviceInfo.screenHeight * 0.02,
                         ),
@@ -117,7 +131,9 @@ class _FlightReviewScreenState extends State<FlightReviewScreen> {
                         SizedBox(
                           height: deviceInfo.screenHeight * 0.01,
                         ),
-                        TripTimeline(),
+                        TripTimeline(
+                          flight: flightModel,
+                        ),
                         SizedBox(
                           height: deviceInfo.screenHeight * 0.03,
                         ),

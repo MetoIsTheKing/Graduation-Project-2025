@@ -6,12 +6,14 @@ class Routes {
   static const String signUp = '/signUp';
   static const String flights = 'explore/flights';
   static const String searchAirports = 'explore/flights/searchAirports';
-  static const String searchFlightResults = 'explore/flights/searchFlightResults';
-  static const String bookingApplication = 'explore/flights/searchFlightResults/bookingApplication';
+  static const String searchFlightResults =
+      'explore/flights/searchFlightResults';
+  static const String bookingApplication =
+      'explore/flights/searchFlightResults/bookingApplication';
   static const String onBoarding = '/onBoarding';
   static const String codeVerification = '/codeVerification';
   static const String forgetpassword = '/forgetpassword';
   static const String changePassword = '/changePassword';
   static const String resetPassword = '/resetPassword';
-  static const String flightReview = '/flightReview';
+  // static const String flightReview = '/flightReview';
 }

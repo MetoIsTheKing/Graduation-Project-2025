@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,10 @@ import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/curved_appbar.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/ticket_tile.dart';
+
+import '../../../../../../config/routing/routes.dart';
+import '../../data/models/flight_result_model.dart';
+import 'flight_review_screen.dart';
 
 class FlightSearchResultsScreen extends StatelessWidget {
   final SearchFlightsCubit searchFlightsCubit;
@@ -161,6 +166,17 @@ class FlightSearchResultsScreen extends StatelessWidget {
                                       return Transform.scale(
                                         scale: scaleFactor,
                                         child: TicketTile(
+                                          onTap: (FlightResultModel flight) {
+                                            log('flightTicketTapped');
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    FlightReviewScreen(
+                                                        flight: flight),
+                                              ),
+                                            );
+                                          },
                                           flight: flightsResults[index],
                                           arrivalAirportName:
                                               getIt<AirportsDetails>()
