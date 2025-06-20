@@ -18,8 +18,6 @@ import 'package:graduation_project_2025/features/home/main_home_screen.dart';
 import 'package:graduation_project_2025/features/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:graduation_project_2025/features/on_boarding/presentation/pages/onboarding_screen.dart';
 
-import '../../features/home/explore/flights/presentation/pages/flight_review_screen.dart';
-
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -88,8 +86,8 @@ class AppRouter {
           return const BookingApplicationScreen(
             travelers: {
               'adults': 1,
-              'children': 2,
-              'infants': 1,
+              'children': 0,
+              'infants': 0,
             },
           );
         });

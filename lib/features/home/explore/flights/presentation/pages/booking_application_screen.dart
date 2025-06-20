@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
+import 'package:graduation_project_2025/core/helpers/my_logger.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
@@ -74,7 +75,7 @@ class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
 
   void submitForm() {
     final jsonList = travelersInfoList.map((t) => t.toJson()).toList();
-    print(jsonEncode(jsonList)); // Log all travelers
+    MyLogger.green(jsonEncode(jsonList)); // Log all travelers
   }
 
   @override
@@ -119,7 +120,7 @@ class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
                     );
                   },
                 ),
-                //? Contact Info 
+                //? Contact Info
                 CustomRoundedButton(
                     deviceInfo: deviceInfo,
                     label: 'log',

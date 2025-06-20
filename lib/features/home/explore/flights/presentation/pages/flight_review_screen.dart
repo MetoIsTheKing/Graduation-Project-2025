@@ -80,25 +80,6 @@ class _FlightReviewScreenState extends State<FlightReviewScreen> {
                   actionsPadding: EdgeInsetsDirectional.only(
                     end: deviceInfo.screenWidth * 0.05,
                   ),
-                  actions: [
-                    IconButton(
-                      icon: SvgPicture.asset(
-                        'assets/images/currency.svg',
-                        width: deviceInfo.screenWidth * 0.06,
-                      ),
-                      onPressed: () {
-                        showCurrencyPicker(
-                          context: context,
-                          showFlag: true,
-                          showCurrencyName: true,
-                          showCurrencyCode: true,
-                          onSelect: (Currency currency) {
-                            print('Select currency: ${currency.name}');
-                          },
-                        );
-                      },
-                    ),
-                  ],
                 ),
                 floatingActionButton: FloatingButton(
                     Currency: flightModel.totalPrice,
@@ -114,7 +95,7 @@ class _FlightReviewScreenState extends State<FlightReviewScreen> {
                         horizontal: deviceInfo.screenWidth * 0.05,
                         vertical: deviceInfo.screenHeight * 0.02),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         TripHeader(
                           flight: flightModel,
@@ -122,11 +103,16 @@ class _FlightReviewScreenState extends State<FlightReviewScreen> {
                         SizedBox(
                           height: deviceInfo.screenHeight * 0.02,
                         ),
-                        Text(
-                          'Trip Timeline',
-                          style: TextStyles.bold20(deviceInfo, Colors.white)
-                              .copyWith(
-                                  fontSize: deviceInfo.screenWidth * 0.055),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Trip Timeline',
+                              style: TextStyles.bold20(deviceInfo, Colors.white)
+                                  .copyWith(
+                                      fontSize: deviceInfo.screenWidth * 0.055),
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: deviceInfo.screenHeight * 0.01,

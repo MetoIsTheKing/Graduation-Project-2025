@@ -9,7 +9,6 @@ class FlightActionsModel {
     required FlightModel selecteFlightModel,
     bool isReturnDate,
   }) onDatePickerTapped;
-  final void Function() onAddAnotherFlightPressed;
   final void Function(FlightModel flightModel) onSearchFlightsPressed;
 
   FlightActionsModel({
@@ -17,7 +16,6 @@ class FlightActionsModel {
     required this.onFromFieldTaped,
     required this.onToFieldTapped,
     required this.onTravellersFieldTapped,
-    required this.onAddAnotherFlightPressed,
     required this.onSearchFlightsPressed,
     required this.onDatePickerTapped,
   });

@@ -20,20 +20,18 @@ class RadioTilesRow extends StatelessWidget {
     final options = [
       {'value': 'option1', 'label': 'One-way'},
       {'value': 'option2', 'label': 'Round-trip'},
-      {'value': 'option3', 'label': 'Multi-city'},
     ];
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: options.map((option) {
-        return Expanded(
-          child: FlightTypeRadioTile(
-            value: option['value']!,
-            label: option['label']!,
-            selectedValue: selectedFlightType,
-            onChanged: onSelectedFlightType,
-            deviceInfo: deviceInfo,
-          ),
+        return FlightTypeRadioTile(
+          value: option['value']!,
+          label: option['label']!,
+          selectedValue: selectedFlightType,
+          onChanged: onSelectedFlightType,
+          deviceInfo: deviceInfo,
         );
       }).toList(),
     );
@@ -62,17 +60,22 @@ class FlightTypeRadioTile extends StatelessWidget {
       data: Theme.of(context).copyWith(
         listTileTheme: const ListTileThemeData(horizontalTitleGap: 2),
       ),
-      child: RadioListTile(
-        activeColor: AppColors.appBlue,
-        value: value,
-        groupValue: selectedValue,
-        onChanged: onChanged,
-        visualDensity: VisualDensity.compact,
-        contentPadding: EdgeInsets.zero,
-        title: Text(
-          label,
-          style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
-              .copyWith(fontSize: deviceInfo.screenWidth * 0.03),
+      child: SizedBox(
+        width: deviceInfo.screenWidth * 0.35,
+        child: RadioListTile(
+          activeColor: AppColors.appBlue,
+          value: value,
+          groupValue: selectedValue,
+          onChanged: onChanged,
+          visualDensity: VisualDensity.compact,
+          contentPadding: EdgeInsets.zero,
+          title: IntrinsicWidth(
+            child: Text(
+              label,
+              style: TextStyles.semiBold18(deviceInfo, AppColors.appBlack)
+                  .copyWith(fontSize: deviceInfo.screenWidth * 0.03),
+            ),
+          ),
         ),
       ),
     );

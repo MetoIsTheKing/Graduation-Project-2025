@@ -19,7 +19,7 @@ class FlightModel {
   FlightModel({
     this.departureDate,
     this.returnDate,
-    this.flightClass = 'economy',
+    this.flightClass = 'ECONOMY',
     Map<String, int>? travellers,
   }) {
     // Initialize travellers map from parameter or use defaults
