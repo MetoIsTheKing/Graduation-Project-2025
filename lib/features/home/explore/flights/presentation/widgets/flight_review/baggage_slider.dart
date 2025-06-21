@@ -6,14 +6,20 @@ import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
 
 class BaggageSlider extends StatelessWidget {
-  const BaggageSlider({super.key, required this.onTap, required this.counter});
+  const BaggageSlider({
+    super.key,
+    required this.onTap,
+    required this.counter,
+    this.isEconomy = false,
+  });
   final void Function(int selected) onTap;
   final int counter;
+  final bool isEconomy;
   @override
   Widget build(BuildContext context) {
     return FlutterCarousel(
       options: FlutterCarouselOptions(
-        height: deviceInfo.screenHeight * 0.3,
+        height: deviceInfo.screenHeight * 0.35,
         enlargeCenterPage: true,
         initialPage: 0,
         viewportFraction: .5,
@@ -21,12 +27,12 @@ class BaggageSlider extends StatelessWidget {
         // slideIndicator: CircularSlideIndicator(),
         disableCenter: true,
       ),
-      items: [1, 2, 3].map((i) {
+      items: [1, 2, 3].map((index) {
         return Builder(
           builder: (BuildContext context) {
             return InkWell(
               onTap: () {
-                onTap(i);
+                onTap(index);
               },
               focusColor: Colors.transparent,
               hoverColor: Colors.transparent,
@@ -36,13 +42,19 @@ class BaggageSlider extends StatelessWidget {
                   width: deviceInfo.screenWidth * 0.4,
                   margin: EdgeInsets.symmetric(
                       horizontal: deviceInfo.screenWidth * 0.015),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: deviceInfo.screenWidth * 0.015,
+                    vertical: deviceInfo.screenHeight * 0.02,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    border: counter == i
+                    border: counter == index
                         ? Border.all(
                             color: AppColors.appYellow,
                             width: deviceInfo.screenWidth * 0.01)
-                        : null,
+                        : Border.all(
+                            color: Colors.white,
+                            width: deviceInfo.screenWidth * 0.01),
                     borderRadius: BorderRadius.circular(
                       deviceInfo.screenHeight * 0.02,
                     ),
@@ -50,49 +62,38 @@ class BaggageSlider extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      RichText(
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: '22',
-                              style: TextStyles.bold75(
-                                  deviceInfo, AppColors.appDarkBlack),
-                            ),
-                            TextSpan(
-                              text: ' KG',
-                              style: TextStyles.bold34(
-                                  deviceInfo, AppColors.appDarkBlack),
-                            ),
-                          ],
-                        ),
-                      ),
+                      Text(
+                          baggageDetails[isEconomy ? 0 : 1][index - 1]['title'],
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.start,
+                          style: TextStyles.bold34(
+                            deviceInfo,
+                            AppColors.appDarkBlack,
+                          )),
                       SizedBox(
                         height: deviceInfo.screenHeight * 0.01,
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: deviceInfo.screenWidth * 0.015),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _detailsRow('assets/images/check_mark.svg',
-                                '7 kg cabin baggage'),
-                            _detailsRow('assets/images/check_mark.svg',
-                                '7 kg checked baggage'),
-                            _detailsRow(
-                                'assets/images/hazard.svg', 'Not Refundable'),
-                            _detailsRow(
-                                'assets/images/hazard.svg', 'Not Changeable'),
-                          ],
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ...baggageDetails[isEconomy ? 0 : 1][index - 1]
+                                  ['description']
+                              .map((e) => _detailsRow(
+                                    'assets/images/check_mark.svg',
+                                    e,
+                                  ))
+                              .toList(),
+                          _detailsRow(
+                            'assets/images/hazard.svg',
+                            baggageDetails[isEconomy ? 0 : 1][index - 1]
+                                ['extra'],
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        height: deviceInfo.screenHeight * 0.02,
-                      ),
+                      Spacer(),
                       Container(
+                        width: double.infinity,
                         decoration: BoxDecoration(
                           color: AppColors.appBlue,
                           borderRadius: BorderRadius.circular(
@@ -104,9 +105,14 @@ class BaggageSlider extends StatelessWidget {
                               vertical: deviceInfo.screenHeight * 0.01,
                               horizontal: deviceInfo.screenWidth * 0.02),
                           child: Text(
-                            '+ 2500 USD',
+                            baggageDetails[isEconomy ? 0 : 1][index - 1]
+                                        ['extraAmount'] ==
+                                    0
+                                ? 'Included'
+                                : "${baggageDetails[isEconomy ? 0 : 1][index - 1]['extraAmount'].toString()} USD",
                             style:
                                 TextStyles.semiBold12(deviceInfo, Colors.white),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       )
@@ -145,3 +151,50 @@ class BaggageSlider extends StatelessWidget {
     );
   }
 }
+
+List<List<Map<String, dynamic>>> baggageDetails = [
+  [
+    {
+      'title': 'Basic Fare',
+      'description': ['1 x Checked Bag (7kg)', '1 x Cabin Bag (23kg)'],
+      'extra': 'No Extra price',
+      'extraAmount': 0
+    },
+    {
+      'title': 'Extra Bag Option',
+      'description': ['2 x Checked Bag (23kg)', '1 x Cabin Bag (23kg)'],
+      'extra': 'Extra Price',
+      'extraAmount': 60
+    },
+    {
+      'title': 'Premium Fare',
+      'description': ['1 x Checked Bag (32kg)', '1 x Cabin Bag (23kg)'],
+      'extra': 'Extra Price',
+      'extraAmount': 85
+    },
+  ],
+  [
+    {
+      'title': 'Standard Premium',
+      'description': ['2 x Checked Bag (32kg)', '2 x Cabin Bag (10kg)'],
+      'extra': 'No Extra Price',
+      'extraAmount': 0
+    },
+    {
+      'title': 'Extra Premium',
+      'description': ['3 x Checked Bag (32kg)', '2 x Cabin Bag (10kg)'],
+      'extra': 'Extra Price',
+      'extraAmount': 100
+    },
+    {
+      'title': 'Luxury Allowance',
+      'description': [
+        '2 x Checked Bag (32kg)',
+        '1 x Oversized Bag (up to 158cm)',
+        '2 x Extra Cabin Bag (10kg)'
+      ],
+      'extra': 'Extra Price',
+      'extraAmount': 150
+    },
+  ]
+];

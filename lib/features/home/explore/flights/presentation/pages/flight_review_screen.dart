@@ -16,6 +16,7 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_review/trip_timeline.dart';
 
 import '../../data/models/flight_result_model.dart';
+import '../widgets/flight_review/amenities_container.dart';
 
 class FlightReviewScreen extends StatefulWidget {
   final FlightResultModel flight;
@@ -67,62 +68,107 @@ class _FlightReviewScreenState extends State<FlightReviewScreen> {
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerFloat,
                 body: SingleChildScrollView(
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: deviceInfo.screenWidth * 0.05,
-                        vertical: deviceInfo.screenHeight * 0.02),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        TripHeader(
-                          flight: flightModel,
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: deviceInfo.screenWidth * 0.05,
+                              vertical: deviceInfo.screenHeight * 0.02),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              TripHeader(
+                                flight: flightModel,
+                              ),
+                              SizedBox(
+                                height: deviceInfo.screenHeight * 0.02,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Trip Timeline',
+                                    style: TextStyles.bold20(
+                                            deviceInfo, Colors.white)
+                                        .copyWith(
+                                            fontSize:
+                                                deviceInfo.screenWidth * 0.055),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: deviceInfo.screenHeight * 0.01,
+                              ),
+                              TripTimeline(
+                                flight: flightModel,
+                              ),
+                              SizedBox(
+                                height: deviceInfo.screenHeight * 0.03,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Baggage Allowance',
+                                    style: TextStyles.bold20(
+                                            deviceInfo, Colors.white)
+                                        .copyWith(
+                                            fontSize:
+                                                deviceInfo.screenWidth * 0.055),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          height: deviceInfo.screenHeight * 0.02,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        Column(
                           children: [
-                            Text(
-                              'Trip Timeline',
-                              style: TextStyles.bold20(deviceInfo, Colors.white)
-                                  .copyWith(
-                                      fontSize: deviceInfo.screenWidth * 0.055),
+                            SizedBox(height: deviceInfo.screenHeight * 0.01),
+                            BlocBuilder<FlightReviewCubit, FlightReviewState>(
+                              builder: (context, state) {
+                                return BaggageSlider(
+                                  onTap: cubit.onBaggageSelected,
+                                  counter: cubit.selectedBaggage,
+                                );
+                              },
                             ),
+                            SizedBox(
+                              height: deviceInfo.screenHeight * 0.02,
+                            )
                           ],
                         ),
-                        SizedBox(
-                          height: deviceInfo.screenHeight * 0.01,
-                        ),
-                        TripTimeline(
-                          flight: flightModel,
-                        ),
-                        SizedBox(
-                          height: deviceInfo.screenHeight * 0.03,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Baggage Allowance',
-                              style: TextStyles.bold20(deviceInfo, Colors.white)
-                                  .copyWith(
-                                      fontSize: deviceInfo.screenWidth * 0.055),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: deviceInfo.screenHeight * 0.01),
-                        BlocBuilder<FlightReviewCubit, FlightReviewState>(
-                          builder: (context, state) {
-                            return BaggageSlider(
-                              onTap: cubit.onBaggageSelected,
-                              counter: cubit.selectedBaggage,
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          height: deviceInfo.screenHeight * 0.15,
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: deviceInfo.screenWidth * 0.05,
+                            vertical: deviceInfo.screenHeight * 0.02,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Amenities',
+                                    style: TextStyles.bold20(
+                                            deviceInfo, Colors.white)
+                                        .copyWith(
+                                            fontSize:
+                                                deviceInfo.screenWidth * 0.055),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: deviceInfo.screenHeight * 0.01,
+                              ),
+                              const AmenitiesContainer(),
+                              SizedBox(
+                                height: deviceInfo.screenHeight * 0.1,
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
