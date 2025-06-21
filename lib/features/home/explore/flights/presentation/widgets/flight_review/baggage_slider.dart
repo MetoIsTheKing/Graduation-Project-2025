@@ -15,7 +15,7 @@ class BaggageSlider extends StatelessWidget {
       options: FlutterCarouselOptions(
         height: deviceInfo.screenHeight * 0.3,
         enlargeCenterPage: true,
-        initialPage: 1,
+        initialPage: 0,
         viewportFraction: .5,
         showIndicator: false,
         // slideIndicator: CircularSlideIndicator(),

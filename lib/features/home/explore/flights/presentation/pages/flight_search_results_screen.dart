@@ -167,14 +167,52 @@ class FlightSearchResultsScreen extends StatelessWidget {
                                         scale: scaleFactor,
                                         child: TicketTile(
                                           onTap: (FlightResultModel flight) {
-                                            log('flightTicketTapped');
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    FlightReviewScreen(
-                                                        flight: flight),
+                                            // // ////////////////////////////////
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) =>
+                                            //         FlightReviewScreen(
+                                            //             flight: flight),
+                                            //   ),
+                                            // );
+
+                                            showModalBottomSheet(
+                                              context: context,
+                                              builder: (context) =>
+                                                  FlightReviewScreen(
+                                                flight: flight,
                                               ),
+                                              constraints: BoxConstraints(
+                                                minHeight:
+                                                    deviceInfo.screenHeight *
+                                                        0.65,
+                                                maxHeight:
+                                                    deviceInfo.screenHeight *
+                                                        0.65,
+                                              ),
+                                              sheetAnimationStyle:
+                                                  AnimationStyle(
+                                                duration: const Duration(
+                                                    milliseconds: 500),
+                                                reverseDuration: const Duration(
+                                                    milliseconds: 500),
+                                              ),
+                                              isScrollControlled: true,
+                                              clipBehavior: Clip.antiAlias,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.vertical(
+                                                    top: Radius.circular(
+                                                        deviceInfo.screenWidth *
+                                                            0.1),
+                                                  ),
+                                                  side: BorderSide(
+                                                    color: Colors.white,
+                                                    width:
+                                                        deviceInfo.screenWidth *
+                                                            0.005,
+                                                  )),
                                             );
                                           },
                                           flight: flightsResults[index],

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
+import 'package:graduation_project_2025/core/helpers/my_logger.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
@@ -55,36 +56,13 @@ class _FlightReviewScreenState extends State<FlightReviewScreen> {
               FlightReviewCubit cubit = FlightReviewCubit.get(context);
               return Scaffold(
                 backgroundColor: Colors.transparent,
-                appBar: AppBar(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.transparent,
-                  centerTitle: true,
-                  leading: Padding(
-                    padding: EdgeInsetsDirectional.only(
-                        start: deviceInfo.screenWidth * 0.05),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: deviceInfo.screenWidth * 0.06,
-                      ),
-                      onPressed: () {
-                        context.pop();
-                      },
-                    ),
-                  ),
-                  title: Text(
-                    'Review your trip',
-                    style: TextStyles.semiBold18(deviceInfo, Colors.white),
-                  ),
-                  actionsPadding: EdgeInsetsDirectional.only(
-                    end: deviceInfo.screenWidth * 0.05,
-                  ),
-                ),
                 floatingActionButton: FloatingButton(
                     Currency: flightModel.totalPrice,
                     onPressed: () {
-                      context.pushReplacementNamed(Routes.logIn);
+                      for (var segment in flightModel.segments) {
+                        MyLogger.green(
+                            'Flight Review Screen Departure: ${segment.departure.iataCode}, Arrival: ${segment.arrival.iataCode}');
+                      }
                     }),
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerFloat,
@@ -123,11 +101,16 @@ class _FlightReviewScreenState extends State<FlightReviewScreen> {
                         SizedBox(
                           height: deviceInfo.screenHeight * 0.03,
                         ),
-                        Text(
-                          'Baggage Allowance',
-                          style: TextStyles.bold20(deviceInfo, Colors.white)
-                              .copyWith(
-                                  fontSize: deviceInfo.screenWidth * 0.055),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Baggage Allowance',
+                              style: TextStyles.bold20(deviceInfo, Colors.white)
+                                  .copyWith(
+                                      fontSize: deviceInfo.screenWidth * 0.055),
+                            ),
+                          ],
                         ),
                         SizedBox(height: deviceInfo.screenHeight * 0.01),
                         BlocBuilder<FlightReviewCubit, FlightReviewState>(

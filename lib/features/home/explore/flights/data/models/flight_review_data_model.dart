@@ -6,7 +6,7 @@ import 'package:graduation_project_2025/core/shared_functions/mapping_airlines_c
 
 class FlightReviewDataModel {
   final FlightResultModel flight;
-  late final int stops;
+  late final List<Segment> segments;
   late final String departureCode;
   late final String arrivalCode;
   // late final String departureCity;
@@ -28,7 +28,7 @@ class FlightReviewDataModel {
   FlightReviewDataModel({
     required this.flight,
   }) {
-    stops = flight.itineraries[0].segments.length - 1;
+    segments = flight.itineraries[0].segments;
     departureCode = flight.itineraries[0].segments[0].departure.iataCode;
     arrivalCode = flight.itineraries[0]
         .segments[flight.itineraries[0].segments.length - 1].arrival.iataCode;
@@ -50,13 +50,13 @@ class FlightReviewDataModel {
         .replaceAll("H", 'H ');
     departureDateTime = flight
         .itineraries[0].segments[0].departure.departureDateTime
-        .substring(12);
+        .substring(11, 16);
     arrivalDateTime = flight
         .itineraries[0]
         .segments[flight.itineraries[0].segments.length - 1]
         .arrival
         .arrivalDateTime
-        .substring(12);
+        .substring(11, 16);
 
     departureDate = flight
         .itineraries[0].segments[0].departure.departureDateTime
