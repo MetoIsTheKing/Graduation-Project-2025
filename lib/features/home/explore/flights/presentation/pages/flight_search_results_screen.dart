@@ -16,7 +16,7 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 
 import '../../../../../../config/routing/routes.dart';
 import '../../data/models/flight_result_model.dart';
-import 'flight_review_screen.dart';
+import 'flight_details_screen.dart';
 
 class FlightSearchResultsScreen extends StatelessWidget {
   final SearchFlightsCubit searchFlightsCubit;
@@ -180,8 +180,11 @@ class FlightSearchResultsScreen extends StatelessWidget {
                                             showModalBottomSheet(
                                               context: context,
                                               builder: (context) =>
-                                                  FlightReviewScreen(
+                                                  FlightDetailsScreen(
                                                 flight: flight,
+                                                isEconomy: searchQuery[
+                                                        'travelClass'] ==
+                                                    'ECONOMY',
                                               ),
                                               constraints: BoxConstraints(
                                                 minHeight:

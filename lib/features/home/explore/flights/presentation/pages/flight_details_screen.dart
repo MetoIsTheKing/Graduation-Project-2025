@@ -8,31 +8,34 @@ import 'package:graduation_project_2025/core/helpers/my_logger.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_review_data_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flight_review/flight_review_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_review/baggage_slider.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_review/floating_button.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_review/trip_header.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_review/trip_timeline.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_details_data_model.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flight_details/flight_details_cubit.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_details/baggage_slider.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_details/floating_button.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_details/trip_header.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_details/trip_timeline.dart';
 
 import '../../data/models/flight_result_model.dart';
-import '../widgets/flight_review/amenities_container.dart';
+import '../widgets/flight_details/amenities_container.dart';
 
-class FlightReviewScreen extends StatefulWidget {
+class FlightDetailsScreen extends StatefulWidget {
   final FlightResultModel flight;
-  const FlightReviewScreen({super.key, required this.flight});
+  final bool isEconomy;
+  const FlightDetailsScreen(
+      {super.key, required this.flight, required this.isEconomy});
 
   @override
-  State<FlightReviewScreen> createState() => _FlightReviewScreenState();
+  State<FlightDetailsScreen> createState() => _FlightDetailsScreenState();
 }
 
-class _FlightReviewScreenState extends State<FlightReviewScreen> {
-  late FlightReviewDataModel flightModel;
+class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
+  late FlightDetailsDataModel flightModel;
 
   @override
   void initState() {
     super.initState();
-    flightModel = FlightReviewDataModel(flight: widget.flight);
+    flightModel = FlightDetailsDataModel(
+        flight: widget.flight, isEconomy: widget.isEconomy);
   }
 
   @override
@@ -52,19 +55,26 @@ class _FlightReviewScreenState extends State<FlightReviewScreen> {
             ),
           ),
           BlocProvider(
-            create: (context) => FlightReviewCubit(),
+            create: (context) => FlightDetailsCubit(),
             child: Builder(builder: (context) {
-              FlightReviewCubit cubit = FlightReviewCubit.get(context);
+              FlightDetailsCubit cubit = FlightDetailsCubit.get(context);
               return Scaffold(
                 backgroundColor: Colors.transparent,
-                floatingActionButton: FloatingButton(
-                    Currency: flightModel.totalPrice,
-                    onPressed: () {
-                      for (var segment in flightModel.segments) {
-                        MyLogger.green(
-                            'Flight Review Screen Departure: ${segment.departure.iataCode}, Arrival: ${segment.arrival.iataCode}');
-                      }
-                    }),
+                floatingActionButton:
+                    BlocBuilder<FlightDetailsCubit, FlightDetailsState>(
+                  builder: (context, state) {
+                    return FloatingButton(
+                        Currency:
+                            "${((double.tryParse(flightModel.totalPrice)! + cubit.extraPrice) * 100).round() / 100}",
+                        onPressed: () {
+                          for (var segment in flightModel.segments) {
+                            MyLogger.green(
+                                'Flight Details Screen Departure: ${segment.departure.iataCode}, Arrival: ${segment.arrival.iataCode}');
+                          }
+                          MyLogger.magenta(flightModel.isEconomy.toString());
+                        });
+                  },
+                ),
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerFloat,
                 body: SingleChildScrollView(
@@ -126,11 +136,12 @@ class _FlightReviewScreenState extends State<FlightReviewScreen> {
                         Column(
                           children: [
                             SizedBox(height: deviceInfo.screenHeight * 0.01),
-                            BlocBuilder<FlightReviewCubit, FlightReviewState>(
+                            BlocBuilder<FlightDetailsCubit, FlightDetailsState>(
                               builder: (context, state) {
                                 return BaggageSlider(
                                   onTap: cubit.onBaggageSelected,
                                   counter: cubit.selectedBaggage,
+                                  isEconomy: flightModel.isEconomy,
                                 );
                               },
                             ),
@@ -150,22 +161,27 @@ class _FlightReviewScreenState extends State<FlightReviewScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'Amenities',
-                                    style: TextStyles.bold20(
-                                            deviceInfo, Colors.white)
-                                        .copyWith(
-                                            fontSize:
-                                                deviceInfo.screenWidth * 0.055),
-                                  ),
+                                  flightModel.amenities.isEmpty
+                                      ? SizedBox()
+                                      : Text(
+                                          'Amenities',
+                                          style: TextStyles.bold20(
+                                                  deviceInfo, Colors.white)
+                                              .copyWith(
+                                                  fontSize:
+                                                      deviceInfo.screenWidth *
+                                                          0.055),
+                                        ),
                                 ],
                               ),
                               SizedBox(
                                 height: deviceInfo.screenHeight * 0.01,
                               ),
-                              const AmenitiesContainer(),
+                              AmenitiesContainer(
+                                flight: flightModel,
+                              ),
                               SizedBox(
-                                height: deviceInfo.screenHeight * 0.1,
+                                height: deviceInfo.screenHeight * 0.15,
                               )
                             ],
                           ),

@@ -24,7 +24,7 @@ class FloatingButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("$Currency EGP",
+          Text("$Currency USD",
               style: TextStyles.semiBold12(deviceInfo, AppColors.appDarkBlack)),
           SizedBox(
             height: deviceInfo.screenHeight * 0.05,

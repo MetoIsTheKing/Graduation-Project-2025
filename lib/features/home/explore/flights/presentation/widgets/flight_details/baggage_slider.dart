@@ -5,14 +5,16 @@ import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
 
+import '../../../data/models/flight_details_data_model.dart';
+
 class BaggageSlider extends StatelessWidget {
   const BaggageSlider({
     super.key,
     required this.onTap,
     required this.counter,
-    this.isEconomy = false,
+    required this.isEconomy,
   });
-  final void Function(int selected) onTap;
+  final void Function(int selected, double price) onTap;
   final int counter;
   final bool isEconomy;
   @override
@@ -21,18 +23,23 @@ class BaggageSlider extends StatelessWidget {
       options: FlutterCarouselOptions(
         height: deviceInfo.screenHeight * 0.35,
         enlargeCenterPage: true,
-        initialPage: 0,
+        initialPage: counter,
         viewportFraction: .5,
         showIndicator: false,
         // slideIndicator: CircularSlideIndicator(),
         disableCenter: true,
+        keepPage: false,
+        // padEnds: false,
       ),
-      items: [1, 2, 3].map((index) {
+      items: [2, 1, 3].map((index) {
         return Builder(
           builder: (BuildContext context) {
             return InkWell(
               onTap: () {
-                onTap(index);
+                onTap(
+                    index,
+                    baggageDetails[isEconomy ? 0 : 1][index - 1]
+                        ['extraAmount']);
               },
               focusColor: Colors.transparent,
               hoverColor: Colors.transparent,
@@ -151,50 +158,3 @@ class BaggageSlider extends StatelessWidget {
     );
   }
 }
-
-List<List<Map<String, dynamic>>> baggageDetails = [
-  [
-    {
-      'title': 'Basic Fare',
-      'description': ['1 x Checked Bag (7kg)', '1 x Cabin Bag (23kg)'],
-      'extra': 'No Extra price',
-      'extraAmount': 0
-    },
-    {
-      'title': 'Extra Bag Option',
-      'description': ['2 x Checked Bag (23kg)', '1 x Cabin Bag (23kg)'],
-      'extra': 'Extra Price',
-      'extraAmount': 60
-    },
-    {
-      'title': 'Premium Fare',
-      'description': ['1 x Checked Bag (32kg)', '1 x Cabin Bag (23kg)'],
-      'extra': 'Extra Price',
-      'extraAmount': 85
-    },
-  ],
-  [
-    {
-      'title': 'Standard Premium',
-      'description': ['2 x Checked Bag (32kg)', '2 x Cabin Bag (10kg)'],
-      'extra': 'No Extra Price',
-      'extraAmount': 0
-    },
-    {
-      'title': 'Extra Premium',
-      'description': ['3 x Checked Bag (32kg)', '2 x Cabin Bag (10kg)'],
-      'extra': 'Extra Price',
-      'extraAmount': 100
-    },
-    {
-      'title': 'Luxury Allowance',
-      'description': [
-        '2 x Checked Bag (32kg)',
-        '1 x Oversized Bag (up to 158cm)',
-        '2 x Extra Cabin Bag (10kg)'
-      ],
-      'extra': 'Extra Price',
-      'extraAmount': 150
-    },
-  ]
-];

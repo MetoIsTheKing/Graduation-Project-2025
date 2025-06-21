@@ -4,12 +4,12 @@ import 'package:graduation_project_2025/core/shared_functions/mapping_airlines_c
 import 'package:graduation_project_2025/core/shared_functions/mapping_airports_codes.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_review_data_model.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_details_data_model.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 class TripTimeline extends StatelessWidget {
   const TripTimeline({super.key, required this.flight});
-  final FlightReviewDataModel flight;
+  final FlightDetailsDataModel flight;
 
   @override
   Widget build(BuildContext context) {
