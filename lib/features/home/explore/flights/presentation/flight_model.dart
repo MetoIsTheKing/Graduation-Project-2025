@@ -72,6 +72,8 @@ class FlightSearchQueryParams {
   bool nonStop;
   int max;
   String currencyCode;
+  bool isRoundTrip;
+  int goOrReturnIndicator = 0; // 0 for go, 1 for return
 
   FlightSearchQueryParams([
     this.originLocationCode = '',
@@ -85,15 +87,16 @@ class FlightSearchQueryParams {
     this.nonStop = false,
     this.max = 10,
     this.currencyCode = 'USD',
+    this.isRoundTrip = false,
   ]);
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toGoMap() {
     return {
       'originLocationCode': originLocationCode,
       'destinationLocationCode': destinationLocationCode,
       'departureDate': departureDate,
-      if (returnDate != null || returnDate!.isNotEmpty)
-        'returnDate': returnDate,
+      // if (returnDate != null && returnDate!.isNotEmpty)
+      //   'returnDate': returnDate,
       'adults': adults,
       'children': children,
       'infants': infants,
@@ -102,5 +105,32 @@ class FlightSearchQueryParams {
       'max': max,
       'currencyCode': currencyCode,
     };
+  }
+
+  Map<String, dynamic> toReturnMap() {
+    return {
+      'originLocationCode': destinationLocationCode,
+      'destinationLocationCode': originLocationCode,
+      'departureDate': returnDate,
+      // if (returnDate != null && returnDate!.isNotEmpty)
+      //   'returnDate': departureDate,
+      'adults': adults,
+      'children': children,
+      'infants': infants,
+      'travelClass': travelClass,
+      'nonStop': nonStop,
+      'max': max,
+      'currencyCode': currencyCode,
+    };
+  }
+
+  void incrementIndicator() {
+    goOrReturnIndicator += 1; //? when going to return screen
+  }
+
+  void decrementIndicator() {
+    if (goOrReturnIndicator == 1) {
+      goOrReturnIndicator -= 1;
+    } //? when return back to go screen
   }
 }

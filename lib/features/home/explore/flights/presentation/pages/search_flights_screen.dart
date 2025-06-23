@@ -18,15 +18,15 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_travellers_card_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/radio_tiles_row.dart';
 
-class FlightsScreen extends StatefulWidget {
+class SearchFlightsScreen extends StatefulWidget {
   final AirportsDetails? airportsDetails;
-  const FlightsScreen({super.key, this.airportsDetails});
+  const SearchFlightsScreen({super.key, this.airportsDetails});
 
   @override
-  State<FlightsScreen> createState() => _FlightsScreenState();
+  State<SearchFlightsScreen> createState() => _SearchFlightsScreenState();
 }
 
-class _FlightsScreenState extends State<FlightsScreen> {
+class _SearchFlightsScreenState extends State<SearchFlightsScreen> {
   String? selectedFlightType = 'option1';
   final PageController _pageController = PageController(initialPage: 0);
 
@@ -46,7 +46,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
     'infants': 0,
   };
   late String flightClass = 'ECONOMY';
-  late bool isNonStop = false;
+  late bool isNonStop = true;
 
   late bool isRoundTrip = false;
   final formKey = GlobalKey<FormState>();
@@ -163,6 +163,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
   ///////////////////////////////// Buttons onPress functions //////////////////////////////
   void onSearchFlightsPressed() {
     if (formKey.currentState!.validate()) {
+      getIt<FlightSearchQueryParams>().isRoundTrip = isRoundTrip;
       getIt<FlightSearchQueryParams>()
         ..originLocationCode = _fromController.text
         ..destinationLocationCode = _toController.text
@@ -172,17 +173,17 @@ class _FlightsScreenState extends State<FlightsScreen> {
         ..children = travellers['children']!
         ..infants = travellers['infants']!
         ..travelClass = flightClass
-        ..nonStop = isNonStop
+        ..nonStop = !isNonStop
         ..max = 10
         ..currencyCode = 'USD';
       MyLogger.green(
-          'Query Params: ${getIt<FlightSearchQueryParams>().toMap()}');
+          'Query Params: ${getIt<FlightSearchQueryParams>().toGoMap()}');
+      searchFlightCubit
+          .searchFlights(getIt<FlightSearchQueryParams>().toGoMap());
+      context.pushNamed(Routes.searchFlightResults);
     } else {
       MyLogger.red('fucccccccccccck');
     }
-
-    //searchFlightCubit.searchFlights(queryParams);
-    //context.pushNamed(Routes.searchFlightResults, arguments: queryParams);
   }
 
   void onChangeButtonPressed() {

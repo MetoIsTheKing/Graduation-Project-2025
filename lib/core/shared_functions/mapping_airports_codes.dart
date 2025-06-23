@@ -787,8 +787,6 @@ final Map<String, AirportDetails> famousAirports = {
       name: 'Asheville Regional Airport',
       city: 'Asheville',
       country: 'United States'),
-  'DUB': AirportDetails(
-      name: 'Dublin Airport', city: 'Dublin', country: 'Ireland'),
   'EDI': AirportDetails(
       name: 'Edinburgh Airport', city: 'Edinburgh', country: 'United Kingdom'),
   'GLA': AirportDetails(

@@ -115,7 +115,7 @@ class SearchAirport extends StatelessWidget {
                                       onTap: () {
                                         if (args.isOrigin == true) {
                                           getIt<AirportsDetails>()
-                                              .arrAirportsDetails = {
+                                              .depAirportsDetails = {
                                             "airportName": airports[index].name,
                                             "cityName":
                                                 airports[index].cityName,
@@ -128,7 +128,7 @@ class SearchAirport extends StatelessWidget {
                                           Navigator.of(context).pop();
                                         } else {
                                           getIt<AirportsDetails>()
-                                              .depAirportsDetails = {
+                                              .arrAirportsDetails = {
                                             "airportName": airports[index].name,
                                             "cityName":
                                                 airports[index].cityName,

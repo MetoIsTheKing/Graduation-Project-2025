@@ -78,7 +78,6 @@ class SearchFlightssRemoteDataSourceImpl
       if (response.statusCode == 200) {
         // Check if the data list is empty
         final List<dynamic> data = response.data['data'] as List? ?? [];
-        log('data key before parsing: $data');
 
         if (data.isEmpty) {
           return {
@@ -104,9 +103,6 @@ class SearchFlightssRemoteDataSourceImpl
             })
             .whereType<FlightResultModel>() // Filter out null values
             .toList();
-
-        log('Parsed flights ${flightsList.length} ');
-
         return {
           'statusCode': response.statusCode,
           'flights': flightsList,

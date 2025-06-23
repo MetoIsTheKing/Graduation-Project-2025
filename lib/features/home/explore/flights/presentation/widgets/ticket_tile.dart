@@ -33,9 +33,7 @@ class TicketTile extends StatelessWidget {
       builder: (context, deviceInfo, constraints) {
         bool isTablet = deviceInfo.deviceType == DeviceType.tablet;
         return InkWell(
-          onTap: () {
-            onTap!(flight);
-          },
+          onTap: () => onTap!(flight),
           child: Padding(
             padding: EdgeInsets.symmetric(
               vertical: isTablet ? 0 : deviceInfo.screenHeight * 0.01,
@@ -103,7 +101,6 @@ class TicketTile extends StatelessWidget {
                                   oppositeContents: Padding(
                                     padding: EdgeInsets.only(
                                         bottom: constraints.maxWidth * 0.005),
-                                    ///////////////////////// need logic function
                                     child: Text(
                                       '${flight.itineraries[0].segments.length - 1} Stops',
                                       style: medium12.copyWith(
@@ -111,7 +108,6 @@ class TicketTile extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  /////////////////////////////// need logic to get total and parsing
                                   contents: Padding(
                                     padding: EdgeInsets.only(
                                         top: constraints.maxWidth * 0.005),
@@ -162,15 +158,25 @@ class TicketTile extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              arrivalAirportName,
-                              style: medium12,
-                              overflow: TextOverflow.ellipsis,
+                            SizedBox(
+                              width: constraints.maxWidth * 0.4,
+                              child: Text(
+                                arrivalAirportName,
+                                style: medium10,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                            Text(
-                              departureAirportName,
-                              style: medium12,
-                              overflow: TextOverflow.ellipsis,
+                            SizedBox(
+                              width: constraints.maxWidth * 0.02,
+                            ),
+                            SizedBox(
+                              width: constraints.maxWidth * 0.4,
+                              child: Text(
+                                textAlign: TextAlign.end,
+                                departureAirportName,
+                                style: medium10,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         ),
@@ -183,7 +189,7 @@ class TicketTile extends StatelessWidget {
                             Text(
                                 flight.itineraries[0].segments[0].departure
                                     .departureDateTime
-                                    .substring(12),
+                                    .substring(12, 16),
                                 style: medium20),
                             Text(
                                 flight
@@ -193,7 +199,7 @@ class TicketTile extends StatelessWidget {
                                             1]
                                     .arrival
                                     .arrivalDateTime
-                                    .substring(12),
+                                    .substring(12, 16),
                                 style: medium20),
                           ],
                         ),
@@ -255,8 +261,11 @@ class TicketTile extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text('Starts from', style: medium10),
-                                Text('${flight.price.total} \$',
-                                    style: medium20),
+                                //! text size exception
+                                FittedBox(
+                                  child: Text('${flight.price.total} \$',
+                                      style: medium20),
+                                ),
                               ],
                             ),
                           ),
@@ -276,32 +285,29 @@ class TicketTile extends StatelessWidget {
                       //       Padding(
                       //         padding: EdgeInsets.only(
                       //             left: deviceInfo.screenWidth * 0.012),
-                      //         child: Text(baggageAvailability, style: medium10),
+                      //         child: Text('See Details', style: medium10),
                       //       ),
                       //     ],
                       //   ),
                       // ),
                       //? this is the recommendation tag ----------------------
-                      // Visibility(
-                      //   visible: isRecommended,
-                      //   child: IntrinsicHeight(
-                      //     child: Row(
-                      //       mainAxisAlignment: MainAxisAlignment.start,
-                      //       children: [
-                      //         RecommendationTag(
-                      //             tagColor: AppColors.appBlue,
+                      // IntrinsicHeight(
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       GestureDetector(
+                      //         behavior: HitTestBehavior.opaque,
+                      //         onTap: () => onTap!(flight),
+                      //         child: RecommendationTag(
+                      //             tagColor: AppColors.appGreen,
                       //             deviceInfo: deviceInfo,
                       //             constraints: constrain,
-                      //             tagData: tagData,
-                      //             medium12: medium12),
-                      //         RecommendationTag(
-                      //             tagColor: Colors.green,
-                      //             deviceInfo: deviceInfo,
-                      //             constraints: constrain,
-                      //             tagData: tagData,
-                      //             medium12: medium12),
-                      //       ],
-                      //     ),
+                      //             tagData: 'See Details',
+                      //             medium12: medium20.copyWith(
+                      //               fontSize: constrain.maxWidth * 0.058,
+                      //             )),
+                      //       ),
+                      //     ],
                       //   ),
                       // )
                     ],

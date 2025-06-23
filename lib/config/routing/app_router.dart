@@ -11,7 +11,7 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/booking_application_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/flight_search_results_screen.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/flights_screen.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_flights_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_airport.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/pages/explore_screen.dart';
 import 'package:graduation_project_2025/features/home/main_home_screen.dart';
@@ -58,7 +58,7 @@ class AppRouter {
               BlocProvider(create: (context) => getIt<FlightsDataCubit>()),
               BlocProvider.value(value: getIt<SearchFlightsCubit>()),
             ],
-            child: FlightsScreen(
+            child: SearchFlightsScreen(
               airportsDetails: airportArgs,
             ),
           );
@@ -75,10 +75,8 @@ class AppRouter {
         });
       case Routes.searchFlightResults:
         return MaterialPageRoute(builder: (context) {
-          final args = settings.arguments as Map<String, dynamic>;
           return FlightSearchResultsScreen(
             searchFlightsCubit: getIt<SearchFlightsCubit>(),
-            searchQuery: args,
           );
         });
       case Routes.bookingApplication:

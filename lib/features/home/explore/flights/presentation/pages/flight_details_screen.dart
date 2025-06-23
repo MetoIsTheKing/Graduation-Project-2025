@@ -1,11 +1,6 @@
-import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
-import 'package:graduation_project_2025/core/helpers/my_logger.dart';
-import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_details_data_model.dart';
@@ -21,8 +16,9 @@ import '../widgets/flight_details/amenities_container.dart';
 class FlightDetailsScreen extends StatefulWidget {
   final FlightResultModel flight;
   final bool isEconomy;
+  final void Function()? onContinuePressed;
   const FlightDetailsScreen(
-      {super.key, required this.flight, required this.isEconomy});
+      {super.key, required this.flight, required this.isEconomy, required this.onContinuePressed});
 
   @override
   State<FlightDetailsScreen> createState() => _FlightDetailsScreenState();
@@ -64,15 +60,9 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                     BlocBuilder<FlightDetailsCubit, FlightDetailsState>(
                   builder: (context, state) {
                     return FloatingButton(
-                        Currency:
+                        currency:
                             "${((double.tryParse(flightModel.totalPrice)! + cubit.extraPrice) * 100).round() / 100}",
-                        onPressed: () {
-                          for (var segment in flightModel.segments) {
-                            MyLogger.green(
-                                'Flight Details Screen Departure: ${segment.departure.iataCode}, Arrival: ${segment.arrival.iataCode}');
-                          }
-                          MyLogger.magenta(flightModel.isEconomy.toString());
-                        });
+                        onPressed: widget.onContinuePressed);
                   },
                 ),
                 floatingActionButtonLocation:

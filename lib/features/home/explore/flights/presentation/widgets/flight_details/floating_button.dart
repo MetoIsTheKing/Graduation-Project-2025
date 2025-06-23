@@ -4,9 +4,9 @@ import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
 
 class FloatingButton extends StatelessWidget {
-  const FloatingButton({super.key, this.onPressed, required this.Currency});
+  const FloatingButton({super.key, this.onPressed, required this.currency});
   final void Function()? onPressed;
-  final String Currency;
+  final String currency;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,13 +18,13 @@ class FloatingButton extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(deviceInfo.screenHeight * 0.02),
           border: Border.all(
-            color: AppColors.appBlue,
-            width: deviceInfo.screenWidth * 0.002,
+            color: AppColors.appYellow,
+            width: deviceInfo.screenWidth * 0.005,
           )),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("$Currency USD",
+          Text("$currency USD",
               style: TextStyles.semiBold12(deviceInfo, AppColors.appDarkBlack)),
           SizedBox(
             height: deviceInfo.screenHeight * 0.05,

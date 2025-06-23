@@ -10,5 +10,5 @@ class AppColors {
   static const Color appBlack = Color.fromARGB(255, 91, 90, 90);
   static const Color appDarkBlack = Color(0xff22313F);
   static const Color appRed = Color(0xFFFF0000);
-  static const Color appGreen = Color(0xFF00FF00);
+  static const Color appGreen = Color.fromARGB(255, 6, 224, 6);
 }
