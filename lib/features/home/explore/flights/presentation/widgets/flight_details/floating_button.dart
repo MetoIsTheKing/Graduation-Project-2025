@@ -16,11 +16,15 @@ class FloatingButton extends StatelessWidget {
           vertical: deviceInfo.screenHeight * 0.008),
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(deviceInfo.screenHeight * 0.02)),
+          borderRadius: BorderRadius.circular(deviceInfo.screenHeight * 0.02),
+          border: Border.all(
+            color: AppColors.appBlue,
+            width: deviceInfo.screenWidth * 0.002,
+          )),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(Currency,
+          Text("$Currency USD",
               style: TextStyles.semiBold12(deviceInfo, AppColors.appDarkBlack)),
           SizedBox(
             height: deviceInfo.screenHeight * 0.05,

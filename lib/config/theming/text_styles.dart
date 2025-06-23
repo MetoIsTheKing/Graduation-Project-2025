@@ -68,6 +68,15 @@ class TextStyles {
     );
   }
 
+  static TextStyle regular10(DeviceInfo deviceInfo, Color color) {
+    return TextStyle(
+      fontSize: deviceInfo.screenWidth * 0.021,
+      color: color,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Poppins',
+    );
+  }
+
   static TextStyle regular12(DeviceInfo deviceInfo, Color color) {
     return TextStyle(
       fontSize: deviceInfo.screenWidth * 0.028,

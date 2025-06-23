@@ -15,7 +15,7 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/ticket_tile.dart';
 
 import '../../data/models/flight_result_model.dart';
-import 'flight_review_screen.dart';
+import 'flight_details_screen.dart';
 
 class FlightSearchResultsScreen extends StatelessWidget {
   final SearchFlightsCubit searchFlightsCubit;
@@ -166,14 +166,55 @@ class FlightSearchResultsScreen extends StatelessWidget {
                                         scale: scaleFactor,
                                         child: TicketTile(
                                           onTap: (FlightResultModel flight) {
-                                            log('flightTicketTapped');
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    FlightReviewScreen(
-                                                        flight: flight),
+                                            // // ////////////////////////////////
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) =>
+                                            //         FlightReviewScreen(
+                                            //             flight: flight),
+                                            //   ),
+                                            // );
+
+                                            showModalBottomSheet(
+                                              context: context,
+                                              builder: (context) =>
+                                                  FlightDetailsScreen(
+                                                flight: flight,
+                                                isEconomy: searchQuery[
+                                                        'travelClass'] ==
+                                                    'ECONOMY',
                                               ),
+                                              constraints: BoxConstraints(
+                                                minHeight:
+                                                    deviceInfo.screenHeight *
+                                                        0.65,
+                                                maxHeight:
+                                                    deviceInfo.screenHeight *
+                                                        0.65,
+                                              ),
+                                              sheetAnimationStyle:
+                                                  AnimationStyle(
+                                                duration: const Duration(
+                                                    milliseconds: 500),
+                                                reverseDuration: const Duration(
+                                                    milliseconds: 500),
+                                              ),
+                                              isScrollControlled: true,
+                                              clipBehavior: Clip.antiAlias,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.vertical(
+                                                    top: Radius.circular(
+                                                        deviceInfo.screenWidth *
+                                                            0.1),
+                                                  ),
+                                                  side: BorderSide(
+                                                    color: Colors.white,
+                                                    width:
+                                                        deviceInfo.screenWidth *
+                                                            0.005,
+                                                  )),
                                             );
                                           },
                                           flight: flightsResults[index],

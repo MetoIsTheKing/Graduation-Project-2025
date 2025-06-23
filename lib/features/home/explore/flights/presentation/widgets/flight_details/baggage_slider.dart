@@ -5,28 +5,41 @@ import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
 
+import '../../../data/models/flight_details_data_model.dart';
+
 class BaggageSlider extends StatelessWidget {
-  const BaggageSlider({super.key, required this.onTap, required this.counter});
-  final void Function(int selected) onTap;
+  const BaggageSlider({
+    super.key,
+    required this.onTap,
+    required this.counter,
+    required this.isEconomy,
+  });
+  final void Function(int selected, double price) onTap;
   final int counter;
+  final bool isEconomy;
   @override
   Widget build(BuildContext context) {
     return FlutterCarousel(
       options: FlutterCarouselOptions(
-        height: deviceInfo.screenHeight * 0.3,
+        height: deviceInfo.screenHeight * 0.35,
         enlargeCenterPage: true,
-        initialPage: 1,
+        initialPage: counter,
         viewportFraction: .5,
         showIndicator: false,
         // slideIndicator: CircularSlideIndicator(),
         disableCenter: true,
+        keepPage: false,
+        // padEnds: false,
       ),
-      items: [1, 2, 3].map((i) {
+      items: [2, 1, 3].map((index) {
         return Builder(
           builder: (BuildContext context) {
             return InkWell(
               onTap: () {
-                onTap(i);
+                onTap(
+                    index,
+                    baggageDetails[isEconomy ? 0 : 1][index - 1]
+                        ['extraAmount']);
               },
               focusColor: Colors.transparent,
               hoverColor: Colors.transparent,
@@ -36,13 +49,19 @@ class BaggageSlider extends StatelessWidget {
                   width: deviceInfo.screenWidth * 0.4,
                   margin: EdgeInsets.symmetric(
                       horizontal: deviceInfo.screenWidth * 0.015),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: deviceInfo.screenWidth * 0.015,
+                    vertical: deviceInfo.screenHeight * 0.02,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    border: counter == i
+                    border: counter == index
                         ? Border.all(
                             color: AppColors.appYellow,
                             width: deviceInfo.screenWidth * 0.01)
-                        : null,
+                        : Border.all(
+                            color: Colors.white,
+                            width: deviceInfo.screenWidth * 0.01),
                     borderRadius: BorderRadius.circular(
                       deviceInfo.screenHeight * 0.02,
                     ),
@@ -50,49 +69,38 @@ class BaggageSlider extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      RichText(
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: '22',
-                              style: TextStyles.bold75(
-                                  deviceInfo, AppColors.appDarkBlack),
-                            ),
-                            TextSpan(
-                              text: ' KG',
-                              style: TextStyles.bold34(
-                                  deviceInfo, AppColors.appDarkBlack),
-                            ),
-                          ],
-                        ),
-                      ),
+                      Text(
+                          baggageDetails[isEconomy ? 0 : 1][index - 1]['title'],
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.start,
+                          style: TextStyles.bold34(
+                            deviceInfo,
+                            AppColors.appDarkBlack,
+                          )),
                       SizedBox(
                         height: deviceInfo.screenHeight * 0.01,
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: deviceInfo.screenWidth * 0.015),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _detailsRow('assets/images/check_mark.svg',
-                                '7 kg cabin baggage'),
-                            _detailsRow('assets/images/check_mark.svg',
-                                '7 kg checked baggage'),
-                            _detailsRow(
-                                'assets/images/hazard.svg', 'Not Refundable'),
-                            _detailsRow(
-                                'assets/images/hazard.svg', 'Not Changeable'),
-                          ],
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ...baggageDetails[isEconomy ? 0 : 1][index - 1]
+                                  ['description']
+                              .map((e) => _detailsRow(
+                                    'assets/images/check_mark.svg',
+                                    e,
+                                  ))
+                              .toList(),
+                          _detailsRow(
+                            'assets/images/hazard.svg',
+                            baggageDetails[isEconomy ? 0 : 1][index - 1]
+                                ['extra'],
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        height: deviceInfo.screenHeight * 0.02,
-                      ),
+                      Spacer(),
                       Container(
+                        width: double.infinity,
                         decoration: BoxDecoration(
                           color: AppColors.appBlue,
                           borderRadius: BorderRadius.circular(
@@ -104,9 +112,14 @@ class BaggageSlider extends StatelessWidget {
                               vertical: deviceInfo.screenHeight * 0.01,
                               horizontal: deviceInfo.screenWidth * 0.02),
                           child: Text(
-                            '+ 2500 USD',
+                            baggageDetails[isEconomy ? 0 : 1][index - 1]
+                                        ['extraAmount'] ==
+                                    0
+                                ? 'Included'
+                                : "${baggageDetails[isEconomy ? 0 : 1][index - 1]['extraAmount'].toString()} USD",
                             style:
                                 TextStyles.semiBold12(deviceInfo, Colors.white),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       )
