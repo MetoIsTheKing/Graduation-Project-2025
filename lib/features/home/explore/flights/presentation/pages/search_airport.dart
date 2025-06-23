@@ -7,8 +7,8 @@ import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart'
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/airport_text_input.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_custom_tile.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_airport/airport_text_input.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_airport/search_custom_tile.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/curved_appbar.dart';
 
 class SearchAirport extends StatelessWidget {
@@ -121,7 +121,8 @@ class SearchAirport extends StatelessWidget {
                                                 airports[index].cityName,
                                             "countryName":
                                                 airports[index].countryName,
-                                            "iataCode": airports[index].iataCode,
+                                            "iataCode":
+                                                airports[index].iataCode,
                                           };
                                           args.fromController.text =
                                               airports[index].iataCode;
@@ -134,7 +135,8 @@ class SearchAirport extends StatelessWidget {
                                                 airports[index].cityName,
                                             "countryName":
                                                 airports[index].countryName,
-                                            "iataCode": airports[index].iataCode,
+                                            "iataCode":
+                                                airports[index].iataCode,
                                           };
                                           args.toController.text =
                                               airports[index].iataCode;

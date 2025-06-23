@@ -4,7 +4,7 @@ import 'package:graduation_project_2025/core/helpers/my_logger.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/airport_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_result_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/repository/search_airports_repo.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
 
 part 'search_flights_state.dart';
 
@@ -43,7 +43,7 @@ class SearchFlightsCubit extends Cubit<SearchFlightsState> {
         if (getIt<FlightSearchQueryParams>().isRoundTrip) {
           if (getIt<FlightSearchQueryParams>().goOrReturnIndicator == 0) {
             goFlights = response['flights'] as List<FlightResultModel>;
-            if (goFlights == returnFlights){
+            if (goFlights == returnFlights) {
               MyLogger.red(
                 'goFlights and returnFlights are the same, true 0',
               );
@@ -51,12 +51,12 @@ class SearchFlightsCubit extends Cubit<SearchFlightsState> {
             emit(FlightsLoaded(flights: goFlights));
           } else {
             returnFlights = response['flights'] as List<FlightResultModel>;
-            if (goFlights == returnFlights){
+            if (goFlights == returnFlights) {
               MyLogger.red(
                 'goFlights and returnFlights are the same, true 1',
               );
             }
-            if (goFlights == returnFlights){
+            if (goFlights == returnFlights) {
               MyLogger.red(
                 'goFlights and returnFlights are the same, false 0',
               );

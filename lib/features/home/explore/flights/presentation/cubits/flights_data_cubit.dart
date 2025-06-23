@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
 
 class FlightsDataCubit extends Cubit<FlightModel> {
   FlightsDataCubit() : super(FlightModel());

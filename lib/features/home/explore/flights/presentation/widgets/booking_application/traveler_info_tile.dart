@@ -7,8 +7,8 @@ import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_textfield.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/country_picker.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/date_picker.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/traveler_info_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/airport_text_input.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/data/models/traveler_info_model.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_airport/airport_text_input.dart';
 import 'package:country_picker/country_picker.dart';
 
 class TravelerInfoTile extends StatefulWidget {
@@ -231,7 +231,6 @@ class _TravelerInfoTileState extends State<TravelerInfoTile> {
               top: deviceInfo.screenHeight * 0.01,
             ),
             child: CustomDatePickerField(
-
                 deviceInfo: deviceInfo,
                 prefix: 'Expiry Date',
                 hint: 'Choose date',

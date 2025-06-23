@@ -9,9 +9,9 @@ import 'package:graduation_project_2025/core/responsive/ui_component/info_widget
 import 'package:graduation_project_2025/core/shared_functions/mapping_airports_codes.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/curved_appbar.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/ticket_tile.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_search_results/ticket_tile.dart';
 
 import '../../data/models/flight_result_model.dart';
 import 'flight_details_screen.dart';
