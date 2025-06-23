@@ -4,6 +4,10 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 class FlightsDataCubit extends Cubit<FlightModel> {
   FlightsDataCubit() : super(FlightModel());
 
+  void resetState() {
+    emit(FlightModel());
+  }
+
   // Helper method to create a new state with all values copied
   FlightModel _copyStateWith({
     DateTime? departureDate,
@@ -39,12 +43,18 @@ class FlightsDataCubit extends Cubit<FlightModel> {
 
   // Update departure location
   void updateFrom(String value) {
-    emit(_copyStateWith(fromText: value));
+    emit(_copyStateWith(
+      fromText: value,
+      travellersText: state.travellersController.text,
+    ));
   }
 
   // Update destination
   void updateTo(String value) {
-    emit(_copyStateWith(toText: value));
+    emit(_copyStateWith(
+      toText: value,
+      travellersText: state.travellersController.text,
+    ));
   }
 
   // Update departure date
@@ -52,6 +62,7 @@ class FlightsDataCubit extends Cubit<FlightModel> {
     emit(_copyStateWith(
       departureDate: date,
       departureDateText: date.toString(),
+      travellersText: state.travellersController.text,
     ));
   }
 
@@ -60,6 +71,7 @@ class FlightsDataCubit extends Cubit<FlightModel> {
     emit(_copyStateWith(
       returnDate: date,
       returnDateText: date?.toString() ?? '',
+      travellersText: state.travellersController.text,
     ));
   }
 
@@ -81,11 +93,5 @@ class FlightsDataCubit extends Cubit<FlightModel> {
       travellers: updatedTravellers,
       travellersText: travellersText,
     ));
-  }
-
-  @override
-  Future<void> close() {
-    state.dispose();
-    return super.close();
   }
 }

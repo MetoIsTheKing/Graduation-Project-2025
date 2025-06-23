@@ -17,6 +17,7 @@ import 'package:graduation_project_2025/features/home/explore/flights/data/data_
 import 'package:graduation_project_2025/features/home/explore/flights/data/repository/search_airports_repo.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
 
 final getIt = GetIt.instance;
 
@@ -38,7 +39,12 @@ Future<void> initDependencies() async {
     AirportsDetails(
       arrAirportsDetails: {},
       depAirportsDetails: {},
-    ),);
+    ),
+  );
+
+  getIt.registerSingleton<FlightSearchQueryParams>(
+    FlightSearchQueryParams(),
+  );
 
   // ------- dio client -------
   getIt.registerLazySingleton<DioNetworkClient>(() => FakeUsersClient(),

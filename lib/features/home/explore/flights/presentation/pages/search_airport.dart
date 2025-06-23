@@ -1,9 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/routing/arguments.dart';
-import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
@@ -32,14 +30,15 @@ class SearchAirport extends StatelessWidget {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: CurvedAppbar(
-              backgroundColor: AppColors.appBlue,
-              backButtonColor: Colors.white,
-              titleWidget: Text(
-                args.appBarTitle,
-                style: TextStyles.medium20(deviceinfo, Colors.white),
-              ),
-              onBack: () => context.pop(),
-            ),
+                backgroundColor: AppColors.appBlue,
+                backButtonColor: Colors.white,
+                titleWidget: Text(
+                  args.appBarTitle,
+                  style: TextStyles.medium20(deviceinfo, Colors.white),
+                ),
+                onBack: () {
+                  context.pop();
+                }),
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Padding(
@@ -53,37 +52,26 @@ class SearchAirport extends StatelessWidget {
                             ? 'assets/images/plane_up.svg'
                             : 'assets/images/plane_down.svg',
                         airportConteroller: args.isOrigin
-                            ? args.flightModel.fromController
-                            : args.flightModel.toController,
+                            ? args.fromController
+                            : args.toController,
                         onChanged: (value) {
                           if (value.isEmpty) {
                             return;
                           } else {
-                            // Cancel previous searches and wait for 500ms before executing the search
-                            // This prevents API calls for every character typed
                             Future.delayed(
-                              const Duration(milliseconds: 1000),
+                              const Duration(milliseconds: 1500),
                             ).then((_) {
-                              // Only search if the text hasn't changed during the delay
                               if ((args.isOrigin
-                                          ? args.flightModel.fromController
-                                          : args.flightModel.toController)
+                                          ? args.fromController
+                                          : args.toController)
                                       .text ==
                                   value) {
-                                context
-                                    .read<SearchFlightsCubit>()
-                                    .searchAirports(value);
+                                searchFlightsCubit.searchAirports(value);
                               }
                             });
                           }
                         },
                       ),
-                      SearchCustomTile(
-                          title: "use current location",
-                          tileIconPath: 'assets/images/location_pin.svg',
-                          tileBorderColor: Colors.grey,
-                          tileFillColor: Colors.white,
-                          onTap: null),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: deviceinfo.screenHeight * 0.02),
@@ -126,32 +114,36 @@ class SearchAirport extends StatelessWidget {
                                     child: SearchCustomTile(
                                       onTap: () {
                                         if (args.isOrigin == true) {
-                                          args.cubit.updateFrom(
-                                              airports[index].iataCode);
-                                          context.pushReplacementNamed(
-                                              Routes.flights,
-                                              arguments: getIt<AirportsDetails>()
-                                                ..arrAirportsDetails = {
-                                                  "airportName":airports[index].name,
-                                                  "cityName":airports[index].cityName,
-                                                  "countryName":airports[index].countryName,
-                                                });
+                                          getIt<AirportsDetails>()
+                                              .arrAirportsDetails = {
+                                            "airportName": airports[index].name,
+                                            "cityName":
+                                                airports[index].cityName,
+                                            "countryName":
+                                                airports[index].countryName,
+                                            "iataCode": airports[index].iataCode,
+                                          };
+                                          args.fromController.text =
+                                              airports[index].iataCode;
+                                          Navigator.of(context).pop();
                                         } else {
-                                          args.cubit.updateTo(
-                                              airports[index].iataCode);
-                                          context.pushReplacementNamed(
-                                              Routes.flights,
-                                              arguments: getIt<AirportsDetails>()
-                                                ..depAirportsDetails = {
-                                                  "airportName":airports[index].name,
-                                                  "cityName":airports[index].cityName,
-                                                  "countryName":airports[index].countryName,
-                                                });
+                                          getIt<AirportsDetails>()
+                                              .depAirportsDetails = {
+                                            "airportName": airports[index].name,
+                                            "cityName":
+                                                airports[index].cityName,
+                                            "countryName":
+                                                airports[index].countryName,
+                                            "iataCode": airports[index].iataCode,
+                                          };
+                                          args.toController.text =
+                                              airports[index].iataCode;
+                                          Navigator.of(context).pop();
                                         }
                                       },
                                       title: airports[index].name,
                                       tileIconPath:
-                                          'assets/images/airport_icon.svg',
+                                          'assets/images/airport_logo_ic.png',
                                       tileFillColor: Colors.white,
                                       tileBorderColor: AppColors.appBlue,
                                       subtitle: Text(
@@ -173,12 +165,12 @@ class SearchAirport extends StatelessWidget {
                           } else {
                             return Center(
                               child: Text(
-                                'Unexpected error occurred',
+                                'enter airport name to search',
                                 style:
                                     TextStyles.medium16(deviceinfo, Colors.grey)
                                         .copyWith(
-                                            fontSize:
-                                                deviceinfo.screenHeight * 0.01),
+                                            fontSize: deviceinfo.screenHeight *
+                                                0.015),
                               ),
                             );
                           }

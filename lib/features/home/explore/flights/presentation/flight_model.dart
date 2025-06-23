@@ -13,7 +13,8 @@ class FlightModel {
 
   // Changed from final to late - will be initialized in constructor
   late Map<String, int> travellers;
-
+  bool nonStop = false;
+  //int max
   String flightClass;
 
   FlightModel({
@@ -33,15 +34,6 @@ class FlightModel {
           };
   }
 
-  void dispose() {
-    fromController.dispose();
-    toController.dispose();
-    travellersController.dispose();
-    departureDateController.dispose();
-    returnDateController.dispose();
-  }
-
-  // Helper method to get all data as a map for API call
   Map<String, dynamic> toApiMap() {
     return {
       'from': fromController.text,
@@ -53,7 +45,6 @@ class FlightModel {
     };
   }
 
-  // Create a copy of this model (useful for state management)
   FlightModel copyWith({
     DateTime? departureDate,
     DateTime? returnDate,
@@ -66,5 +57,50 @@ class FlightModel {
       flightClass: flightClass ?? this.flightClass,
       travellers: travellers ?? Map<String, int>.from(this.travellers),
     );
+  }
+}
+
+class FlightSearchQueryParams {
+  String originLocationCode;
+  String destinationLocationCode;
+  String departureDate;
+  String? returnDate;
+  int adults;
+  int children;
+  int infants;
+  String travelClass;
+  bool nonStop;
+  int max;
+  String currencyCode;
+
+  FlightSearchQueryParams([
+    this.originLocationCode = '',
+    this.destinationLocationCode = '',
+    this.departureDate = '',
+    this.returnDate = '',
+    this.adults = 1,
+    this.children = 0,
+    this.infants = 0,
+    this.travelClass = 'ECONOMY',
+    this.nonStop = false,
+    this.max = 10,
+    this.currencyCode = 'USD',
+  ]);
+
+  Map<String, dynamic> toMap() {
+    return {
+      'originLocationCode': originLocationCode,
+      'destinationLocationCode': destinationLocationCode,
+      'departureDate': departureDate,
+      if (returnDate != null || returnDate!.isNotEmpty)
+        'returnDate': returnDate,
+      'adults': adults,
+      'children': children,
+      'infants': infants,
+      'travelClass': travelClass,
+      'nonStop': nonStop,
+      'max': max,
+      'currencyCode': currencyCode,
+    };
   }
 }

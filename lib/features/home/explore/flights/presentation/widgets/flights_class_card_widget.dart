@@ -3,17 +3,14 @@ import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
 
 class FlightsClassCardWidget extends StatelessWidget {
+  final String flightClass;
+  final void Function(String? selectedValue) onSelectedFlightClass;
   const FlightsClassCardWidget({
     super.key,
-    required this.flightModel,
-    required this.onSelectedFlightClass,
+    required this.onSelectedFlightClass, required this.flightClass,
   });
-
-  final FlightModel flightModel;
-  final void Function(String? selectedValue) onSelectedFlightClass;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +71,7 @@ class FlightsClassCardWidget extends StatelessWidget {
                   children: flightClasses.map((classItem) {
                     return RadioListTile<String>(
                       value: classItem['value']!,
-                      groupValue: flightModel.flightClass,
+                      groupValue: flightClass,
                       onChanged: onSelectedFlightClass,
                       activeColor: AppColors.appBlue,
                       title: Text(classItem['label']!),

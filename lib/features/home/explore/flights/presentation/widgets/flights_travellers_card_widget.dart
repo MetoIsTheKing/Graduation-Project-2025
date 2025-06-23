@@ -3,19 +3,16 @@ import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flights_travellers_field_widget.dart';
 
 class FlightsTravellersCardWidget extends StatelessWidget {
-  const FlightsTravellersCardWidget(
-      {super.key,
-      required this.flightModel,
-      required this.onAddTraveller,
-      required this.onremoveTraveller});
-
-  final FlightModel flightModel;
+  final Map<String, int> travellers;
   final void Function(String travellerType) onAddTraveller;
   final void Function(String travellerType) onremoveTraveller;
+  const FlightsTravellersCardWidget(
+      {super.key,
+      required this.onAddTraveller,
+      required this.onremoveTraveller, required this.travellers});
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +83,7 @@ class FlightsTravellersCardWidget extends StatelessWidget {
                           title: 'Adults',
                           subTitle: 'Age(+12)',
                           numberOfTravellers:
-                              flightModel.travellers['adults'].toString(),
+                              travellers['adults'].toString(),
                           onAddTraveller: () {
                             onAddTraveller('adults');
                           },
@@ -102,7 +99,7 @@ class FlightsTravellersCardWidget extends StatelessWidget {
                           title: 'Children',
                           subTitle: 'Age(2-11)',
                           numberOfTravellers:
-                              flightModel.travellers['children'].toString(),
+                              travellers['children'].toString(),
                           onAddTraveller: () {
                             onAddTraveller('children');
                           },
@@ -118,7 +115,7 @@ class FlightsTravellersCardWidget extends StatelessWidget {
                           title: 'Infants',
                           subTitle: 'Under 2 years',
                           numberOfTravellers:
-                              flightModel.travellers['infants'].toString(),
+                              travellers['infants'].toString(),
                           onAddTraveller: () {
                             onAddTraveller('infants');
                           },

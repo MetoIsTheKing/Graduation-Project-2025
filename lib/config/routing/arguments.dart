@@ -1,18 +1,17 @@
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/flight_model.dart';
+import 'package:flutter/material.dart';
 
 class SearchAirportArguments {
-  final FlightsDataCubit cubit;
   final String appBarTitle;
+  final TextEditingController fromController;
+  final TextEditingController toController;
   final bool isOrigin;
-  final FlightModel flightModel;
   final void Function() onBack;
 
   SearchAirportArguments({
-    required this.cubit,
+    required this.fromController, 
+    required this.toController, 
     required this.appBarTitle,
     required this.isOrigin,
-    required this.flightModel,
     required this.onBack,
   });
 }

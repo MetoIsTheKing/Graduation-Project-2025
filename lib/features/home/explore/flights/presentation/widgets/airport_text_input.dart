@@ -20,10 +20,9 @@ class AirportTextInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: refactor text style , handle on change
     final FocusNode focusNode = FocusNode();
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: deviceInfo.screenHeight * 0.02),
+      padding: EdgeInsets.only(top: deviceInfo.screenHeight * 0.02),
       child: TextField(
         textInputAction: TextInputAction.done,
         focusNode: focusNode,
