@@ -13,11 +13,15 @@ import 'package:graduation_project_2025/features/auth/data/datasources/users_rem
 import 'package:graduation_project_2025/features/auth/data/repositories/user_repo_impl.dart';
 import 'package:graduation_project_2025/features/auth/domain/repositories/user_repo.dart';
 import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:graduation_project_2025/features/booking/data/models/one_way_booking_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/data_sources/search_flights_remote.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/repository/search_airports_repo.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
+
+import '../../features/booking/data/models/booking_sub_models.dart';
+import '../../features/booking/data/models/round_trip_booking_model.dart';
 
 final getIt = GetIt.instance;
 
@@ -96,5 +100,79 @@ Future<void> initDependencies() async {
   //AuthCubit
   getIt.registerSingleton<AuthCubit>(
     AuthCubit(getIt<UserRepo>()),
+  );
+
+  // Booking Models
+
+  //OneWay
+  getIt.registerSingleton<OneWayBookingModel>(
+    OneWayBookingModel(
+      flightId: '',
+      numberOfStops: 0,
+      originAirportCode: '',
+      destinationAirportCode: '',
+      originCity: '',
+      destinationCity: '',
+      departureDate: DateTime.now(),
+      arrivalDate: DateTime.now(),
+      selectedBaggageOption: BaggageOptionModel(
+        type: '',
+        weight: '',
+        price: 0.0,
+      ),
+      totalPrice: 0.0,
+      currency: 'USD',
+      travellersInfo: [],
+      contactDetails: ContactDetailsModel(
+        email: '',
+        phone: '',
+      ),
+    ),
+  );
+  // RoundTrip
+  getIt.registerSingleton<RoundTripBookingModel>(
+    RoundTripBookingModel(
+      flightData: [
+        FlightDataModel(
+          flightId: '',
+          typeOfFlight: '',
+          numberOfStops: 0,
+          originAirportCode: '',
+          destinationAirportCode: '',
+          originCity: '',
+          destinationCity: '',
+          departureDate: DateTime.now(),
+          arrivalDate: DateTime.now(),
+          selectedBaggageOption: BaggageOptionModel(
+            type: '',
+            weight: '',
+            price: 0.0,
+          ),
+        ),
+        FlightDataModel(
+          flightId: '',
+          typeOfFlight: '',
+          numberOfStops: 0,
+          originAirportCode: '',
+          destinationAirportCode: '',
+          originCity: '',
+          destinationCity: '',
+          departureDate: DateTime.now(),
+          arrivalDate: DateTime.now(),
+          selectedBaggageOption: BaggageOptionModel(
+            type: '',
+            weight: '',
+            price: 0.0,
+          ),
+        )
+      ],
+      totalPrice: 0.0,
+      currency: 'USD',
+      travellersInfo: [],
+      contactDetails: ContactDetailsModel(
+        email: '',
+        phone: '',
+      ),
+    ),
   );
 }

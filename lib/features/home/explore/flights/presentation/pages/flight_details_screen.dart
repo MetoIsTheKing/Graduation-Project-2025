@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
+import 'package:graduation_project_2025/features/booking/data/models/booking_sub_models.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_details_data_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flight_details/flight_details_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_details/baggage_slider.dart';
@@ -16,9 +17,13 @@ import '../widgets/flight_details/amenities_container.dart';
 class FlightDetailsScreen extends StatefulWidget {
   final FlightResultModel flight;
   final bool isEconomy;
-  final void Function()? onContinuePressed;
+  final void Function(BaggageOptionModel baggageOption, double totalPrice)
+      onContinuePressed;
   const FlightDetailsScreen(
-      {super.key, required this.flight, required this.isEconomy, required this.onContinuePressed});
+      {super.key,
+      required this.flight,
+      required this.isEconomy,
+      required this.onContinuePressed});
 
   @override
   State<FlightDetailsScreen> createState() => _FlightDetailsScreenState();
@@ -61,8 +66,21 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                   builder: (context, state) {
                     return FloatingButton(
                         currency:
-                            "${((double.tryParse(flightModel.totalPrice)! + cubit.extraPrice) * 100).round() / 100}",
-                        onPressed: widget.onContinuePressed);
+                            "${((double.tryParse(flightModel.basicPrice)! + cubit.extraPrice) * 100).round() / 100}",
+                        onPressed: () {
+                          widget.onContinuePressed(
+                            BaggageOptionModel(
+                              type: baggageDetails[widget.isEconomy ? 0 : 1]
+                                  [cubit.selectedBaggage - 1]['title'],
+                              price: baggageDetails[widget.isEconomy ? 0 : 1]
+                                  [cubit.selectedBaggage - 1]['extraAmount'],
+                              weight: baggageDetails[widget.isEconomy ? 0 : 1]
+                                  [cubit.selectedBaggage - 1]['weight'],
+                            ),
+                            (double.tryParse(flightModel.basicPrice)! +
+                                cubit.extraPrice),
+                          );
+                        });
                   },
                 ),
                 floatingActionButtonLocation:
