@@ -2,17 +2,23 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
+import 'package:graduation_project_2025/config/routing/app_router.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
+import 'package:graduation_project_2025/core/helpers/my_logger.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_functions/mapping_airports_codes.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
+import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:graduation_project_2025/features/booking/data/models/booking_sub_models.dart';
+import 'package:graduation_project_2025/features/booking/data/models/one_way_booking_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/curved_appbar.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_search_results/ticket_tile.dart';
 
+import '../../../../../booking/data/models/round_trip_booking_model.dart';
 import '../../data/models/flight_result_model.dart';
 import 'flight_details_screen.dart';
 
@@ -233,7 +239,11 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
                                                         getIt<FlightSearchQueryParams>()
                                                                 .travelClass ==
                                                             'ECONOMY',
-                                                    onContinuePressed: () {
+                                                    onContinuePressed:
+                                                        (BaggageOptionModel
+                                                                baggageOption,
+                                                            double
+                                                                totalPrice) async {
                                                       if (getIt<
                                                               FlightSearchQueryParams>()
                                                           .isRoundTrip) {
@@ -247,16 +257,26 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
                                                               .searchFlights(getIt<
                                                                       FlightSearchQueryParams>()
                                                                   .toReturnMap());
-                                                          //* store flight details
+                                                          handleSignInAndBookingRoundTrip(
+                                                              flight,
+                                                              baggageOption,
+                                                              totalPrice,
+                                                              false);
                                                           context.pushNamed(Routes
                                                               .searchFlightResults);
                                                         } else {
-                                                          //* store flight details
-                                                          //^ handle signIn ,then navigate to booking
+                                                          handleSignInAndBookingRoundTrip(
+                                                              flight,
+                                                              baggageOption,
+                                                              totalPrice,
+                                                              true);
                                                         }
                                                       } else {
-                                                        //* store flight details
-                                                        //^ handle signIn ,then navigate to booking
+                                                        handleSignInAndBookingOneWay(
+                                                          flight,
+                                                          baggageOption,
+                                                          totalPrice,
+                                                        );
                                                       }
                                                     },
                                                   ),
@@ -374,5 +394,57 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
         },
       ),
     );
+  }
+
+  /// Handles the sign-in and booking process.
+  void handleSignInAndBookingOneWay(
+    FlightResultModel flight,
+    BaggageOptionModel baggageOption,
+    double totalPrice,
+  ) async {
+    if (await getIt<AuthCubit>().isLoggedIn()) {
+      OneWayBookingModel.mapFlightResultToOneWayBooking(
+        flightResult: flight,
+        baggageOption: baggageOption,
+        totalPrice: totalPrice,
+      );
+      getIt<OneWayBookingModel>().printBookingDetails();
+
+      //TODO: Navigate to booking screen
+    } else {
+      MyLogger.red('Not loggedin');
+      Navigator.of(context).pushNamed(Routes.logIn);
+    }
+  }
+
+  void handleSignInAndBookingRoundTrip(
+    FlightResultModel flight,
+    BaggageOptionModel baggageOption,
+    double totalPrice,
+    bool isSecondTrip,
+  ) async {
+    if (!isSecondTrip) {
+      RoundTripBookingModel.mapFlightResultToRoundTripBooking(
+        flightResult: flight,
+        baggageOption: baggageOption,
+        totalPrice: totalPrice,
+        isSecondTrip: false,
+      );
+      return;
+    }
+    if (await getIt<AuthCubit>().isLoggedIn() || true) {
+      RoundTripBookingModel.mapFlightResultToRoundTripBooking(
+        flightResult: flight,
+        baggageOption: baggageOption,
+        totalPrice: totalPrice,
+        isSecondTrip: true,
+      );
+      getIt<RoundTripBookingModel>().printBookingDetails();
+
+      //TODO: Navigate to booking screen
+    } else {
+      MyLogger.red('Not loggedin');
+      Navigator.of(context).pushNamed(Routes.logIn);
+    }
   }
 }

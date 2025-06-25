@@ -9,6 +9,7 @@ import 'package:graduation_project_2025/core/shared_components/custom_rounded_bu
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/core/utils/app_strings.dart';
 import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_footer.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_textfield.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/divider.dart';
@@ -56,6 +57,11 @@ class _LogScreenState extends State<LoginScreen> {
       return GestureDetector(
         onTap: FocusScope.of(context).unfocus,
         child: Scaffold(
+          appBar: AuthAppBar(
+              backButtonVisible: true,
+              onPressed: () {
+                context.pop();
+              }),
           backgroundColor: Colors.white,
           // appBar: AuthAppBar(
           //   backButtonVisible: false,
@@ -129,8 +135,7 @@ class _LogScreenState extends State<LoginScreen> {
                                   };
                                   print('this is requetBody : $requestBody');
 
-                                  //context.read<AuthCubit>().login(requestBody);
-                                  context.pushReplacementNamed(Routes.mainHome);
+                                  context.read<AuthCubit>().login(requestBody);
                                 },
                                 textColor: Colors.white,
                               );
