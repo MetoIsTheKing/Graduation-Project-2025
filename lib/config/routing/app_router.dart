@@ -70,11 +70,14 @@ class AppRouter {
               searchFlightsCubit: searchFlightCubit, args: argss);
         });
       case Routes.searchFlightResults:
-        return MaterialPageRoute(builder: (context) {
-          return FlightSearchResultsScreen(
-            searchFlightsCubit: getIt<SearchFlightsCubit>(),
-          );
-        });
+        return MaterialPageRoute(
+            // give the route its name so We can Use PopUntill
+            settings: settings,
+            builder: (context) {
+              return FlightSearchResultsScreen(
+                searchFlightsCubit: getIt<SearchFlightsCubit>(),
+              );
+            });
       case Routes.bookingApplication:
         return MaterialPageRoute(builder: (context) {
           final bookingArgs = args as Map<String, int>;

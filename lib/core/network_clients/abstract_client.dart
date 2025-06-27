@@ -11,9 +11,9 @@ class DioNetworkClient {
     dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
-        connectTimeout: Duration(seconds: 10),
-        sendTimeout: Duration(seconds: 10),
-        receiveTimeout: Duration(seconds: 10),
+        connectTimeout: Duration(seconds: 15),
+        sendTimeout: Duration(seconds: 15),
+        receiveTimeout: Duration(seconds: 15),
         headers: {
           'Content-Type': 'application/json',
           //authriztion header
@@ -107,7 +107,8 @@ class DioNetworkClient {
 
   // Generic GET request with token and query parameters
   Future<Response> get(
-    String path, { // Add token parameter
+    String path, {
+    // Add token parameter
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
@@ -128,9 +129,10 @@ class DioNetworkClient {
     Map<String, dynamic>? data,
   }) async {
     try {
-      final response = await dio.post(path,
-          data: data,
-          );
+      final response = await dio.post(
+        path,
+        data: data,
+      );
       return response;
     } catch (e) {
       handleError(e);
@@ -140,7 +142,8 @@ class DioNetworkClient {
 
   // Generic PUT request with token and data
   Future<Response> put(
-    String path, { // Add token parameter
+    String path, {
+    // Add token parameter
     Map<String, dynamic>? data,
   }) async {
     try {
@@ -157,10 +160,11 @@ class DioNetworkClient {
 
   // Generic DELETE request with token
   Future<Response> delete(
-    String path, ) async {
+    String path,
+  ) async {
     try {
       final response = await dio.delete(
-        path,// Add token dynamically
+        path, // Add token dynamically
       );
       return response;
     } catch (e) {

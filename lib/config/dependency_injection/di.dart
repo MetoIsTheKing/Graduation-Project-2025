@@ -22,6 +22,7 @@ import 'package:graduation_project_2025/features/home/explore/flights/data/model
 
 import '../../features/booking/data/models/booking_sub_models.dart';
 import '../../features/booking/data/models/round_trip_booking_model.dart';
+import '../routing/auth_navigation_state.dart';
 
 final getIt = GetIt.instance;
 
@@ -120,60 +121,7 @@ Future<void> initDependencies() async {
       ),
     ),
   );
-
-  // ------- dio client -------
-  getIt.registerLazySingleton<DioNetworkClient>(() => FakeUsersClient(),
-      instanceName: DiInstances.dioUserClient);
-  getIt.registerLazySingleton<DioNetworkClient>(
-      () => AmadeusApiClient(
-            apiKey: dotenv.env['AMADEUS_API_KEY'] ?? 'your_api_key',
-            apiSecret: dotenv.env['AMADEUS_API_SECRET'] ?? 'your_api_secret',
-          ),
-      instanceName: DiInstances.amadeusClient);
-
-  //------------ data sources ------------
-
-  // UserRemote
-  getIt.registerLazySingleton<UsersRemote>(
-    () => UsersRemoteImpl(
-        fakeUsersClient:
-            getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient)),
+  getIt.registerLazySingleton<AuthNavigationState>(
+    () => AuthNavigationState(),
   );
-  // SearchAirportsRemote
-  getIt.registerLazySingleton<SearchFlightssRemoteDataSource>(
-    () => SearchFlightssRemoteDataSourceImpl(
-      amadeusApiClient:
-          getIt<DioNetworkClient>(instanceName: DiInstances.amadeusClient),
-    ),
-  );
-
-  //------------ repositories ------------
-
-  // UserRepo
-  getIt.registerLazySingleton<UserRepo>(
-    () => UserRepoImpl(getIt<UsersRemote>()),
-  );
-  // SearchAirportsRepo
-  getIt.registerLazySingleton<SearchFlightsRepo>(
-    () => SearchFlightsRepo(
-        remoteDataSource: getIt<SearchFlightssRemoteDataSource>()),
-  );
-  //------------ cubits ------------
-
-  // SearchFlightsCubits
-  getIt.registerSingleton<SearchFlightsCubit>(
-    SearchFlightsCubit(searchAirportsRepo: getIt<SearchFlightsRepo>()),
-  );
-  getIt.registerLazySingleton<FlightsDataCubit>(
-    () => FlightsDataCubit(),
-  );
-
-  //AuthCubit
-  getIt.registerSingleton<AuthCubit>(
-    AuthCubit(getIt<UserRepo>()),
-  );
-
-  // Booking Models
-
-  //OneWay
 }
