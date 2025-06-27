@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/routing/app_router.dart';
+import 'package:graduation_project_2025/config/routing/auth_navigation_state.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/helpers/my_logger.dart';
@@ -413,6 +414,7 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
       //TODO: Navigate to booking screen
     } else {
       MyLogger.red('Not loggedin');
+      getIt<AuthNavigationState>().setRedirectRoute(Routes.searchFlightResults);
       Navigator.of(context).pushNamed(Routes.logIn);
     }
   }
@@ -432,7 +434,7 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
       );
       return;
     }
-    if (await getIt<AuthCubit>().isLoggedIn() || true) {
+    if (await getIt<AuthCubit>().isLoggedIn()) {
       RoundTripBookingModel.mapFlightResultToRoundTripBooking(
         flightResult: flight,
         baggageOption: baggageOption,

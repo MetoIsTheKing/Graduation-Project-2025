@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/booking/data/models/booking_sub_models.dart';
+import 'package:graduation_project_2025/features/booking/data/models/one_way_booking_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_details_data_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flight_details/flight_details_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_details/baggage_slider.dart';
@@ -68,6 +70,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                         currency:
                             "${((double.tryParse(flightModel.basicPrice)! + cubit.extraPrice) * 100).round() / 100}",
                         onPressed: () {
+                          getIt<OneWayBookingModel>().travellersInfo = [];
                           widget.onContinuePressed(
                             BaggageOptionModel(
                               type: baggageDetails[widget.isEconomy ? 0 : 1]

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
+
+import '../../../../../config/routing/auth_navigation_state.dart';
+import '../../../../../core/helpers/my_logger.dart';
 
 class AuthFooter extends StatelessWidget {
   final bool isSignup;
@@ -21,9 +25,10 @@ class AuthFooter extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
+            // Make sure that the login screen always comes before the signup screen
             isSignup
-                ? context.pushNamed(Routes.logIn)
-                : Navigator.of(context).pushNamed(Routes.signUp);
+                ? context.pushReplacementNamed(Routes.logIn)
+                : Navigator.of(context).pushReplacementNamed(Routes.signUp);
           },
           child: Text(isSignup ? "Login" : 'Sign Up',
               style: TextStyles.semiBoldDark32.copyWith(

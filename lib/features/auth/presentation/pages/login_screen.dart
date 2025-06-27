@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/paddings.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
+import 'package:graduation_project_2025/core/helpers/my_logger.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
@@ -15,6 +17,8 @@ import 'package:graduation_project_2025/features/auth/presentation/widgets/share
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/divider.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_header.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/error_toast.dart';
+
+import '../../../../config/routing/auth_navigation_state.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -116,7 +120,29 @@ class _LogScreenState extends State<LoginScreen> {
                                         description: 'Login Successful')
                                     .show(context);
                                 Future.delayed(const Duration(seconds: 1));
-                                context.pushReplacementNamed(Routes.mainHome);
+
+                                // Read the route from the shared state object
+                                String? redirectRoute =
+                                    getIt<AuthNavigationState>().routeName;
+                                // CRITICAL: Clear the state immediately so it's not accidentally used again
+                                getIt<AuthNavigationState>()
+                                    .clearRedirectRoute();
+                                if (redirectRoute != null) {
+                                  // A specific return route was provided. Use it.
+                                  Navigator.popUntil(
+                                    context,
+                                    (route) =>
+                                        route.settings.name == redirectRoute,
+                                  );
+                                } else {
+                                  // No specific route was provided. Use the default behavior.
+
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    Routes.explore,
+                                    (route) => false,
+                                  );
+                                }
                               }
                             },
                             builder: (context, state) {

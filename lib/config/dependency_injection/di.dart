@@ -22,6 +22,7 @@ import 'package:graduation_project_2025/features/home/explore/flights/data/model
 
 import '../../features/booking/data/models/booking_sub_models.dart';
 import '../../features/booking/data/models/round_trip_booking_model.dart';
+import '../routing/auth_navigation_state.dart';
 
 final getIt = GetIt.instance;
 
@@ -174,5 +175,9 @@ Future<void> initDependencies() async {
         phone: '',
       ),
     ),
+  );
+
+  getIt.registerLazySingleton<AuthNavigationState>(
+    () => AuthNavigationState(),
   );
 }
