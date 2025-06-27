@@ -38,7 +38,8 @@ Future<void> initDependencies() async {
     );
   }
 
-  // AirportDetails
+////////////////////////////////////^ Data Models  ////////////////////////
+  //! i think this is not needed anymore
   getIt.registerSingleton<AirportsDetails>(
     AirportsDetails(
       arrAirportsDetails: {},
@@ -49,62 +50,6 @@ Future<void> initDependencies() async {
   getIt.registerSingleton<FlightSearchQueryParams>(
     FlightSearchQueryParams(),
   );
-
-  // ------- dio client -------
-  getIt.registerLazySingleton<DioNetworkClient>(() => FakeUsersClient(),
-      instanceName: DiInstances.dioUserClient);
-  getIt.registerLazySingleton<DioNetworkClient>(
-      () => AmadeusApiClient(
-            apiKey: dotenv.env['AMADEUS_API_KEY'] ?? 'your_api_key',
-            apiSecret: dotenv.env['AMADEUS_API_SECRET'] ?? 'your_api_secret',
-          ),
-      instanceName: DiInstances.amadeusClient);
-
-  //------------ data sources ------------
-
-  // UserRemote
-  getIt.registerLazySingleton<UsersRemote>(
-    () => UsersRemoteImpl(
-        fakeUsersClient:
-            getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient)),
-  );
-  // SearchAirportsRemote
-  getIt.registerLazySingleton<SearchFlightssRemoteDataSource>(
-    () => SearchFlightssRemoteDataSourceImpl(
-      amadeusApiClient:
-          getIt<DioNetworkClient>(instanceName: DiInstances.amadeusClient),
-    ),
-  );
-
-  //------------ repositories ------------
-
-  // UserRepo
-  getIt.registerLazySingleton<UserRepo>(
-    () => UserRepoImpl(getIt<UsersRemote>()),
-  );
-  // SearchAirportsRepo
-  getIt.registerLazySingleton<SearchFlightsRepo>(
-    () => SearchFlightsRepo(
-        remoteDataSource: getIt<SearchFlightssRemoteDataSource>()),
-  );
-  //------------ cubits ------------
-
-  // SearchFlightsCubits
-  getIt.registerSingleton<SearchFlightsCubit>(
-    SearchFlightsCubit(searchAirportsRepo: getIt<SearchFlightsRepo>()),
-  );
-  getIt.registerLazySingleton<FlightsDataCubit>(
-    () => FlightsDataCubit(),
-  );
-
-  //AuthCubit
-  getIt.registerSingleton<AuthCubit>(
-    AuthCubit(getIt<UserRepo>()),
-  );
-
-  // Booking Models
-
-  //OneWay
   getIt.registerSingleton<OneWayBookingModel>(
     OneWayBookingModel(
       flightId: '',
@@ -175,4 +120,60 @@ Future<void> initDependencies() async {
       ),
     ),
   );
+
+  // ------- dio client -------
+  getIt.registerLazySingleton<DioNetworkClient>(() => FakeUsersClient(),
+      instanceName: DiInstances.dioUserClient);
+  getIt.registerLazySingleton<DioNetworkClient>(
+      () => AmadeusApiClient(
+            apiKey: dotenv.env['AMADEUS_API_KEY'] ?? 'your_api_key',
+            apiSecret: dotenv.env['AMADEUS_API_SECRET'] ?? 'your_api_secret',
+          ),
+      instanceName: DiInstances.amadeusClient);
+
+  //------------ data sources ------------
+
+  // UserRemote
+  getIt.registerLazySingleton<UsersRemote>(
+    () => UsersRemoteImpl(
+        fakeUsersClient:
+            getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient)),
+  );
+  // SearchAirportsRemote
+  getIt.registerLazySingleton<SearchFlightssRemoteDataSource>(
+    () => SearchFlightssRemoteDataSourceImpl(
+      amadeusApiClient:
+          getIt<DioNetworkClient>(instanceName: DiInstances.amadeusClient),
+    ),
+  );
+
+  //------------ repositories ------------
+
+  // UserRepo
+  getIt.registerLazySingleton<UserRepo>(
+    () => UserRepoImpl(getIt<UsersRemote>()),
+  );
+  // SearchAirportsRepo
+  getIt.registerLazySingleton<SearchFlightsRepo>(
+    () => SearchFlightsRepo(
+        remoteDataSource: getIt<SearchFlightssRemoteDataSource>()),
+  );
+  //------------ cubits ------------
+
+  // SearchFlightsCubits
+  getIt.registerSingleton<SearchFlightsCubit>(
+    SearchFlightsCubit(searchAirportsRepo: getIt<SearchFlightsRepo>()),
+  );
+  getIt.registerLazySingleton<FlightsDataCubit>(
+    () => FlightsDataCubit(),
+  );
+
+  //AuthCubit
+  getIt.registerSingleton<AuthCubit>(
+    AuthCubit(getIt<UserRepo>()),
+  );
+
+  // Booking Models
+
+  //OneWay
 }

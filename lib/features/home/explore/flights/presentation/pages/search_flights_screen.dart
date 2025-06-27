@@ -178,8 +178,6 @@ class _SearchFlightsScreenState extends State<SearchFlightsScreen> {
         ..currencyCode = 'USD';
       MyLogger.green(
           'Query Params: ${getIt<FlightSearchQueryParams>().toGoMap()}');
-      searchFlightCubit
-          .searchFlights(getIt<FlightSearchQueryParams>().toGoMap());
       context.pushNamed(Routes.searchFlightResults);
     } else {
       MyLogger.red('fucccccccccccck');

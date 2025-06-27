@@ -2,7 +2,6 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
-import 'package:graduation_project_2025/config/routing/app_router.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/helpers/my_logger.dart';
@@ -13,6 +12,7 @@ import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:graduation_project_2025/features/booking/data/models/booking_sub_models.dart';
 import 'package:graduation_project_2025/features/booking/data/models/one_way_booking_model.dart';
+import 'package:graduation_project_2025/features/booking/presentaion/pages/booking_application_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/curved_appbar.dart';
@@ -34,25 +34,20 @@ class FlightSearchResultsScreen extends StatefulWidget {
 }
 
 class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
-  late List<FlightResultModel> flightsResults;
-
   @override
   void initState() {
     super.initState();
-    flightsResults = widget.searchFlightsCubit.goFlights;
-    // Set initial flights list based on indicator
-    _updateFlightsList();
-  }
-
-  void _updateFlightsList() {
-    if (getIt<FlightSearchQueryParams>().goOrReturnIndicator == 0) {
-      setState(() {
-        flightsResults = widget.searchFlightsCubit.goFlights;
-      });
+    if (getIt<FlightSearchQueryParams>().isRoundTrip) {
+      if (getIt<FlightSearchQueryParams>().goOrReturnIndicator == 0) {
+        widget.searchFlightsCubit
+            .searchFlights(getIt<FlightSearchQueryParams>().toGoMap());
+      } else {
+        widget.searchFlightsCubit
+            .searchFlights(getIt<FlightSearchQueryParams>().toReturnMap());
+      }
     } else {
-      setState(() {
-        flightsResults = widget.searchFlightsCubit.returnFlights;
-      });
+      widget.searchFlightsCubit
+          .searchFlights(getIt<FlightSearchQueryParams>().toGoMap());
     }
   }
 
@@ -77,6 +72,7 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
                     context.pop();
                   } else {
                     getIt<FlightSearchQueryParams>().goOrReturnIndicator = 0;
+                    widget.searchFlightsCubit.toggleFlightList();
                     context.pop();
                   }
                 } else {
@@ -190,8 +186,10 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
                                       ),
                                     ),
                                   );
-                                } else if (state is FlightsLoaded &&
-                                    state.flights.isEmpty) {
+                                } else if ((state is FlightsGoLoaded &&
+                                        state.goFlights.isEmpty) ||
+                                    (state is FlightsReturnLoaded &&
+                                        state.returnFlights.isEmpty)) {
                                   return Center(
                                     child: Text(
                                       'No flights found',
@@ -215,7 +213,16 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
                                           deviceInfo, Colors.white),
                                     ),
                                   );
-                                } else if (state is FlightsLoaded) {
+                                } else if (state is FlightsGoLoaded ||
+                                    state is FlightsReturnLoaded) {
+                                  // Determine the correct flights list based on the state
+                                  final List<FlightResultModel> flightsResults =
+                                      state is FlightsGoLoaded
+                                          ? state.goFlights
+                                          : state is FlightsReturnLoaded
+                                              ? state.returnFlights
+                                              : [];
+
                                   return Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -252,11 +259,6 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
                                                             0) {
                                                           getIt<FlightSearchQueryParams>()
                                                               .incrementIndicator();
-                                                          widget
-                                                              .searchFlightsCubit
-                                                              .searchFlights(getIt<
-                                                                      FlightSearchQueryParams>()
-                                                                  .toReturnMap());
                                                           handleSignInAndBookingRoundTrip(
                                                               flight,
                                                               baggageOption,
@@ -315,22 +317,43 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
                                                 );
                                               },
                                               flight: flightsResults[index],
-                                              departureAirportName:
-                                                  getAirportDetails(flightsResults[
-                                                              index]
+                                              departureAirportName: flightsResults
+                                                          .isNotEmpty &&
+                                                      index <
+                                                          flightsResults
+                                                              .length &&
+                                                      flightsResults[index]
+                                                          .itineraries
+                                                          .isNotEmpty &&
+                                                      flightsResults[index]
                                                           .itineraries[0]
-                                                          .segments[flightsResults[
+                                                          .segments
+                                                          .isNotEmpty
+                                                  ? getAirportDetails(
+                                                              flightsResults[
                                                                       index]
-                                                                  .itineraries[
-                                                                      0]
+                                                                  .itineraries[0]
                                                                   .segments
-                                                                  .length -
-                                                              1]
-                                                          .arrival
-                                                          .iataCode)['name'] ??
-                                                      'Unknown',
-                                              arrivalAirportName:
-                                                  getAirportDetails(
+                                                                  .last
+                                                                  .arrival
+                                                                  .iataCode)[
+                                                          'name'] ??
+                                                      'Unknown Airport'
+                                                  : 'Unknown Airport',
+
+                                              arrivalAirportName: flightsResults
+                                                          .isNotEmpty &&
+                                                      index <
+                                                          flightsResults
+                                                              .length &&
+                                                      flightsResults[index]
+                                                          .itineraries
+                                                          .isNotEmpty &&
+                                                      flightsResults[index]
+                                                          .itineraries[0]
+                                                          .segments
+                                                          .isNotEmpty
+                                                  ? getAirportDetails(
                                                               flightsResults[
                                                                       index]
                                                                   .itineraries[0]
@@ -338,8 +361,8 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
                                                                   .departure
                                                                   .iataCode)[
                                                           'name'] ??
-                                                      'Unknown',
-
+                                                      'Unknown Airport'
+                                                  : 'Unknown Airport',
                                               // arrivalAirportName: getIt<
                                               //                 FlightSearchQueryParams>()
                                               //             .goOrReturnIndicator ==
@@ -396,6 +419,7 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
     );
   }
 
+  //^ why it is not 1 function?????????????????????
   /// Handles the sign-in and booking process.
   void handleSignInAndBookingOneWay(
     FlightResultModel flight,
@@ -409,11 +433,24 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
         totalPrice: totalPrice,
       );
       getIt<OneWayBookingModel>().printBookingDetails();
-
-      //TODO: Navigate to booking screen
+      if (mounted) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return BookingApplicationScreen(
+              travelers: getIt<FlightSearchQueryParams>().getTravellersMap());
+        }));
+      } else {
+        return;
+      }
     } else {
       MyLogger.red('Not loggedin');
-      Navigator.of(context).pushNamed(Routes.logIn);
+      if (mounted) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return BookingApplicationScreen(
+              travelers: getIt<FlightSearchQueryParams>().getTravellersMap());
+        }));
+      } else {
+        return;
+      }
     }
   }
 
@@ -432,7 +469,7 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
       );
       return;
     }
-    if (await getIt<AuthCubit>().isLoggedIn() || true) {
+    if (await getIt<AuthCubit>().isLoggedIn()) {
       RoundTripBookingModel.mapFlightResultToRoundTripBooking(
         flightResult: flight,
         baggageOption: baggageOption,
@@ -441,10 +478,24 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
       );
       getIt<RoundTripBookingModel>().printBookingDetails();
 
-      //TODO: Navigate to booking screen
+      if (mounted) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return BookingApplicationScreen(
+              travelers: getIt<FlightSearchQueryParams>().getTravellersMap());
+        }));
+      } else {
+        return;
+      }
     } else {
       MyLogger.red('Not loggedin');
-      Navigator.of(context).pushNamed(Routes.logIn);
+      if (mounted) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return BookingApplicationScreen(
+              travelers: getIt<FlightSearchQueryParams>().getTravellersMap());
+        }));
+      } else {
+        return;
+      }
     }
   }
 }

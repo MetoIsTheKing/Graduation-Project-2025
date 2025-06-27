@@ -107,6 +107,14 @@ class FlightSearchQueryParams {
     };
   }
 
+  Map<String,int> getTravellersMap() {
+    return {
+      'adults': adults,
+      'children': children,
+      'infants': infants,
+    };
+  }
+
   Map<String, dynamic> toReturnMap() {
     return {
       'originLocationCode': destinationLocationCode,

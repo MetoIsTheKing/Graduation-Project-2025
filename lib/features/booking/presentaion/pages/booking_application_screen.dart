@@ -9,8 +9,8 @@ import 'package:graduation_project_2025/core/shared_components/custom_rounded_bu
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/traveler_info_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/curved_appbar.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/booking_application/total_price_tag.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/booking_application/traveler_info_tile.dart';
+import 'package:graduation_project_2025/features/booking/presentaion/widgets/booking_application/total_price_tag.dart';
+import 'package:graduation_project_2025/features/booking/presentaion/widgets/booking_application/traveler_info_tile.dart';
 
 class BookingApplicationScreen extends StatefulWidget {
   final Map<String, int> travelers;
