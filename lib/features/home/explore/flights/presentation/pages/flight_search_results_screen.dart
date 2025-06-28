@@ -487,18 +487,13 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
       }
     } else {
       MyLogger.red('Not loggedin');
-<<<<<<< HEAD
       // Here👋
-      getIt<AuthNavigationState>().setRedirectRoute(Routes.searchFlightResults);
-      Navigator.of(context).pushNamed(Routes.logIn);
-=======
       getIt<AuthNavigationState>().setRedirectRoute(Routes.searchFlightResults);
       if (mounted) {
         Navigator.of(context).pushNamed(Routes.logIn);
       } else {
         return;
       }
->>>>>>> af3d65fbca6cd39b49b74f33cc67e658ed036e64
     }
   }
 }
