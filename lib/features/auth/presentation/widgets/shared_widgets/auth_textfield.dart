@@ -111,8 +111,8 @@ class AuthTextField extends StatelessWidget {
       textInputAction:
           nextFocusNode != null ? TextInputAction.next : TextInputAction.done,
       onFieldSubmitted: (value) {
-        if (nextFocusNode != null) {
-          FocusScope.of(context).requestFocus(nextFocusNode);
+        if (nextFocusNode != null && focusNode != null) {
+          FocusScope.of(context).requestFocus(nextFocusNode!);
         }
       },
       decoration: InputDecoration(

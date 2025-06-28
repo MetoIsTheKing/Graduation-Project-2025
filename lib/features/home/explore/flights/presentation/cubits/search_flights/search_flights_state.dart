@@ -23,10 +23,16 @@ class AirportsLoaded extends SearchFlightsState {
 
 // Flights
 class FlightsIsLoading extends SearchFlightsState {}
-class FlightsLoaded extends SearchFlightsState {
-  final List<FlightResultModel> flights;
-  FlightsLoaded({
-    required this.flights,
+class FlightsGoLoaded extends SearchFlightsState {
+  final List<FlightResultModel> goFlights;
+  FlightsGoLoaded({
+    required this.goFlights,
+  });
+}
+class FlightsReturnLoaded extends SearchFlightsState {
+  final List<FlightResultModel> returnFlights;
+  FlightsReturnLoaded({
+    required this.returnFlights,
   });
 }
 class FlightsOnError extends SearchFlightsState {

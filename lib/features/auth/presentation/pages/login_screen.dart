@@ -4,7 +4,6 @@ import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/paddings.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
-import 'package:graduation_project_2025/core/helpers/my_logger.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';

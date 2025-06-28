@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
-import 'package:graduation_project_2025/core/helpers/my_logger.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/airport_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_result_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/repository/search_airports_repo.dart';
@@ -15,8 +14,8 @@ class SearchFlightsCubit extends Cubit<SearchFlightsState> {
     print('Cubit created!');
   }
 
-  List<FlightResultModel> goFlights = [];
-  List<FlightResultModel> returnFlights = [];
+  List<FlightResultModel> _goFlights = [];
+  List<FlightResultModel> _returnFlights = [];
 
   Future<void> searchAirports(String query) async {
     emit(AirportsIsLoading());
@@ -42,31 +41,18 @@ class SearchFlightsCubit extends Cubit<SearchFlightsState> {
       if (response['statusCode'] == 200) {
         if (getIt<FlightSearchQueryParams>().isRoundTrip) {
           if (getIt<FlightSearchQueryParams>().goOrReturnIndicator == 0) {
-            goFlights = response['flights'] as List<FlightResultModel>;
-            if (goFlights == returnFlights) {
-              MyLogger.red(
-                'goFlights and returnFlights are the same, true 0',
-              );
-            }
-            emit(FlightsLoaded(flights: goFlights));
+            _goFlights = response['flights'] as List<FlightResultModel>;
+
+            emit(FlightsGoLoaded(goFlights: _goFlights));
           } else {
-            returnFlights = response['flights'] as List<FlightResultModel>;
-            if (goFlights == returnFlights) {
-              MyLogger.red(
-                'goFlights and returnFlights are the same, true 1',
-              );
-            }
-            if (goFlights == returnFlights) {
-              MyLogger.red(
-                'goFlights and returnFlights are the same, false 0',
-              );
-            }
-            emit(FlightsLoaded(flights: returnFlights));
+            _returnFlights = response['flights'] as List<FlightResultModel>;
+
+            emit(FlightsReturnLoaded(returnFlights: _returnFlights));
           }
         } else {
-          goFlights = response['flights'] as List<FlightResultModel>;
-          emit(FlightsLoaded(
-            flights: goFlights,
+          _goFlights = response['flights'] as List<FlightResultModel>;
+          emit(FlightsGoLoaded(
+            goFlights: _goFlights,
           ));
         }
       } else {
@@ -75,6 +61,22 @@ class SearchFlightsCubit extends Cubit<SearchFlightsState> {
     } catch (e, stackTrace) {
       print(stackTrace);
       emit(FlightsOnError(errorMessage: e.toString()));
+    }
+  }
+
+  void toggleFlightList() {
+    if (getIt<FlightSearchQueryParams>().goOrReturnIndicator == 0) {
+      if (_goFlights.isNotEmpty) {
+        emit(FlightsGoLoaded(goFlights: _goFlights));
+      } else {
+        emit(FlightsOnError(errorMessage: "No departure flights available"));
+      }
+    } else {
+      if (_returnFlights.isNotEmpty) {
+        emit(FlightsReturnLoaded(returnFlights: _returnFlights));
+      } else {
+        emit(FlightsOnError(errorMessage: "No return flights available"));
+      }
     }
   }
 }

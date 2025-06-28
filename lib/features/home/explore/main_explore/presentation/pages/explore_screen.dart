@@ -1,10 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project_2025/config/routing/arguments.dart';
+import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/map_widget.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/widgets/hotel_recomendation_card.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/widgets/profile_header.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/widgets/quick_action_button.dart';
@@ -64,20 +65,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         icon: 'assets/images/flight_icon.png',
                         dimension: deviceInfo.screenHeight * 0.14,
                         onPressed: () {
-                          context.pushReplacementNamed(Routes.flights,
-                              arguments: AirportsDetails(
-                                arrAirportsDetails: {},
-                                depAirportsDetails: {},
-                              ));
+                          context.pushReplacementNamed(Routes.flights);
                           print('flight clicked');
                         }),
                     QuickActionButton(
                         iconlabel: 'Activity',
                         icon: 'assets/images/hotel_icon.png',
                         dimension: deviceInfo.screenHeight * 0.11,
-                        onPressed: () {
-                          context.pushNamed(Routes.bookingApplication);
-                        }),
+                        onPressed: () {}),
                   ],
                 ),
               ),

@@ -9,7 +9,7 @@ import 'package:graduation_project_2025/features/auth/presentation/pages/login_s
 import 'package:graduation_project_2025/features/auth/presentation/pages/signup_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/booking_application_screen.dart';
+import 'package:graduation_project_2025/features/booking/presentaion/pages/booking_application_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/flight_search_results_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_flights_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_airport.dart';
@@ -51,16 +51,12 @@ class AppRouter {
       //   return MaterialPageRoute(builder: (context) => FlightReviewScreen());
       case Routes.flights:
         return MaterialPageRoute(builder: (context) {
-          final airportArgs = args as AirportsDetails;
-
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => getIt<FlightsDataCubit>()),
               BlocProvider.value(value: getIt<SearchFlightsCubit>()),
             ],
-            child: SearchFlightsScreen(
-              airportsDetails: airportArgs,
-            ),
+            child: SearchFlightsScreen(),
           );
         });
 
@@ -84,12 +80,9 @@ class AppRouter {
             });
       case Routes.bookingApplication:
         return MaterialPageRoute(builder: (context) {
-          return const BookingApplicationScreen(
-            travelers: {
-              'adults': 1,
-              'children': 0,
-              'infants': 0,
-            },
+          final bookingArgs = args as Map<String, int>;
+          return BookingApplicationScreen(
+            travelers: bookingArgs,
           );
         });
       case Routes.onBoarding:

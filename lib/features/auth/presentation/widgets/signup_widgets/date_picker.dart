@@ -26,7 +26,8 @@ class CustomDatePickerField extends StatefulWidget {
 
 class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
   void _openDatePicker(BuildContext context) async {
-    DateTime? pickedDate;
+    DateTime tempSelectedDate = widget.selectedDate ?? DateTime.now();
+    DateTime tempFocusedDate = widget.selectedDate ?? DateTime.now();
 
     await showModalBottomSheet(
       context: context,
@@ -35,83 +36,82 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: widget.deviceInfo.screenHeight * 0.5,
-                child: TableCalendar(
-                  firstDay: DateTime(1900),
-                  weekNumbersVisible: false,
-                  headerStyle: HeaderStyle(formatButtonVisible: false),
-                  sixWeekMonthsEnforced: false,
-                  lastDay: DateTime(2100),
-                  focusedDay: widget.selectedDate ?? DateTime.now(),
-                  selectedDayPredicate: (day) {
-                    return isSameDay(widget.selectedDate, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) {
-                    setState(() {
-                      selectedDay = selectedDay;
-                      focusedDay = focusedDay;
-                      pickedDate = selectedDay;
-                    });
-                  },
-                  calendarStyle: CalendarStyle(
-                    todayDecoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      border:
-                          Border.all(color: AppColors.appDarkBlue, width: 2),
+        return StatefulBuilder(builder: (context, setState) {
+          return Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: widget.deviceInfo.screenHeight * 0.5,
+                  child: TableCalendar(
+                    pageAnimationCurve: Curves.easeInOut,
+                    pageAnimationDuration: const Duration(milliseconds: 500),
+                    firstDay: DateTime(1900),
+                    weekNumbersVisible: false,
+                    headerStyle: HeaderStyle(formatButtonVisible: false),
+                    sixWeekMonthsEnforced: false,
+                    lastDay: DateTime(2100),
+                    focusedDay: tempFocusedDate,
+                    selectedDayPredicate: (day) {
+                      return isSameDay(tempSelectedDate, day);
+                    },
+                    onDaySelected: (selectedDay, focusedDay) {
+                      setState(() {
+                        tempSelectedDate = selectedDay;
+                        tempFocusedDate = focusedDay;
+                      });
+                    },
+                    calendarStyle: CalendarStyle(
+                      todayDecoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border:
+                            Border.all(color: AppColors.appDarkBlue, width: 2),
+                      ),
+                      todayTextStyle: TextStyle(color: AppColors.appDarkBlue),
+                      selectedDecoration: BoxDecoration(
+                        color: AppColors.appBlue,
+                        shape: BoxShape.circle,
+                      ),
+                      selectedTextStyle: TextStyle(color: Colors.white),
                     ),
-                    todayTextStyle: TextStyle(color: AppColors.appDarkBlue),
-                    selectedDecoration: BoxDecoration(
-                      color: AppColors.appBlue,
-                      shape: BoxShape.circle,
-                    ),
-                    selectedTextStyle: TextStyle(color: Colors.white),
                   ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              // Action Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text("Cancel",
-                        style: TextStyle(color: Colors.red)),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (pickedDate != null) {
-                        widget.onDateSelected(pickedDate!);
-                      }
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.appBlue,
-                      foregroundColor: Colors.white,
+                const SizedBox(height: 10),
+                // Action Buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text("Cancel",
+                          style: TextStyle(color: Colors.red)),
                     ),
-                    child: const Text("Confirm"),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
+                    ElevatedButton(
+                      onPressed: () {
+                        widget.onDateSelected(tempSelectedDate);
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.appBlue,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text("Confirm"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
       },
     );
   }
-
- 
 
   @override
   Widget build(BuildContext context) {

@@ -1,0 +1,9 @@
+flutter_native_splash:
+  background_image: "assets/images/splash.png" # Fallback background color (for Android <12, iOS) # Centered logo (optional)
+  android: true
+  ios: true
+
+  
+  # Android 12+ (full-screen image)
+  android_12:
+    background_image: "assets/images/splash.png"  # Full-screen background # Optional logo overlay # Behind background_image (if transparent)

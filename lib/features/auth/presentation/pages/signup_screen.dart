@@ -3,6 +3,7 @@ import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/paddings.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 
@@ -102,7 +103,7 @@ class _SignupScreenState extends State<SignupScreen> {
           backgroundColor: Colors.white,
           appBar: AuthAppBar(
             backButtonVisible: true,
-            onPressed: () => context.pop(),
+            onPressed: () => context.pushReplacementNamed(Routes.logIn),
           ),
           body: SafeArea(
             bottom: false,
