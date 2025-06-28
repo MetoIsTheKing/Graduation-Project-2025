@@ -446,6 +446,8 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
       //TODO: Navigate to booking screen
     } else {
       MyLogger.red('Not loggedin');
+      // Here👋
+      getIt<AuthNavigationState>().setRedirectRoute(Routes.searchFlightResults);
       Navigator.of(context).pushNamed(Routes.logIn);
     }
   }
