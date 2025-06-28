@@ -7,13 +7,13 @@ import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_textfield.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/country_picker.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/date_picker.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/traveler_info_model.dart';
+import 'package:graduation_project_2025/features/booking/data/models/traveler_info_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_airport/airport_text_input.dart';
 import 'package:country_picker/country_picker.dart';
 
 class TravelerInfoTile extends StatefulWidget {
-  final TravelerInfoModel travelerInfoModel;
-  final Function(TravelerInfoModel) onDataChanged;
+  final TravelerInfoUiModel travelerInfoModel;
+  final Function(TravelerInfoUiModel) onDataChanged;
   const TravelerInfoTile(
       {super.key,
       required this.travelerInfoModel,
@@ -26,8 +26,10 @@ class TravelerInfoTile extends StatefulWidget {
 class _TravelerInfoTileState extends State<TravelerInfoTile> {
   Color expandableTitleColor = Colors.white;
 
-  final TextEditingController _fullNameController = TextEditingController();
-  final FocusNode _fullNameFocusNode = FocusNode();
+  final TextEditingController _firstNameController = TextEditingController();
+  final FocusNode _firstNameFocusNode = FocusNode();
+  final TextEditingController _lastNameController = TextEditingController();
+  final FocusNode _lastNameFocusNode = FocusNode();
 
   final TextEditingController _birhtDateController = TextEditingController();
   DateTime selectedBirthDate = DateTime.now();
@@ -51,14 +53,31 @@ class _TravelerInfoTileState extends State<TravelerInfoTile> {
   Country? selectedIssuingCountry;
 
   @override
+  void initState() {
+    selectedBirthDate = DateTime.now();
+    _birhtDateController.text = selectedBirthDate.toString().substring(0, 10);
+    widget.travelerInfoModel.birthDate = _birhtDateController.text;
+    selectedExpiryDate = DateTime.now().add(const Duration(days: 365 * 5));
+    _passportExpiryController.text =
+        selectedExpiryDate.toString().substring(0, 10);
+    widget.travelerInfoModel.passportExpiryDate =
+        _passportExpiryController.text;
+    widget.onDataChanged(widget.travelerInfoModel);
+
+    super.initState();
+  }
+
+  @override
   void dispose() {
-    _fullNameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _birhtDateController.dispose();
     _nationalityController.dispose();
     _passportNumController.dispose();
     _passportExpiryController.dispose();
     _issuingCountryController.dispose();
-    _fullNameFocusNode.dispose();
+    _firstNameFocusNode.dispose();
+    _lastNameFocusNode.dispose();
     _birhtDateFocusNode.dispose();
     _nationalityFocusNode.dispose();
     _passportNumFocusNode.dispose();
@@ -132,8 +151,8 @@ class _TravelerInfoTileState extends State<TravelerInfoTile> {
               top: deviceInfo.screenHeight * 0.01,
             ),
             child: AuthTextField(
-              prefix: 'Full Name',
-              hint: 'Enter your full name',
+              prefix: 'First Name',
+              hint: 'Enter your first name',
               keyboardType: TextInputType.name,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(
@@ -143,11 +162,38 @@ class _TravelerInfoTileState extends State<TravelerInfoTile> {
                   RegExp(r'^[0-9]+$'),
                 ),
               ],
-              controller: _fullNameController,
-              focusNode: _fullNameFocusNode,
-              nextFocusNode: _birhtDateFocusNode,
+              controller: _firstNameController,
+              focusNode: _firstNameFocusNode,
+              nextFocusNode: _lastNameFocusNode,
+              needValidation: true,
               onChanged: (value) {
-                widget.travelerInfoModel.fullName = _fullNameController.text;
+                widget.travelerInfoModel.firstName = _firstNameController.text;
+                widget.onDataChanged(widget.travelerInfoModel);
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: deviceInfo.screenHeight * 0.01,
+            ),
+            child: AuthTextField(
+              prefix: 'Last Name',
+              hint: 'Enter your last name',
+              keyboardType: TextInputType.name,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(
+                  RegExp(r'^[a-zA-Z\s]+$'),
+                ),
+                FilteringTextInputFormatter.deny(
+                  RegExp(r'^[0-9]+$'),
+                ),
+              ],
+              controller: _lastNameController,
+              focusNode: _lastNameFocusNode,
+              nextFocusNode: _birhtDateFocusNode,
+              needValidation: true,
+              onChanged: (value) {
+                widget.travelerInfoModel.lastName = _lastNameController.text;
                 widget.onDataChanged(widget.travelerInfoModel);
               },
             ),
@@ -220,6 +266,7 @@ class _TravelerInfoTileState extends State<TravelerInfoTile> {
                 controller: _passportNumController,
                 focusNode: _passportNumFocusNode,
                 nextFocusNode: _passportExpiryFocusNode,
+                needValidation: true,
                 onChanged: (value) {
                   widget.travelerInfoModel.passportNumber =
                       _passportNumController.text;

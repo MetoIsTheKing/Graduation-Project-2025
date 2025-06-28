@@ -10,7 +10,7 @@ class CustomCountryPickerField extends StatelessWidget {
   final String hint;
   final Country? selectedCountry;
   final Function(Country selectedCountry) onCountrySelected;
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final FocusNode? nextFocusNode;
 
   const CustomCountryPickerField({
@@ -20,7 +20,7 @@ class CustomCountryPickerField extends StatelessWidget {
     required this.hint,
     this.selectedCountry,
     required this.onCountrySelected,
-    required this.focusNode,
+     this.focusNode,
     this.nextFocusNode,
   });
 
@@ -32,6 +32,10 @@ class CustomCountryPickerField extends StatelessWidget {
       showPhoneCode: false,
       onSelect: (Country country) {
         onCountrySelected(country);
+        Form.of(context).validate();
+        if (nextFocusNode != null) {
+          FocusScope.of(context).requestFocus(nextFocusNode);
+        }
         if (nextFocusNode != null) {
           FocusScope.of(context).requestFocus(nextFocusNode);
         }
@@ -72,61 +76,104 @@ class CustomCountryPickerField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        focusNode.requestFocus();
-        _openCountryPicker(context);
+    return FormField<Country>(
+      validator: (value) {
+        if (selectedCountry == null) {
+          return 'Please select a country';
+        }
+        return null;
       },
-      child: Container(
-        height: deviceInfo.screenHeight > deviceInfo.screenWidth
-            ? deviceInfo.screenHeight * 0.06
-            : deviceInfo.screenWidth * 0.079,
-        decoration: BoxDecoration(
-          color: AppColors.appLighterGrey,
-          borderRadius: BorderRadius.circular(deviceInfo.screenHeight * 0.055),
-          border: Border.all(color: AppColors.appGrey, width: 2),
-        ),
-        padding: EdgeInsets.symmetric(
-          horizontal: deviceInfo.screenWidth * 0.04,
-        ),
-        width: double.infinity,
-        child: Row(
+      builder: (FormFieldState<Country> state) {
+        // Update state when country changes
+        if (selectedCountry != null && state.hasError) {
+          // Clear error when a country is selected
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            state.validate();
+          });
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: deviceInfo.screenWidth * 0.32,
-              child: Row(
-                children: [
-                  Text(prefix,
-                      style: TextStyles.mediumDark16.copyWith(
-                          fontSize: deviceInfo.screenWidth * 0.03,
-                          color: Colors.grey)),
-                  const Spacer(),
-                  Text("|",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: deviceInfo.screenWidth * 0.06)),
-                  SizedBox(width: deviceInfo.screenWidth * 0.04),
-                ],
+            GestureDetector(
+              onTap: () {
+                //focusNode.requestFocus();
+                _openCountryPicker(context);
+              },
+              child: Container(
+                height: deviceInfo.screenHeight > deviceInfo.screenWidth
+                    ? deviceInfo.screenHeight * 0.06
+                    : deviceInfo.screenWidth * 0.079,
+                decoration: BoxDecoration(
+                  color: AppColors.appLighterGrey,
+                  borderRadius:
+                      BorderRadius.circular(deviceInfo.screenHeight * 0.055),
+                  border: Border.all(
+                      // Change border color to red if there's an error
+                      color: state.hasError ? Colors.red : AppColors.appGrey,
+                      width: 1),
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: deviceInfo.screenWidth * 0.04,
+                ),
+                width: double.infinity,
+                child: Row(
+                  children: [
+                    // Your existing container content
+                    SizedBox(
+                      width: deviceInfo.screenWidth * 0.32,
+                      child: Row(
+                        children: [
+                          Text(prefix,
+                              style: TextStyles.mediumDark16.copyWith(
+                                  fontSize: deviceInfo.screenWidth * 0.03,
+                                  color: Colors.grey)),
+                          const Spacer(),
+                          Text("|",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: deviceInfo.screenWidth * 0.06)),
+                          SizedBox(width: deviceInfo.screenWidth * 0.04),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        selectedCountry != null ? selectedCountry!.name : hint,
+                        style: selectedCountry != null
+                            ? TextStyles.mediumDark16.copyWith(
+                                fontSize: deviceInfo.screenWidth * 0.035,
+                                color: Colors.black)
+                            : TextStyles.mediumDark16.copyWith(
+                                fontSize: deviceInfo.screenWidth * 0.03,
+                                color: Colors.grey),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const Icon(Icons.arrow_drop_down, color: Colors.grey),
+                  ],
+                ),
               ),
             ),
-            Expanded(
-              child: Text(
-                selectedCountry != null ? selectedCountry!.name : hint,
-                style: selectedCountry != null
-                    ? TextStyles.mediumDark16.copyWith(
-                        fontSize: deviceInfo.screenWidth * 0.035,
-                        color: Colors.black)
-                    : TextStyles.mediumDark16.copyWith(
-                        fontSize: deviceInfo.screenWidth * 0.03,
-                        color: Colors.grey),
-                overflow: TextOverflow.ellipsis,
+            // Show error message if there is one
+            if (state.hasError)
+              Padding(
+                padding: EdgeInsets.only(
+                  left: deviceInfo.screenWidth * 0.04,
+                  top: deviceInfo.screenHeight * 0.01,
+                ),
+                child: Text(
+                  state.errorText!,
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: deviceInfo.screenWidth * 0.03,
+                  ),
+                ),
               ),
-            ),
-            const Icon(Icons.arrow_drop_down, color: Colors.grey),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }

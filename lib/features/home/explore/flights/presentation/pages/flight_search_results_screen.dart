@@ -2,7 +2,6 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
-import 'package:graduation_project_2025/config/routing/app_router.dart';
 import 'package:graduation_project_2025/config/routing/auth_navigation_state.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
@@ -446,7 +445,11 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
     } else {
       MyLogger.red('Not loggedin');
       getIt<AuthNavigationState>().setRedirectRoute(Routes.searchFlightResults);
-      Navigator.of(context).pushNamed(Routes.logIn);
+      if (mounted) {
+        Navigator.of(context).pushNamed(Routes.logIn);
+      } else {
+        return;
+      }
     }
   }
 
@@ -484,11 +487,9 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
       }
     } else {
       MyLogger.red('Not loggedin');
+      getIt<AuthNavigationState>().setRedirectRoute(Routes.searchFlightResults);
       if (mounted) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return BookingApplicationScreen(
-              travelers: getIt<FlightSearchQueryParams>().getTravellersMap());
-        }));
+        Navigator.of(context).pushNamed(Routes.logIn);
       } else {
         return;
       }

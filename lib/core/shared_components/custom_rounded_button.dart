@@ -19,7 +19,9 @@ class CustomRoundedButton extends StatelessWidget {
     required this.backgroundColor,
     required this.onPressed,
     required this.textColor,
-    this.assetIcon,  this.isLoading = false, this.imageColor,
+    this.assetIcon,
+    this.isLoading = false,
+    this.imageColor,
   });
 
   @override
@@ -28,34 +30,35 @@ class CustomRoundedButton extends StatelessWidget {
       padding: EdgeInsets.only(top: deviceInfo.screenHeight * 0.01),
       child: TextButton(
         style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all( isLoading ? AppColors.appYellow : backgroundColor),
+          backgroundColor: WidgetStateProperty.all(
+              isLoading ? AppColors.appYellow : backgroundColor),
           fixedSize: WidgetStateProperty.all(
             Size(deviceInfo.screenWidth, deviceInfo.screenHeight * 0.055),
           ),
         ),
         onPressed: isLoading ? null : onPressed,
-        child: isLoading ? SizedBox(
-          height: deviceInfo.screenHeight * 0.05,
-          child: CircularProgressIndicator(color: AppColors.appDarkBlue)) 
-          : Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (assetIcon != null) ...[
-              Image.asset(
-                assetIcon!,
-                width: deviceInfo.screenHeight * 0.035,
-                height: deviceInfo.screenHeight * 0.035,
-                color: imageColor,
+        child: isLoading
+            ? SizedBox(
+                height: deviceInfo.screenHeight * 0.05,
+                child: CircularProgressIndicator(color: AppColors.appDarkBlue))
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (assetIcon != null) ...[
+                    Image.asset(
+                      assetIcon!,
+                      width: deviceInfo.screenHeight * 0.035,
+                      height: deviceInfo.screenHeight * 0.035,
+                      color: imageColor,
+                    ),
+                    SizedBox(width: deviceInfo.screenWidth * 0.015),
+                  ],
+                  Text(
+                    label,
+                    style: TextStyles.medium16(deviceInfo, textColor),
+                  ),
+                ],
               ),
-              SizedBox(width: deviceInfo.screenWidth * 0.015),
-            ],
-            Text(
-              label,
-              style: TextStyles.mediumWhite16.copyWith(
-                  color: textColor, fontSize: deviceInfo.screenWidth * 0.03),
-            ),
-          ],
-        ),
       ),
     );
   }
