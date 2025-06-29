@@ -93,6 +93,7 @@ class DioNetworkClient {
           newRefreshToken ??
               refreshToken, // Use old refresh token if new one isn't provided
         );
+        //?? we need to validate refresh token , if expired we should logout
         return true;
       }
       return false;
@@ -159,11 +160,18 @@ class DioNetworkClient {
     String path, {
     // Add token parameter
     Map<String, dynamic>? data,
+    bool isProtected = false,
   }) async {
     try {
       final response = await dio.put(
         path,
         data: data,
+        options: Options(
+          headers: {
+            if (isProtected)
+              'Authorization': 'Bearer ${await TokenManager.getAccessToken()}',
+          },
+        ),
       );
       return response;
     } catch (e) {

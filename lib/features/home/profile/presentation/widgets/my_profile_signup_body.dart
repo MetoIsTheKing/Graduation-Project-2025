@@ -17,7 +17,6 @@ class MyProfileSignupBody extends StatelessWidget {
     return InfoWidget(builder: (context, deviceInfo, constrains) {
       final fieldsSpacing = deviceInfo.screenHeight * 0.015;
       print('this is code from MyProfile ---> ${deviceInfo.hashCode}');
-
       return Scaffold(
           body: Column(children: [
         Container(

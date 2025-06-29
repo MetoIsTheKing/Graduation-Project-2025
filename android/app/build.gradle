@@ -6,8 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.flutter_base_version"
-    compileSdk = 35  // Make sure it's a valid SDK version
-    //ndkVersion = "25.2.9519653"  // Optional, update based on your setup
+    compileSdk = 35
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -20,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId = "com.metotravel.taierapp"
-        minSdk = 21  // Minimum SDK (change if needed)
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
