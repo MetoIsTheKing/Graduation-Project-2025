@@ -16,5 +16,6 @@ class Routes {
   static const String forgetpassword = '/forgetpassword';
   static const String changePassword = '/changePassword';
   static const String resetPassword = '/resetPassword';
+  static const String bookingScreen = '/bookingScreen';
   // static const String flightReview = '/flightReview';
 }

@@ -7,7 +7,8 @@ import 'package:graduation_project_2025/features/home/chat_bot.dart';
 
 import 'package:graduation_project_2025/features/home/my_bookings/presentation/pages/my_bookings.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/pages/explore_screen.dart';
-import 'package:graduation_project_2025/features/home/profile/presentaion/pages/my_profile.dart';
+
+import 'profile/presentation/pages/my_profile.dart';
 
 class MainHomeScreen extends StatefulWidget {
   const MainHomeScreen({super.key});
@@ -105,9 +106,7 @@ class MainHomeScreenState extends State<MainHomeScreen> {
                   ExploreScreen(scrollController: _scrollControllers[0]),
                   MyBookings(scrollController: _scrollControllers[1]),
                   ChatBot(scrollController: _scrollControllers[2]),
-                  MyProfile(
-                    scrollController: _scrollControllers[3]
-                  ),
+                  MyProfile(scrollController: _scrollControllers[3]),
                 ],
               ),
               // AnimatedPositioned for smooth hide/show animation
@@ -116,7 +115,9 @@ class MainHomeScreenState extends State<MainHomeScreen> {
                 curve: Curves.easeInOut,
                 left: 8,
                 right: 8,
-                bottom: _isNavBarVisible ? 0.05 : -300, // Slide out of view when hidden
+                bottom: _isNavBarVisible
+                    ? 0.05
+                    : -300, // Slide out of view when hidden
                 child: Stack(
                   children: [
                     Positioned(
@@ -137,7 +138,8 @@ class MainHomeScreenState extends State<MainHomeScreen> {
                       ),
                     ),
                     DotCurvedBottomNav(
-                      scrollController: _scrollControllers[_currentPage], // Use current page's controller
+                      scrollController: _scrollControllers[
+                          _currentPage], // Use current page's controller
                       hideOnScroll: true,
                       indicatorColor: AppColors.appYellow,
                       backgroundColor: Colors.white,
