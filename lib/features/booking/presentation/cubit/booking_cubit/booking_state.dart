@@ -15,3 +15,17 @@ class BookingFailure extends BookingState {
 
   BookingFailure(this.error);
 }
+
+class PaymentIntentLoading extends BookingState {}
+
+class PaymentIntentSuccess extends BookingState {
+  final String clientSecret;
+
+  PaymentIntentSuccess(this.clientSecret);
+}
+
+class PaymentIntentFailure extends BookingState {
+  final String error;
+
+  PaymentIntentFailure(this.error);
+}

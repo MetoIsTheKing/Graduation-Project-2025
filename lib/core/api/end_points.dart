@@ -7,4 +7,5 @@ class EndPoints {
       dotenv.env['AIRPORTS_BASE_URL'] ?? "fake-airports-api.com";
 
   static String get bookFlight => "booking/book-flight";
+  static String get createPaymentIntent => "payment/create-payment-intent";
 }

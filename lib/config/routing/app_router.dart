@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/routing/arguments.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
+import 'package:graduation_project_2025/features/booking/presentation/pages/payment_screen.dart';
 import 'package:graduation_project_2025/features/chat_bot/presentation/pages/chat_bot_screen.dart';
 
 import 'package:graduation_project_2025/features/auth/presentation/pages/change_password_screen.dart';
@@ -107,6 +108,13 @@ class AppRouter {
             child: BookingApplicationScreen(
               travelers: getIt<FlightSearchQueryParams>().getTravellersMap(),
             ),
+          ),
+        );
+      case Routes.paymentScreen:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: getIt<BookingCubit>()..createPaymentIntent(),
+            child: PaymentScreen(),
           ),
         );
 

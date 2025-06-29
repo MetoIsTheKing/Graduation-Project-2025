@@ -7,7 +7,7 @@ import 'package:graduation_project_2025/core/responsive/ui_component/info_widget
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/chat_bot/data/message_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/curved_appbar.dart';
+import 'package:graduation_project_2025/core/shared_components/curved_appbar.dart';
 
 class ChatBotScreen extends StatefulWidget {
   const ChatBotScreen({super.key});

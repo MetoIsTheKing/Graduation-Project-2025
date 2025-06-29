@@ -1,10 +1,13 @@
 import 'package:graduation_project_2025/core/api/end_points.dart';
+import 'package:graduation_project_2025/core/helpers/my_logger.dart';
 
 import '../../../../core/network_clients/abstract_client.dart';
 
 abstract class BookingRemote {
   Future<Map<String, dynamic>> bookFlight(Map<String, dynamic> requestBody,
       {String? path});
+  Future<Map<String, dynamic>> createPaymentIntent(
+      Map<String, dynamic> requestBody);
 }
 
 class BookingRemoteImpl implements BookingRemote {
@@ -26,7 +29,27 @@ class BookingRemoteImpl implements BookingRemote {
         'data': response.data,
       };
     } catch (e, stackTrace) {
-      print(stackTrace);
+      MyLogger.red(stackTrace.toString());
+      return Future.error(e);
+    }
+  }
+
+  // Create Payment intent
+  @override
+  Future<Map<String, dynamic>> createPaymentIntent(
+      Map<String, dynamic> requestBody) async {
+    try {
+      final response = await bookingClient.post(
+        EndPoints.createPaymentIntent,
+        data: requestBody,
+        isProtected: true,
+      );
+      return {
+        'statusCode': response.statusCode,
+        'data': response.data,
+      };
+    } catch (e, stackTrace) {
+      MyLogger.red(stackTrace.toString());
       return Future.error(e);
     }
   }

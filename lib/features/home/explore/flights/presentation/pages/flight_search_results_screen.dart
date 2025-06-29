@@ -16,7 +16,7 @@ import 'package:graduation_project_2025/features/booking/data/models/one_way_boo
 import 'package:graduation_project_2025/features/booking/presentation/pages/booking_application_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/curved_appbar.dart';
+import 'package:graduation_project_2025/core/shared_components/curved_appbar.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_search_results/ticket_tile.dart';
 
 import '../../../../../booking/data/models/round_trip_booking_model.dart';

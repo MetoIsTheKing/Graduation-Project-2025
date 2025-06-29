@@ -17,11 +17,12 @@ import 'package:graduation_project_2025/features/booking/presentation/cubit/book
 import 'package:graduation_project_2025/features/booking/presentation/widgets/booking_application/contact_info_tile.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
 import 'package:graduation_project_2025/features/booking/data/models/traveler_info_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/curved_appbar.dart';
+import 'package:graduation_project_2025/core/shared_components/curved_appbar.dart';
 import 'package:graduation_project_2025/features/booking/presentation/widgets/booking_application/total_price_tag.dart';
 import 'package:graduation_project_2025/features/booking/presentation/widgets/booking_application/traveler_info_tile.dart';
 import 'package:intl_phone_field/countries.dart';
 
+import '../../../../config/routing/routes.dart';
 import '../cubit/booking_cubit/booking_state.dart';
 
 class BookingApplicationScreen extends StatefulWidget {
@@ -232,9 +233,13 @@ class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
                         MyLogger.green('Booking in progress...');
                       } else if (state is BookingSuccess) {
                         successToast(
-                            title: 'Success', description: state.message);
+                          title: 'Success',
+                          description: state.message,
+                        ).show(context);
+                        context.pushNamed(Routes.paymentScreen);
                       } else if (state is BookingFailure) {
-                        errorToast(title: 'Error', description: state.error);
+                        errorToast(title: 'Error', description: state.error)
+                            .show(context);
                       }
                     },
                     builder: (context, state) {
