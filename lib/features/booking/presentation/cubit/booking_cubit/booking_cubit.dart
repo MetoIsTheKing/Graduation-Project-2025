@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/features/booking/data/models/one_way_booking_model.dart';
 import 'package:graduation_project_2025/features/booking/data/models/round_trip_booking_model.dart';
@@ -19,6 +21,16 @@ class BookingCubit extends Cubit<BookingState> {
   String? paymentIntentId;
   double? amount;
   String? currency;
+  String? paymentStatus;
+  String? bookingStatus;
+  String? message;
+
+  // --- Add these variables for polling ---
+  Timer? _pollingTimer;
+  int _pollingAttempts = 0;
+  final int _maxPollingAttempts =
+      10; // Timeout after 20 seconds (10 attempts * 2s)
+  // ------------------------------------
 
   void bookFlight(Map<String, dynamic> requestBody) async {
     emit(BookingLoading());
@@ -50,6 +62,7 @@ class BookingCubit extends Cubit<BookingState> {
 
   void createPaymentIntent() async {
     emit(PaymentIntentLoading());
+    message = "Processing payment...";
     var requestBody = {
       "bookingId": bookingId,
       "amount": amount,
@@ -72,5 +85,82 @@ class BookingCubit extends Cubit<BookingState> {
       MyLogger.red("Payment intent creation failed: $error");
       emit(PaymentIntentFailure("Failed to create payment intent: $error"));
     }
+  }
+
+  /// Starts the polling process to check for payment status.
+  void startPaymentStatusPolling() {
+    // Cancel any existing timer to be safe
+    _pollingTimer?.cancel();
+    _pollingAttempts = 0;
+    message = "Verifying payment, please wait...";
+
+    emit(PaymentPollingInProgress("Verifying payment, please wait..."));
+
+    // Start a timer that fires every 2 seconds
+    _pollingTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      _checkPaymentStatus(timer);
+    });
+  }
+
+  /// Performs a single check of the payment status.
+  void _checkPaymentStatus(Timer timer) async {
+    _pollingAttempts++;
+
+    // --- Timeout Check ---
+    if (_pollingAttempts > _maxPollingAttempts) {
+      timer.cancel(); // Stop the timer
+      MyLogger.red("Payment status check timed out.");
+      emit(PaymentPollingFailure(
+          "Verification timed out. Please check your bookings screen or contact support."));
+      return;
+    }
+    // ---------------------
+
+    try {
+      final response = await bookingRepo.checkPaymentStatus(bookingId!);
+
+      if (response['statusCode'] == 200) {
+        final paymentStatus = response['data']['data']['paymentStatus'];
+        MyLogger.green(
+            "Polling attempt #$_pollingAttempts: Payment status is '$paymentStatus'");
+
+        // --- Success Condition ---
+        if (paymentStatus == 'completed') {
+          timer.cancel(); // Stop the timer
+          bookingStatus = response['data']['data']['status'];
+          MyLogger.green("Payment confirmed successfully!");
+          emit(PaymentPollingSuccess("Payment confirmed!"));
+        }
+        // Otherwise, the status is still 'pending', so we do nothing and let the timer fire again.
+        // -----------------------
+      } else {
+        // If the API returns an error, stop polling.
+        timer.cancel();
+        MyLogger.red("Payment status check failed: ${response['message']}");
+        emit(PaymentPollingFailure(
+            "Payment status check failed: ${response['message']}"));
+      }
+    } catch (error) {
+      // If any other error occurs, stop polling.
+      timer.cancel();
+      MyLogger.red("Payment status check failed: $error");
+      emit(PaymentPollingFailure("Failed to check payment status: $error"));
+    }
+  }
+
+  /// Call this method to manually stop the timer if the user navigates away.
+  void cancelPaymentPolling() {
+    _pollingTimer?.cancel();
+  }
+
+  void startStripe() {
+    emit(PaymentStripeInProgress());
+  }
+
+  @override
+  Future<void> close() {
+    // Ensure the timer is always cancelled when the cubit is closed.
+    _pollingTimer?.cancel();
+    return super.close();
   }
 }

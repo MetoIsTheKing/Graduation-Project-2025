@@ -8,6 +8,8 @@ abstract class BookingRemote {
       {String? path});
   Future<Map<String, dynamic>> createPaymentIntent(
       Map<String, dynamic> requestBody);
+
+  Future<Map<String, dynamic>> checkPaymentStatus(String bookingId);
 }
 
 class BookingRemoteImpl implements BookingRemote {
@@ -42,6 +44,24 @@ class BookingRemoteImpl implements BookingRemote {
       final response = await bookingClient.post(
         EndPoints.createPaymentIntent,
         data: requestBody,
+        isProtected: true,
+      );
+      return {
+        'statusCode': response.statusCode,
+        'data': response.data,
+      };
+    } catch (e, stackTrace) {
+      MyLogger.red(stackTrace.toString());
+      return Future.error(e);
+    }
+  }
+
+  // Check payment status
+  @override
+  Future<Map<String, dynamic>> checkPaymentStatus(String bookingId) async {
+    try {
+      final response = await bookingClient.get(
+        '${EndPoints.checkPaymentStatus}$bookingId',
         isProtected: true,
       );
       return {

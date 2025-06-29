@@ -29,3 +29,37 @@ class PaymentIntentFailure extends BookingState {
 
   PaymentIntentFailure(this.error);
 }
+
+class PaymentStatusLoading extends BookingState {}
+
+class PaymentStatusSuccess extends BookingState {
+  final String message;
+
+  PaymentStatusSuccess(this.message);
+}
+
+class PaymentStatusFailure extends BookingState {
+  final String error;
+
+  PaymentStatusFailure(this.error);
+}
+
+class PaymentPollingInProgress extends BookingState {
+  final String message;
+
+  PaymentPollingInProgress(this.message);
+}
+
+class PaymentPollingFailure extends BookingState {
+  final String error;
+
+  PaymentPollingFailure(this.error);
+}
+
+class PaymentPollingSuccess extends BookingState {
+  final String message;
+
+  PaymentPollingSuccess(this.message);
+}
+
+class PaymentStripeInProgress extends BookingState {}

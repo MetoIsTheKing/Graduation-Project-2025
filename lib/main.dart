@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:graduation_project_2025/app.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/core/helpers/bloc_observer.dart';
@@ -17,6 +18,13 @@ void main() async {
   await initDependencies();
   Bloc.observer = MyBlocObserver();
   FlutterNativeSplash.remove();
+
+  // Initialize Stripe with your publishable key
+  Stripe.publishableKey = dotenv.env['STRIPE_PUBLIC_KEY']!;
+
+  // This is for advanced settings, good to have
+  await Stripe.instance.applySettings();
+
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,

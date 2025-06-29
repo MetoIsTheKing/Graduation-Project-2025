@@ -110,11 +110,18 @@ class DioNetworkClient {
     String path, {
     // Add token parameter
     Map<String, dynamic>? queryParameters,
+    bool isProtected = false,
   }) async {
     try {
       final response = await dio.get(
         path,
         queryParameters: queryParameters,
+        options: Options(
+          headers: {
+            if (isProtected)
+              'Authorization': 'Bearer ${await TokenManager.getAccessToken()}',
+          },
+        ),
       );
       return response;
     } catch (e) {

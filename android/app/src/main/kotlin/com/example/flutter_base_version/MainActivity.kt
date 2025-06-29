@@ -1,5 +1,8 @@
 package com.example.flutter_base_version
 
-import io.flutter.embedding.android.FlutterActivity
+// 1. Change the import
+import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity: FlutterActivity()
+// 2. Change the class you extend
+class MainActivity: FlutterFragmentActivity() {
+}

@@ -8,4 +8,5 @@ class EndPoints {
 
   static String get bookFlight => "booking/book-flight";
   static String get createPaymentIntent => "payment/create-payment-intent";
+  static String get checkPaymentStatus => "payment/status/";
 }

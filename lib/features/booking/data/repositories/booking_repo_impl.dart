@@ -15,4 +15,9 @@ class BookingRepoImpl implements BookingRepo {
       Map<String, dynamic> requestBody) async {
     return await bookingRemote.createPaymentIntent(requestBody);
   }
+
+  @override
+  Future<Map<String, dynamic>> checkPaymentStatus(String bookingId) async {
+    return await bookingRemote.checkPaymentStatus(bookingId);
+  }
 }
