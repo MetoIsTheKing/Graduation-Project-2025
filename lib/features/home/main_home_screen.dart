@@ -4,6 +4,7 @@ import 'package:dot_curved_bottom_nav/dot_curved_bottom_nav.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/chat_bot.dart';
+
 import 'package:graduation_project_2025/features/home/my_bookings/presentation/pages/my_bookings.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/pages/explore_screen.dart';
 import 'package:graduation_project_2025/features/home/profile/presentaion/pages/my_profile.dart';

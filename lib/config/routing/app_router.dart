@@ -7,6 +7,7 @@ import 'package:graduation_project_2025/features/auth/presentation/pages/change_
 import 'package:graduation_project_2025/features/auth/presentation/pages/forgetpassword_screen.dart';
 import 'package:graduation_project_2025/features/auth/presentation/pages/login_screen.dart';
 import 'package:graduation_project_2025/features/auth/presentation/pages/signup_screen.dart';
+import 'package:graduation_project_2025/features/chat_bot/presentation/pages/chat_bot_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/booking/presentaion/pages/booking_application_screen.dart';
@@ -47,6 +48,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) => MainHomeScreen());
       case Routes.explore:
         return MaterialPageRoute(builder: (context) => ExploreScreen());
+      case Routes.chatBot:
+        return MaterialPageRoute(builder: (context) => ChatBotScreen());
       // case Routes.flightReview:
       //   return MaterialPageRoute(builder: (context) => FlightReviewScreen());
       case Routes.flights:

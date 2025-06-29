@@ -72,7 +72,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         iconlabel: 'Activity',
                         icon: 'assets/images/hotel_icon.png',
                         dimension: deviceInfo.screenHeight * 0.11,
-                        onPressed: () {}),
+                        onPressed: () {
+                          context.pushNamed(Routes.chatBot);
+                        }),
                   ],
                 ),
               ),

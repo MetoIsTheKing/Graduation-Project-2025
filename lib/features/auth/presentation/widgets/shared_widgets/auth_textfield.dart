@@ -8,7 +8,7 @@ import 'package:graduation_project_2025/core/responsive/Models/device_info.dart'
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 
 class AuthTextField extends StatelessWidget {
-  final String prefix;
+  final String? prefix;
   final String hint;
   final TextInputType keyboardType;
   final bool isPassword;
@@ -24,7 +24,7 @@ class AuthTextField extends StatelessWidget {
 
   AuthTextField({
     super.key,
-    required this.prefix,
+    this.prefix,
     required this.hint,
     required this.keyboardType,
     this.isPassword = false,
@@ -130,7 +130,7 @@ class AuthTextField extends StatelessWidget {
                 SizedBox(
                   width: deviceInfo.screenWidth * 0.22,
                   child: Text(
-                    prefix,
+                    prefix ?? '',
                     style: hintTextStyle,
                   ),
                 ),
