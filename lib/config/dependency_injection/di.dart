@@ -20,8 +20,12 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
 
+import '../../features/booking/data/datasources/booking_remote.dart';
 import '../../features/booking/data/models/booking_sub_models.dart';
 import '../../features/booking/data/models/round_trip_booking_model.dart';
+import '../../features/booking/data/repositories/booking_repo_impl.dart';
+import '../../features/booking/domain/repositories/booking_repo.dart';
+import '../../features/booking/presentation/cubit/booking_cubit/booking_cubit.dart';
 import '../routing/auth_navigation_state.dart';
 
 final getIt = GetIt.instance;
@@ -76,6 +80,13 @@ Future<void> initDependencies() async {
           getIt<DioNetworkClient>(instanceName: DiInstances.amadeusClient),
     ),
   );
+  // BookFlightRemote
+  getIt.registerLazySingleton<BookingRemote>(
+    () => BookingRemoteImpl(
+      bookingClient:
+          getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient),
+    ),
+  );
 
   //------------ repositories ------------
 
@@ -87,6 +98,10 @@ Future<void> initDependencies() async {
   getIt.registerLazySingleton<SearchFlightsRepo>(
     () => SearchFlightsRepo(
         remoteDataSource: getIt<SearchFlightssRemoteDataSource>()),
+  );
+  // BookingRepo
+  getIt.registerLazySingleton<BookingRepo>(
+    () => BookingRepoImpl(getIt<BookingRemote>()),
   );
   //------------ cubits ------------
 
@@ -103,7 +118,12 @@ Future<void> initDependencies() async {
     AuthCubit(getIt<UserRepo>()),
   );
 
-  // Booking Models
+  // BookingCubit
+  getIt.registerLazySingleton<BookingCubit>(
+    () => BookingCubit(getIt<BookingRepo>()),
+  );
+
+  ////////////////// Booking Models ///////////////////////////////////////////////
 
   //OneWay
   getIt.registerSingleton<OneWayBookingModel>(
@@ -136,7 +156,7 @@ Future<void> initDependencies() async {
       flightData: [
         FlightDataModel(
           flightId: '',
-          typeOfFlight: '',
+          typeOfFlight: 'GO',
           numberOfStops: 0,
           originAirportCode: '',
           destinationAirportCode: '',
@@ -152,7 +172,7 @@ Future<void> initDependencies() async {
         ),
         FlightDataModel(
           flightId: '',
-          typeOfFlight: '',
+          typeOfFlight: 'RETURN',
           numberOfStops: 0,
           originAirportCode: '',
           destinationAirportCode: '',

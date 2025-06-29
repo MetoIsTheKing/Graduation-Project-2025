@@ -13,7 +13,7 @@ import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:graduation_project_2025/features/booking/data/models/booking_sub_models.dart';
 import 'package:graduation_project_2025/features/booking/data/models/one_way_booking_model.dart';
-import 'package:graduation_project_2025/features/booking/presentaion/pages/booking_application_screen.dart';
+import 'package:graduation_project_2025/features/booking/presentation/pages/booking_application_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/curved_appbar.dart';
@@ -435,10 +435,7 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
       );
       getIt<OneWayBookingModel>().printBookingDetails();
       if (mounted) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return BookingApplicationScreen(
-              travelers: getIt<FlightSearchQueryParams>().getTravellersMap());
-        }));
+        context.pushNamed(Routes.bookingScreen);
       } else {
         return;
       }
@@ -478,10 +475,7 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
       getIt<RoundTripBookingModel>().printBookingDetails();
 
       if (mounted) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return BookingApplicationScreen(
-              travelers: getIt<FlightSearchQueryParams>().getTravellersMap());
-        }));
+        context.pushNamed(Routes.bookingScreen);
       } else {
         return;
       }

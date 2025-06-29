@@ -11,9 +11,9 @@ class DioNetworkClient {
     dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
-        connectTimeout: Duration(seconds: 15),
-        sendTimeout: Duration(seconds: 15),
-        receiveTimeout: Duration(seconds: 15),
+        connectTimeout: Duration(seconds: 20),
+        sendTimeout: Duration(seconds: 20),
+        receiveTimeout: Duration(seconds: 20),
         headers: {
           'Content-Type': 'application/json',
           //authriztion header
@@ -127,11 +127,18 @@ class DioNetworkClient {
   Future<Response> post(
     String path, {
     Map<String, dynamic>? data,
+    bool isProtected = false,
   }) async {
     try {
       final response = await dio.post(
         path,
         data: data,
+        options: Options(
+          headers: {
+            if (isProtected)
+              'Authorization': 'Bearer ${await TokenManager.getAccessToken()}',
+          },
+        ),
       );
       return response;
     } catch (e) {

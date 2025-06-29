@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/helpers/my_logger.dart';
@@ -8,16 +9,20 @@ import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart'
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
+import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/error_toast.dart';
 import 'package:graduation_project_2025/features/booking/data/models/booking_sub_models.dart';
 import 'package:graduation_project_2025/features/booking/data/models/one_way_booking_model.dart';
 import 'package:graduation_project_2025/features/booking/data/models/round_trip_booking_model.dart';
-import 'package:graduation_project_2025/features/booking/presentaion/widgets/booking_application/contact_info_tile.dart';
+import 'package:graduation_project_2025/features/booking/presentation/cubit/booking_cubit/booking_cubit.dart';
+import 'package:graduation_project_2025/features/booking/presentation/widgets/booking_application/contact_info_tile.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
 import 'package:graduation_project_2025/features/booking/data/models/traveler_info_model.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/curved_appbar.dart';
-import 'package:graduation_project_2025/features/booking/presentaion/widgets/booking_application/total_price_tag.dart';
-import 'package:graduation_project_2025/features/booking/presentaion/widgets/booking_application/traveler_info_tile.dart';
+import 'package:graduation_project_2025/features/booking/presentation/widgets/booking_application/total_price_tag.dart';
+import 'package:graduation_project_2025/features/booking/presentation/widgets/booking_application/traveler_info_tile.dart';
 import 'package:intl_phone_field/countries.dart';
+
+import '../cubit/booking_cubit/booking_state.dart';
 
 class BookingApplicationScreen extends StatefulWidget {
   final Map<String, int> travelers;
@@ -29,6 +34,8 @@ class BookingApplicationScreen extends StatefulWidget {
 }
 
 class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
+  late BookingCubit cubit;
+
   late List<TravelerInfoUiModel> travelersInfoList = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late int travelersCount;
@@ -39,18 +46,22 @@ class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   Country selectedCountry = Country(
-      code: "EG",
-      name: "Egypt",
-      dialCode: "+20",
-      flag: "🇪🇬",
-      nameTranslations: {},
-      minLength: 10,
-      maxLength: 11);
+    code: "EG",
+    name: "Egypt",
+    dialCode: "+20",
+    flag: "🇪🇬",
+    nameTranslations: {},
+    minLength: 10,
+    maxLength: 11,
+  );
   @override
   void initState() {
+    super.initState();
     // Calculate total travelers count
     travelersCount = widget.travelers['adults'] ?? 0;
 
+    // Cubit Initialization
+    cubit = getIt<BookingCubit>();
     // Add children count if available
     if (widget.travelers.containsKey('children')) {
       travelersCount += widget.travelers['children'] ?? 0;
@@ -63,7 +74,7 @@ class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
     travelersInfoList = List.generate(
         travelersCount,
         (index) => TravelerInfoUiModel(
-              travelerType: _getTravelerType(index),
+              travelerType: _getTravelerType(index).toLowerCase(),
               firstName: '',
               lastName: '',
               birthDate: '',
@@ -72,7 +83,6 @@ class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
               passportExpiryDate: '',
               issuingCountry: '',
             ));
-    super.initState();
   }
 
   String _getTravelerType(int index) {
@@ -80,13 +90,13 @@ class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
     int childrenCount = widget.travelers['children'] ?? 0;
 
     if (index < adultsCount) {
-      return 'Adult ${index + 1}';
+      return 'Adult';
     } else if (index < adultsCount + childrenCount) {
       int childNumber = (index - adultsCount) + 1;
-      return 'Child $childNumber';
+      return 'Child';
     } else {
       int infantNumber = (index - adultsCount - childrenCount) + 1;
-      return 'Infant $infantNumber';
+      return 'Infant';
     }
   }
 
@@ -131,7 +141,7 @@ class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
             travelersInfoList.map((e) => e.toTravellerInfoModel()).toList();
         getIt<RoundTripBookingModel>().contactDetails = ContactDetailsModel(
             email: emailController.text,
-            phone: "+${selectedCountry.dialCode}${phoneController.text}");
+            phone: "${selectedCountry.dialCode}${phoneController.text}");
         MyLogger.green(
           'Round trip booking model updated with travelers info: ${getIt<RoundTripBookingModel>().toJson()} ',
         );
@@ -141,13 +151,22 @@ class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
         getIt<OneWayBookingModel>().travellersInfo =
             travelersInfoList.map((e) => e.toTravellerInfoModel()).toList();
         getIt<OneWayBookingModel>().contactDetails = ContactDetailsModel(
-            email: emailController.text, phone: phoneController.text);
+          email: emailController.text,
+          phone: "${selectedCountry.dialCode}${phoneController.text}",
+        );
 
         MyLogger.green(
           'Round trip booking model updated with travelers info: ${getIt<OneWayBookingModel>().toJson()} ',
         );
         //getIt<OneWayBookingModel>().travellersInfo = jsonList;
       }
+      //////////////////////// Booking in cubit
+      cubit.bookFlight(
+        isRoundTrip
+            ? getIt<RoundTripBookingModel>().toJson()
+            : getIt<OneWayBookingModel>().toJson(),
+      );
+      //////////////////////////////////////////////////
       //MyLogger.green(jsonEncode(jsonList));
     } else {
       MyLogger.red('Form validation failed');
@@ -207,12 +226,29 @@ class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
                     selectedCountry: selectedCountry,
                     onCountryChanged: onCountryChanged,
                   ),
-                  CustomRoundedButton(
-                    deviceInfo: deviceInfo,
-                    label: 'continue',
-                    backgroundColor: AppColors.appBlue,
-                    onPressed: submitForm,
-                    textColor: AppColors.appLighterGrey,
+                  BlocConsumer<BookingCubit, BookingState>(
+                    listener: (context, state) {
+                      if (state is BookingLoading) {
+                        MyLogger.green('Booking in progress...');
+                      } else if (state is BookingSuccess) {
+                        successToast(
+                            title: 'Success', description: state.message);
+                      } else if (state is BookingFailure) {
+                        errorToast(title: 'Error', description: state.error);
+                      }
+                    },
+                    builder: (context, state) {
+                      return CustomRoundedButton(
+                        deviceInfo: deviceInfo,
+                        label: 'continue',
+                        backgroundColor: AppColors.appBlue,
+                        onPressed: () {
+                          submitForm();
+                        },
+                        textColor: AppColors.appLighterGrey,
+                        isLoading: state is BookingLoading,
+                      );
+                    },
                   )
                 ],
               ),
