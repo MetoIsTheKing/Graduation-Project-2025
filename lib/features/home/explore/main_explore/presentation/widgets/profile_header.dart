@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
+
+import '../../../../../../config/theming/text_styles.dart';
 
 // user id is passed from the explore screen inside onTap
 class ProfileHeader extends StatelessWidget {

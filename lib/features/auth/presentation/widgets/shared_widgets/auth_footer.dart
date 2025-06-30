@@ -5,7 +5,6 @@ import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart'
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
 
-
 class AuthFooter extends StatelessWidget {
   final bool isSignup;
   const AuthFooter({super.key, required this.isSignup});

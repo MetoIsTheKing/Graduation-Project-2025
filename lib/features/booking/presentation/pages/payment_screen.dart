@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
+import 'package:graduation_project_2025/core/helpers/my_logger.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/curved_appbar.dart';
@@ -37,21 +38,29 @@ class PaymentScreen extends StatelessWidget {
       if (!context.mounted) return;
 
       // 3. IMPORTANT: Start the polling process with your backend.
-      // We replace the old logic and the immediate success message with this call.
+      // This line is only reached if payment was submitted (not necessarily successful yet)
       context.read<BookingCubit>().startPaymentStatusPolling();
     } on StripeException catch (e) {
-      // This happens if the user cancels or if the card is declined.
-      // The localizedMessage is user-friendly.
-      if (e.error.code != FailureCode.Canceled) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text('Payment Failed: ${e.error.localizedMessage}')),
-        );
+      // This block is executed for any Stripe-related error, including cancellation.
+
+      if (e.error.code == FailureCode.Canceled) {
+        // --- THIS IS THE CANCELLATION CASE ---
+        // The user closed the payment sheet without paying.
+        // We call a method on the cubit to reset the state gracefully.
+        if (context.mounted) {
+          context.read<BookingCubit>().cancelPayment();
+        }
+      } else {
+        // This is for other errors, like a declined card.
+        // The localizedMessage is user-friendly.
+        if (context.mounted) {
+          MyLogger.red('Payment Failed: ${e.error.localizedMessage}');
+        }
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An unexpected error occurred: $e')),
-      );
+      if (context.mounted) {
+        MyLogger.red('An unexpected error occurred: $e');
+      }
     }
   }
 
@@ -66,9 +75,6 @@ class PaymentScreen extends StatelessWidget {
           }
           if (state is PaymentIntentFailure) {
             // Handle failure to get the clientSecret
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error: ${state.error}')),
-            );
           }
           if (state is PaymentPollingSuccess) {
             // THIS is the correct place to show the success message
@@ -96,18 +102,22 @@ class PaymentScreen extends StatelessWidget {
             body: Center(
               child: Padding(
                 padding: EdgeInsets.all(16.0),
-                child: state is PaymentPollingSuccess
-                    ? Column(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Visibility(
+                      visible: state is PaymentPollingSuccess,
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
                             Icons.check_circle,
                             color: Colors.green,
-                            size: 100,
+                            size: deviceInfo.screenHeight * 0.2,
                           ),
                           SizedBox(height: 20),
                           Text(
-                            state.message,
+                            getIt<BookingCubit>().message ?? '',
                             style:
                                 TextStyles.medium16(deviceInfo, Colors.black),
                             textAlign: TextAlign.center,
@@ -118,6 +128,8 @@ class PaymentScreen extends StatelessWidget {
                             label: 'Continue to Home',
                             backgroundColor: AppColors.appGreen,
                             onPressed: () {
+                              getIt<BookingCubit>().reset();
+
                               // Navigate to the home screen or booking confirmation
                               Navigator.pushAndRemoveUntil(
                                 context,
@@ -131,14 +143,20 @@ class PaymentScreen extends StatelessWidget {
                             textColor: Colors.white,
                           )
                         ],
-                      )
-                    : Column(
+                      ),
+                    ),
+                    Visibility(
+                      visible: state is BookingLoading ||
+                          state is PaymentIntentLoading ||
+                          state is PaymentPollingInProgress ||
+                          state is PaymentStripeInProgress,
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CircularProgressIndicator(
                             color: AppColors.appBlue,
                           ),
-                          SizedBox(height: 20),
+                          SizedBox(height: deviceInfo.screenHeight * 0.02),
                           Text(
                             getIt<BookingCubit>().message ??
                                 'Processing payment...',
@@ -147,6 +165,96 @@ class PaymentScreen extends StatelessWidget {
                           ),
                         ],
                       ),
+                    ),
+                    Visibility(
+                      visible:
+                          state is BookingInitial || state is BookingSuccess,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.payment,
+                            color: AppColors.appYellow,
+                            size: deviceInfo.screenHeight * 0.2,
+                          ),
+                          SizedBox(height: deviceInfo.screenHeight * 0.05),
+                          Text(
+                            getIt<BookingCubit>().message ??
+                                'Please proceed to payment',
+                            style:
+                                TextStyles.medium16(deviceInfo, Colors.black),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: deviceInfo.screenHeight * 0.05),
+                          CustomRoundedButton(
+                            deviceInfo: deviceInfo,
+                            label: 'Pay Now',
+                            backgroundColor: AppColors.appBlue,
+                            onPressed: () {
+                              // Trigger the payment intent creation
+                              context
+                                  .read<BookingCubit>()
+                                  .createPaymentIntent();
+                            },
+                            textColor: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Visibility(
+                      visible: state is BookingFailure ||
+                          state is PaymentIntentFailure ||
+                          state is PaymentPollingFailure,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.error_outline,
+                            color: AppColors.appRed,
+                            size: deviceInfo.screenHeight * 0.2,
+                          ),
+                          SizedBox(height: deviceInfo.screenHeight * 0.05),
+                          Text(
+                            getIt<BookingCubit>().message ??
+                                'An error occurred during payment',
+                            style:
+                                TextStyles.medium16(deviceInfo, Colors.black),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: deviceInfo.screenHeight * 0.05),
+                          CustomRoundedButton(
+                            deviceInfo: deviceInfo,
+                            label: 'Pay Now',
+                            backgroundColor: AppColors.appBlue,
+                            onPressed: () {
+                              // Trigger the payment intent creation
+                              context
+                                  .read<BookingCubit>()
+                                  .createPaymentIntent();
+                            },
+                            textColor: Colors.white,
+                          ),
+                          CustomRoundedButton(
+                            deviceInfo: deviceInfo,
+                            label: 'Go Home',
+                            backgroundColor: AppColors.appRed,
+                            onPressed: () {
+                              getIt<BookingCubit>().reset();
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MainHomeScreen()),
+                                (Route<dynamic> route) =>
+                                    false, // The predicate to remove all previous routes
+                              );
+                            },
+                            textColor: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );

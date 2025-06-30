@@ -28,7 +28,6 @@ class SearchCustomTile extends StatelessWidget {
     return ListTile(
       titleAlignment: ListTileTitleAlignment.center,
       minVerticalPadding: deviceInfo.screenHeight * 0.015,
-
       minTileHeight: deviceInfo.screenWidth * 0.15,
       tileColor: tileFillColor,
       subtitle: subtitle,

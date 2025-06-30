@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/features/booking/data/models/one_way_booking_model.dart';
@@ -37,12 +38,15 @@ class BookingCubit extends Cubit<BookingState> {
     try {
       final response = await bookingRepo.bookFlight(requestBody);
       if (response['statusCode'] != 201) {
-        MyLogger.red("Booking failed: ${response['message']}");
-        emit(BookingFailure("Booking failed: ${response['message']}"));
+        MyLogger.red("Booking failed: ${response['data']['message'][0]}");
+        emit(
+          BookingFailure("Booking failed: ${response['data']['message'][0]}"),
+        );
         return;
       }
       bookingRef = response['data']['data']['bookingRef'];
       bookingId = response['data']['data']['bookingId'];
+      message = 'You are almost there\nPlease Proceed to Payment....';
 
       amount = getIt<FlightSearchQueryParams>().isRoundTrip
           ? getIt<RoundTripBookingModel>().totalPrice
@@ -80,10 +84,13 @@ class BookingCubit extends Cubit<BookingState> {
       paymentIntentId = response['data']['data']['paymentIntentId'];
       MyLogger.green(
           "Payment intent created successfully: clientSecret = $clientSecret, paymentIntentId = $paymentIntentId");
+
+      // throw Exception("Simulated error for testing");
       emit(PaymentIntentSuccess(clientSecret!));
     } catch (error) {
       MyLogger.red("Payment intent creation failed: $error");
-      emit(PaymentIntentFailure("Failed to create payment intent: $error"));
+      message = "Failed to create payment intent. Please try again.";
+      emit(PaymentIntentFailure("Failed to create payment intent"));
     }
   }
 
@@ -110,6 +117,8 @@ class BookingCubit extends Cubit<BookingState> {
     if (_pollingAttempts > _maxPollingAttempts) {
       timer.cancel(); // Stop the timer
       MyLogger.red("Payment status check timed out.");
+      message =
+          'Verification timed out. Please check your bookings screen or contact support.';
       emit(PaymentPollingFailure(
           "Verification timed out. Please check your bookings screen or contact support."));
       return;
@@ -121,14 +130,13 @@ class BookingCubit extends Cubit<BookingState> {
 
       if (response['statusCode'] == 200) {
         final paymentStatus = response['data']['data']['paymentStatus'];
-        MyLogger.green(
-            "Polling attempt #$_pollingAttempts: Payment status is '$paymentStatus'");
 
         // --- Success Condition ---
         if (paymentStatus == 'completed') {
           timer.cancel(); // Stop the timer
           bookingStatus = response['data']['data']['status'];
-          MyLogger.green("Payment confirmed successfully!");
+          message = 'Payment successful!';
+          // throw Exception("Simulated error for testing");
           emit(PaymentPollingSuccess("Payment confirmed!"));
         }
         // Otherwise, the status is still 'pending', so we do nothing and let the timer fire again.
@@ -137,24 +145,46 @@ class BookingCubit extends Cubit<BookingState> {
         // If the API returns an error, stop polling.
         timer.cancel();
         MyLogger.red("Payment status check failed: ${response['message']}");
-        emit(PaymentPollingFailure(
-            "Payment status check failed: ${response['message']}"));
+        message = 'Failed to verify payment status.';
+        emit(PaymentPollingFailure("Payment status check failed:"));
       }
     } catch (error) {
       // If any other error occurs, stop polling.
       timer.cancel();
       MyLogger.red("Payment status check failed: $error");
+      message = 'Failed to verify payment status.';
       emit(PaymentPollingFailure("Failed to check payment status: $error"));
     }
   }
 
   /// Call this method to manually stop the timer if the user navigates away.
-  void cancelPaymentPolling() {
-    _pollingTimer?.cancel();
+  void cancelPayment() {
+    message = 'You are almost there\nPlease Proceed to Payment....';
+    emit(BookingInitial());
   }
 
   void startStripe() {
     emit(PaymentStripeInProgress());
+  }
+
+  /// Resets the booking state and clears all variables.
+  void reset() {
+    bookingRef = null;
+    bookingId = null;
+    clientSecret = null;
+    paymentIntentId = null;
+    amount = null;
+    currency = null;
+    paymentStatus = null;
+    bookingStatus = null;
+    message = null;
+
+    // Cancel any ongoing polling timer
+    _pollingTimer?.cancel();
+    _pollingAttempts = 0;
+
+    // Emit the initial state to reset the UI
+    emit(BookingInitial());
   }
 
   @override
