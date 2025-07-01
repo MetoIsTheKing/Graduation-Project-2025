@@ -248,6 +248,7 @@ class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
                         label: 'continue',
                         backgroundColor: AppColors.appBlue,
                         onPressed: () {
+                          FocusScope.of(context).unfocus();
                           submitForm();
                         },
                         textColor: AppColors.appLighterGrey,

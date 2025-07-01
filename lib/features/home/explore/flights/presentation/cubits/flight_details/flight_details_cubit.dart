@@ -11,7 +11,7 @@ class FlightDetailsCubit extends Cubit<FlightDetailsState> {
 
   void onBaggageSelected(int i, double price) {
     selectedBaggage = i;
-    extraPrice = price;
+    extraPrice = (price * 100).round() / 100;
 
     emit(BaggageSelectedState());
   }

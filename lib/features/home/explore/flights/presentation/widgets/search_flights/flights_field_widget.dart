@@ -21,7 +21,8 @@ class FlightsFieldWidget extends StatelessWidget {
     this.onTap,
     required this.deviceInfo,
     required this.isTravellers,
-    required this.formWidgetLabel,  this.validateField,
+    required this.formWidgetLabel,
+    this.validateField,
   });
 
   @override

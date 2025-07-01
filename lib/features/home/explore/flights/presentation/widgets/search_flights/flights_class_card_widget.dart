@@ -9,7 +9,8 @@ class FlightsClassCardWidget extends StatelessWidget {
   final void Function(String? selectedValue) onSelectedFlightClass;
   const FlightsClassCardWidget({
     super.key,
-    required this.onSelectedFlightClass, required this.flightClass,
+    required this.onSelectedFlightClass,
+    required this.flightClass,
   });
 
   @override

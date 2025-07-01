@@ -15,7 +15,9 @@ class ContactInfoTile extends StatefulWidget {
   const ContactInfoTile({
     super.key,
     required this.emailController,
-    required this.phoneController, required this.selectedCountry, required this.onCountryChanged,
+    required this.phoneController,
+    required this.selectedCountry,
+    required this.onCountryChanged,
   });
 
   @override
@@ -92,7 +94,7 @@ class _ContactInfoTileState extends State<ContactInfoTile> {
                 padding: EdgeInsets.only(top: deviceInfo.screenHeight * 0.015),
                 child: AuthPhoneWidget(
                   controller: widget.phoneController,
-                  onCountryChanged:  widget.onCountryChanged,
+                  onCountryChanged: widget.onCountryChanged,
                   initialCountry: widget.selectedCountry,
                   focusNode: phoneNode,
                 ),

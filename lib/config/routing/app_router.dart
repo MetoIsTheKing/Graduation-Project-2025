@@ -113,7 +113,7 @@ class AppRouter {
       case Routes.paymentScreen:
         return MaterialPageRoute(
           builder: (context) => BlocProvider.value(
-            value: getIt<BookingCubit>()..createPaymentIntent(),
+            value: getIt<BookingCubit>(),
             child: PaymentScreen(),
           ),
         );

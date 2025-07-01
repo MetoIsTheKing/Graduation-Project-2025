@@ -20,7 +20,7 @@ class CustomCountryPickerField extends StatelessWidget {
     required this.hint,
     this.selectedCountry,
     required this.onCountrySelected,
-     this.focusNode,
+    this.focusNode,
     this.nextFocusNode,
   });
 
