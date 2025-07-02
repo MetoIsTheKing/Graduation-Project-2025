@@ -20,8 +20,8 @@ class MyProfileSignupBody extends StatelessWidget {
       return Scaffold(
           body: Column(children: [
         Container(
-          height: MediaQuery.of(context).size.height * (330 / 874),
-          width: MediaQuery.of(context).size.width * (403 / 403),
+          height: deviceInfo.screenHeight * (330 / 874),
+          width: deviceInfo.screenWidth * (403 / 403),
           decoration: BoxDecoration(
               color: Colors.blue,
               borderRadius:

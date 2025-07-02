@@ -31,6 +31,7 @@ class ProfileRepoImpl implements ProfileRepo {
       String oldPassword, String newPassword) async {
     try {
       final resp = await remote.changePassword(oldPassword, newPassword);
+      print(resp);
       return Right(resp.statusCode == 200);
     } catch (e) {
       return Left('Change password failed');

@@ -29,6 +29,7 @@ class ProfileCubit extends Cubit<UserState> {
   Future<void> updateUserProfile(Map<String, dynamic> data) async {
     emit(UserLoading());
     final result = await repo.updateUserProfile(data);
+    print(result);
     result.fold((l) => emit(UserError(l)), (r) => emit(UserProfileLoaded(r)));
   }
 }

@@ -9,23 +9,74 @@ import 'package:graduation_project_2025/features/booking/presentation/pages/paym
 import 'package:graduation_project_2025/features/home/main_home_screen.dart';
 import 'package:graduation_project_2025/features/home/profile/presentation/manager/profile_cubit.dart';
 import 'package:graduation_project_2025/features/home/profile/presentation/manager/profile_state.dart';
+import 'package:graduation_project_2025/features/home/profile/presentation/widgets/custom_profile_dialog.dart';
+import 'package:intl_phone_field/countries.dart';
 
 import '../pages/my_profile_signup.dart';
 import '../pages/security_page.dart';
 import 'my_profile_rows.dart';
 
-class MyProfileBody extends StatelessWidget {
+class MyProfileBody extends StatefulWidget {
   const MyProfileBody({super.key});
+
+  @override
+  State<MyProfileBody> createState() => _MyProfileBodyState();
+}
+
+class _MyProfileBodyState extends State<MyProfileBody> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  Country selectedCountry = countries.firstWhere(
+    (country) =>
+        country.code == 'EG', // Change 'US' to your desired country code
+    orElse: () => countries.first, // Fallback to the first country if not found
+  );
+  final _formKey = GlobalKey<FormState>();
+
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final phoneController = TextEditingController();
+
+  final firstNameFocus = FocusNode();
+  final lastNameFocus = FocusNode();
+  final phoneFocus = FocusNode();
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    phoneController.dispose();
+    firstNameFocus.dispose();
+    lastNameFocus.dispose();
+    phoneFocus.dispose();
+    super.dispose();
+  }
+
+  void onCountryChanged(Country country) {
+    setState(() {
+      selectedCountry = country;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     String? name;
     return BlocProvider<ProfileCubit>(
         create: (_) => getIt<ProfileCubit>()..getUserProfile(),
-        child: InfoWidget(builder: (context, deviceInfo, constrains) {
-          print('this is code from MyProfile ---> ${deviceInfo.hashCode}');
-
+        child: InfoWidget(builder: (context, deviceInfo, constraints) {
           return Scaffold(
+            key: _scaffoldKey,
+            drawer: EditProfileDialog(
+              firstNameController: firstNameController,
+              lastNameController: lastNameController,
+              phoneController: phoneController,
+              firstNameFocus: firstNameFocus,
+              lastNameFocus: lastNameFocus,
+              phoneFocus: phoneFocus,
+              fieldsSpacing: deviceInfo.screenHeight * 0.015,
+              onCountryChanged: onCountryChanged,
+              selectedCountry: selectedCountry,
+              dialogHeight: deviceInfo.screenHeight * 0.5,
+            ),
             body: CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -110,6 +161,8 @@ class MyProfileBody extends StatelessWidget {
                                           if (state is UserProfileLoaded) {
                                             final user = state.profile;
                                             return Column(
+                                              spacing: deviceInfo.screenHeight *
+                                                  .015,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
@@ -161,25 +214,47 @@ class MyProfileBody extends StatelessWidget {
                                       Padding(
                                           padding: EdgeInsets.only(
                                               // top: 8.0,
-                                              right: 10,
+                                              right:
+                                                  deviceInfo.screenHeight * .01,
                                               bottom: deviceInfo.screenHeight *
                                                   .01),
-                                          child: Column(
-                                            spacing:
-                                                deviceInfo.screenHeight * .01,
-                                            children: [
-                                              SvgPicture.asset(
-                                                  "assets/images/edit_1.svg"),
-                                              Text(
-                                                "Edit",
-                                                style: TextStyle(
-                                                    height: deviceInfo
-                                                            .screenHeight *
-                                                        .0009,
-                                                    color: Colors.amber),
-                                              ),
-                                            ],
-                                          )),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              _scaffoldKey.currentState
+                                                  ?.openDrawer();
+                                            },
+                                            child: Column(
+                                              spacing:
+                                                  deviceInfo.screenHeight * .01,
+                                              children: [
+                                                SvgPicture.asset(
+                                                    "assets/images/edit_1.svg"),
+                                                Text("Edit",
+                                                    style: TextStyle(
+                                                        height: deviceInfo
+                                                                .screenHeight *
+                                                            .0009,
+                                                        color: Colors.amber)),
+                                              ],
+                                            ),
+                                          )
+                                          //  Column(
+                                          //   spacing:
+                                          //       deviceInfo.screenHeight * .01,
+                                          //   children: [
+                                          //     SvgPicture.asset(
+                                          //         "assets/images/edit_1.svg"),
+                                          //     Text(
+                                          //       "Edit",
+                                          //       style: TextStyle(
+                                          //           height: deviceInfo
+                                          //                   .screenHeight *
+                                          //               .0009,
+                                          //           color: Colors.amber),
+                                          //     ),
+                                          //   ],
+                                          // )
+                                          ),
                                     ],
                                   ),
                                 ],
