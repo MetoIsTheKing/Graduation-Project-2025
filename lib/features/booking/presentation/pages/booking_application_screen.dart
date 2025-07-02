@@ -22,6 +22,7 @@ import 'package:graduation_project_2025/features/booking/presentation/widgets/bo
 import 'package:graduation_project_2025/features/booking/presentation/widgets/booking_application/traveler_info_tile.dart';
 import 'package:intl_phone_field/countries.dart';
 
+import '../../../../config/routing/auth_navigation_state.dart';
 import '../../../../config/routing/routes.dart';
 import '../cubit/booking_cubit/booking_state.dart';
 
@@ -240,6 +241,18 @@ class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
                       } else if (state is BookingFailure) {
                         errorToast(title: 'Error', description: state.error)
                             .show(context);
+                      } else if (state is RefreshTokenExpired) {
+                        errorToast(
+                          title: 'Session Expired',
+                          description: 'Please log in again.',
+                        ).show(context);
+                        getIt<AuthNavigationState>()
+                            .setRedirectRoute(Routes.bookingScreen);
+                        if (mounted) {
+                          Navigator.of(context).pushNamed(Routes.logIn);
+                        } else {
+                          return;
+                        }
                       }
                     },
                     builder: (context, state) {

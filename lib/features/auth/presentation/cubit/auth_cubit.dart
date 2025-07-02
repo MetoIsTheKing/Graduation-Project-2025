@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:graduation_project_2025/config/token_manager.dart';
+import 'package:graduation_project_2025/core/helpers/my_logger.dart';
 import 'package:graduation_project_2025/features/auth/domain/repositories/user_repo.dart';
 import 'dart:developer';
 part 'auth_state.dart';
@@ -56,6 +57,9 @@ class AuthCubit extends Cubit<AuthState> {
           LoginSuccess(),
         );
         print('state now is : $state');
+        MyLogger.yellow(
+          'From AuthCubit, Login Success\nUser Id from token manager  : ${await TokenManager.getUserId()}',
+        );
         print('response is from Cubit -------------> : $response');
       } else if (response['statusCode'] == 401) {
         emit(LoginFailed(

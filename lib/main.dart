@@ -7,6 +7,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:graduation_project_2025/app.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
+import 'package:graduation_project_2025/config/token_manager.dart';
 import 'package:graduation_project_2025/core/helpers/bloc_observer.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart'
     as my_device_info;

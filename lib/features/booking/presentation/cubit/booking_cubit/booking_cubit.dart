@@ -1,7 +1,9 @@
 import 'dart:async';
-import 'dart:math';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_2025/core/api/end_points.dart';
+import 'package:graduation_project_2025/core/network_clients/abstract_client.dart';
 import 'package:graduation_project_2025/features/booking/data/models/one_way_booking_model.dart';
 import 'package:graduation_project_2025/features/booking/data/models/round_trip_booking_model.dart';
 import 'package:graduation_project_2025/features/booking/domain/repositories/booking_repo.dart';
@@ -9,6 +11,7 @@ import 'package:graduation_project_2025/features/booking/presentation/cubit/book
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
 
 import '../../../../../config/dependency_injection/di.dart';
+import '../../../../../config/dependency_injection/di_instances.dart';
 import '../../../../../core/helpers/my_logger.dart';
 
 class BookingCubit extends Cubit<BookingState> {
@@ -35,6 +38,15 @@ class BookingCubit extends Cubit<BookingState> {
 
   void bookFlight(Map<String, dynamic> requestBody) async {
     emit(BookingLoading());
+    // Simulate A refresh token call for testing
+    // await getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient)
+    //     .refreshToken();
+
+    if (RefreshFailed.value) {
+      emit(RefreshTokenExpired());
+      return;
+    }
+
     try {
       final response = await bookingRepo.bookFlight(requestBody);
       if (response['statusCode'] != 201) {
@@ -66,6 +78,16 @@ class BookingCubit extends Cubit<BookingState> {
 
   void createPaymentIntent() async {
     emit(PaymentIntentLoading());
+    // Simulate A refresh token call for testing
+
+    // await getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient)
+    //     .refreshToken();
+
+    if (RefreshFailed.value) {
+      emit(RefreshTokenExpired());
+      return;
+    }
+
     message = "Processing payment...";
     var requestBody = {
       "bookingId": bookingId,
@@ -96,6 +118,10 @@ class BookingCubit extends Cubit<BookingState> {
 
   /// Starts the polling process to check for payment status.
   void startPaymentStatusPolling() {
+    if (RefreshFailed.value) {
+      emit(RefreshTokenExpired());
+      return;
+    }
     // Cancel any existing timer to be safe
     _pollingTimer?.cancel();
     _pollingAttempts = 0;

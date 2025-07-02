@@ -103,6 +103,7 @@ class AppRouter {
         );
       case Routes.bookingScreen:
         return MaterialPageRoute(
+          settings: settings,
           builder: (context) => BlocProvider.value(
             value: getIt<BookingCubit>(),
             child: BookingApplicationScreen(
@@ -112,6 +113,7 @@ class AppRouter {
         );
       case Routes.paymentScreen:
         return MaterialPageRoute(
+          settings: settings,
           builder: (context) => BlocProvider.value(
             value: getIt<BookingCubit>(),
             child: PaymentScreen(),

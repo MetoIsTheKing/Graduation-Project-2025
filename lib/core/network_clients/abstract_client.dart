@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graduation_project_2025/config/token_manager.dart';
+import 'package:graduation_project_2025/core/helpers/my_logger.dart';
 
 //TODO: needed to be abstracted??
 class DioNetworkClient {
@@ -52,7 +53,7 @@ class DioNetworkClient {
       onError: (DioException error, ErrorInterceptorHandler handler) async {
         if (error.response?.statusCode == 401) {
           // Token expired, attempt to refresh
-          final refreshed = await _refreshToken();
+          final refreshed = await refreshToken();
           if (refreshed) {
             // Retry the original request with the new token
             final options = error.requestOptions;
@@ -64,6 +65,8 @@ class DioNetworkClient {
             } catch (e) {
               return handler.reject(error);
             }
+          } else {
+            MyLogger.red('Token refresh failed, user needs to log in again.');
           }
         }
         return handler.reject(error);
@@ -72,7 +75,7 @@ class DioNetworkClient {
   }
 
   // Refresh token logic
-  Future<bool> _refreshToken() async {
+  Future<bool> refreshToken() async {
     final refreshToken = await TokenManager.getRefreshToken();
     if (refreshToken == null) return false;
 
@@ -84,21 +87,30 @@ class DioNetworkClient {
         data: {'refresh_token': refreshToken},
       );
 
+      // throw Exception('Token refresh failed'); // For testing purposes
+
       if (response.statusCode == 201) {
+        // Reset the refresh failed flag
+        RefreshFailed.value = false;
         final newAccessToken = response.data['access_token'];
         final newRefreshToken =
             response.data['refresh_token']; // Optional, if provided
-        await TokenManager.saveTokens(
-          newAccessToken,
-          newRefreshToken ??
-              refreshToken, // Use old refresh token if new one isn't provided
-        );
+        // Save the new tokens
+        await TokenManager.saveAccessTokens(newAccessToken);
+        if (newRefreshToken != null) {
+          await TokenManager.saveRefreshTokens(newRefreshToken);
+        }
         //?? we need to validate refresh token , if expired we should logout
         return true;
+      } else {
+        throw Exception(
+          'Failed to refresh token: ${response.statusCode} - ${response.statusMessage}',
+        );
       }
-      return false;
     } catch (e) {
-      print('Token refresh failed: $e');
+      // Handle token refresh failure
+      RefreshFailed.value = true;
+      MyLogger.red('Token refresh failed: $e');
       return false;
     }
   }
@@ -243,4 +255,9 @@ class DioNetworkClient {
       }
     }
   }
+}
+
+// a flag to indicate if a refresh operation has failed
+abstract class RefreshFailed {
+  static bool value = false;
 }

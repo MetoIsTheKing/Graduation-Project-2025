@@ -63,3 +63,5 @@ class PaymentPollingSuccess extends BookingState {
 }
 
 class PaymentStripeInProgress extends BookingState {}
+
+class RefreshTokenExpired extends BookingState {}

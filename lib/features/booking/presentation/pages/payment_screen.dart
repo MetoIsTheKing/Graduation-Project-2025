@@ -10,6 +10,8 @@ import 'package:graduation_project_2025/core/shared_components/custom_rounded_bu
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/main_home_screen.dart';
 
+import '../../../../config/routing/auth_navigation_state.dart';
+import '../../../../config/routing/routes.dart';
 import '../../../../config/theming/text_styles.dart';
 import '../../../auth/presentation/widgets/shared_widgets/error_toast.dart';
 import '../cubit/booking_cubit/booking_cubit.dart';
@@ -72,20 +74,24 @@ class PaymentScreen extends StatelessWidget {
           if (state is PaymentIntentSuccess) {
             // Once we have the clientSecret, start the payment process
             _startPayment(context, getIt<BookingCubit>().clientSecret!);
-          }
-          if (state is PaymentIntentFailure) {
+          } else if (state is PaymentIntentFailure) {
             // Handle failure to get the clientSecret
-          }
-          if (state is PaymentPollingSuccess) {
+          } else if (state is PaymentPollingSuccess) {
             // THIS is the correct place to show the success message
             // and navigate to the booking confirmation screen.
             successToast(title: 'Success', description: state.message)
                 .show(context);
             // Example: Navigator.of(context).pushReplacementNamed('/booking-confirmation');
-          }
-          if (state is PaymentPollingFailure) {
+          } else if (state is PaymentPollingFailure) {
             // Show the error message from the cubit (e.g., timeout)
             errorToast(title: 'Error', description: state.error).show(context);
+          } else if (state is RefreshTokenExpired) {
+            errorToast(
+              title: 'Session Expired',
+              description: 'Please log in again.',
+            ).show(context);
+            getIt<AuthNavigationState>().setRedirectRoute(Routes.paymentScreen);
+            Navigator.of(context).pushNamed(Routes.logIn);
           }
         },
         builder: (context, state) {
@@ -167,8 +173,9 @@ class PaymentScreen extends StatelessWidget {
                       ),
                     ),
                     Visibility(
-                      visible:
-                          state is BookingInitial || state is BookingSuccess,
+                      visible: state is BookingInitial ||
+                          state is BookingSuccess ||
+                          state is RefreshTokenExpired,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
