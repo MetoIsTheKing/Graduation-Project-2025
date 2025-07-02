@@ -1,303 +1,359 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 // import 'package:get/get.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
+import 'package:graduation_project_2025/features/auth/presentation/pages/login_screen.dart';
+import 'package:graduation_project_2025/features/booking/presentation/pages/payment_screen.dart';
+import 'package:graduation_project_2025/features/home/main_home_screen.dart';
+import 'package:graduation_project_2025/features/home/profile/presentation/manager/profile_cubit.dart';
+import 'package:graduation_project_2025/features/home/profile/presentation/manager/profile_state.dart';
+import 'package:graduation_project_2025/features/home/profile/presentation/widgets/custom_profile_dialog.dart';
+import 'package:intl_phone_field/countries.dart';
 
 import '../pages/my_profile_signup.dart';
 import '../pages/security_page.dart';
 import 'my_profile_rows.dart';
 
-class MyProfileBody extends StatelessWidget {
+class MyProfileBody extends StatefulWidget {
   const MyProfileBody({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return InfoWidget(builder: (context, deviceInfo, constrains) {
-      print('this is code from MyProfile ---> ${deviceInfo.hashCode}');
+  State<MyProfileBody> createState() => _MyProfileBodyState();
+}
 
-      return Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              pinned: true,
-              expandedHeight: deviceInfo.screenHeight * 0.18,
-              backgroundColor: Colors.blue,
-              flexibleSpace: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  var top = constraints.biggest.height;
-                  bool isCollapsed = top <= kToolbarHeight + 50;
-                  return FlexibleSpaceBar(
-                    titlePadding: EdgeInsets.only(left: 20, bottom: 16),
-                    centerTitle: false,
-                    title: isCollapsed
-                        ? Row(
-                            children: [
-                              Image.asset(
-                                "assets/images/Ellipse 54 .png",
-                                width: 35,
-                                height: 35,
-                              ),
-                              const SizedBox(width: 10),
-                              const Text(
-                                "Jos Creative",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          )
-                        : null,
-                    background: ClipRRect(
-                      clipBehavior: Clip.antiAlias,
-                      borderRadius: BorderRadiusDirectional.only(
-                          bottomEnd: Radius.circular(30),
-                          bottomStart: Radius.circular(30),
-                          topEnd: Radius.zero,
-                          topStart: Radius.zero),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadiusDirectional.only(
-                            bottomEnd: Radius.circular(30),
-                            bottomStart: Radius.circular(30),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 25, top: 60),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "My Profile",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 25),
-                              ),
-                              const SizedBox(height: 20),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+class _MyProfileBodyState extends State<MyProfileBody> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  Country selectedCountry = countries.firstWhere(
+    (country) =>
+        country.code == 'EG', // Change 'US' to your desired country code
+    orElse: () => countries.first, // Fallback to the first country if not found
+  );
+  final _formKey = GlobalKey<FormState>();
+
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final phoneController = TextEditingController();
+
+  final firstNameFocus = FocusNode();
+  final lastNameFocus = FocusNode();
+  final phoneFocus = FocusNode();
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    phoneController.dispose();
+    firstNameFocus.dispose();
+    lastNameFocus.dispose();
+    phoneFocus.dispose();
+    super.dispose();
+  }
+
+  void onCountryChanged(Country country) {
+    setState(() {
+      selectedCountry = country;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    String? name;
+    return BlocProvider<ProfileCubit>(
+        create: (_) => getIt<ProfileCubit>()..getUserProfile(),
+        child: InfoWidget(builder: (context, deviceInfo, constraints) {
+          return Scaffold(
+            key: _scaffoldKey,
+            drawer: EditProfileDialog(
+              firstNameController: firstNameController,
+              lastNameController: lastNameController,
+              phoneController: phoneController,
+              firstNameFocus: firstNameFocus,
+              lastNameFocus: lastNameFocus,
+              phoneFocus: phoneFocus,
+              fieldsSpacing: deviceInfo.screenHeight * 0.015,
+              onCountryChanged: onCountryChanged,
+              selectedCountry: selectedCountry,
+              dialogHeight: deviceInfo.screenHeight * 0.5,
+            ),
+            body: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  pinned: true,
+                  expandedHeight: deviceInfo.screenHeight * 0.15,
+                  backgroundColor: Colors.blue,
+                  flexibleSpace: LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      var top = constraints.biggest.height;
+                      bool isCollapsed = top <= kToolbarHeight + 50;
+                      return FlexibleSpaceBar(
+                        titlePadding: EdgeInsets.only(left: 20, bottom: 16),
+                        centerTitle: false,
+                        title: isCollapsed
+                            ? Row(
                                 children: [
                                   Image.asset(
                                     "assets/images/Ellipse 54 .png",
-                                    width: 60,
-                                    height: 60,
+                                    width: 35,
+                                    height: 35,
                                   ),
-                                  const SizedBox(width: 20),
-                                  Column(
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    name.toString(),
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : null,
+                        background: ClipRRect(
+                          clipBehavior: Clip.antiAlias,
+                          borderRadius: BorderRadiusDirectional.only(
+                              bottomEnd: Radius.circular(30),
+                              bottomStart: Radius.circular(30),
+                              topEnd: Radius.zero,
+                              topStart: Radius.zero),
+                          child: Container(
+                            width: double.infinity,
+                            height: deviceInfo.screenHeight * .2,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadiusDirectional.only(
+                                bottomEnd: Radius.circular(30),
+                                bottomStart: Radius.circular(30),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: deviceInfo.screenWidth * .02,
+                                  top: deviceInfo.screenHeight * .04),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "My Profile",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 25),
+                                  ),
+                                  SizedBox(
+                                      height: deviceInfo.screenHeight * .01),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "Jos Creative",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.white),
+                                    children: [
+                                      Image.asset(
+                                        "assets/images/Ellipse 54 .png",
+                                        width: deviceInfo.screenWidth * .12,
                                       ),
-                                      Text(
-                                        "jospghamdes@gmail.com",
-                                        style: TextStyle(color: Colors.white),
+                                      SizedBox(
+                                          width: deviceInfo.screenWidth * .03),
+                                      BlocBuilder<ProfileCubit, UserState>(
+                                        builder: (context, state) {
+                                          if (state is UserProfileLoaded) {
+                                            final user = state.profile;
+                                            return Column(
+                                              spacing: deviceInfo.screenHeight *
+                                                  .015,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  name = user.user.firstName,
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    height: deviceInfo
+                                                            .screenHeight *
+                                                        .00009,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  user.user.email,
+                                                  style: TextStyle(
+                                                    height: deviceInfo
+                                                            .screenHeight *
+                                                        .0009,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  user.user.phoneNumber,
+                                                  style: TextStyle(
+                                                    height: deviceInfo
+                                                            .screenHeight *
+                                                        .0009,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          } else if (state is UserLoading) {
+                                            return CircularProgressIndicator(
+                                                color: Colors.white);
+                                          } else if (state is UserError) {
+                                            return Text(
+                                              "Error loading profile",
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            );
+                                          }
+                                          return SizedBox(); // initial empty state
+                                        },
                                       ),
-                                      Text(
-                                        "+1 654 785 4462",
-                                        style: TextStyle(color: Colors.white),
-                                      )
+                                      const Spacer(),
+                                      Padding(
+                                          padding: EdgeInsets.only(
+                                              // top: 8.0,
+                                              right:
+                                                  deviceInfo.screenHeight * .01,
+                                              bottom: deviceInfo.screenHeight *
+                                                  .01),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              _scaffoldKey.currentState
+                                                  ?.openDrawer();
+                                            },
+                                            child: Column(
+                                              spacing:
+                                                  deviceInfo.screenHeight * .01,
+                                              children: [
+                                                SvgPicture.asset(
+                                                    "assets/images/edit_1.svg"),
+                                                Text("Edit",
+                                                    style: TextStyle(
+                                                        height: deviceInfo
+                                                                .screenHeight *
+                                                            .0009,
+                                                        color: Colors.amber)),
+                                              ],
+                                            ),
+                                          )
+                                          //  Column(
+                                          //   spacing:
+                                          //       deviceInfo.screenHeight * .01,
+                                          //   children: [
+                                          //     SvgPicture.asset(
+                                          //         "assets/images/edit_1.svg"),
+                                          //     Text(
+                                          //       "Edit",
+                                          //       style: TextStyle(
+                                          //           height: deviceInfo
+                                          //                   .screenHeight *
+                                          //               .0009,
+                                          //           color: Colors.amber),
+                                          //     ),
+                                          //   ],
+                                          // )
+                                          ),
                                     ],
                                   ),
-                                  const Spacer(),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 8.0, right: 10),
-                                      child: Column(
-                                        children: [
-                                          SvgPicture.asset(
-                                              "assets/images/edit_1.svg"),
-                                          Text(
-                                            "Edit",
-                                            style:
-                                                TextStyle(color: Colors.amber),
-                                          ),
-                                        ],
-                                      )),
                                 ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: deviceInfo.screenWidth * .06),
+                    child: Column(
+                      children: [
+                        SizedBox(height: deviceInfo.screenHeight * .04),
+                        buildMenuRow(
+                            icon: "assets/images/Heart.svg",
+                            title: "Favorites",
+                            deviceInfo: deviceInfo),
+                        buildMenuRow(
+                          icon: "assets/images/msg.svg",
+                          title: "Notifications",
+                          deviceInfo: deviceInfo,
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MainHomeScreen())),
+                        ),
+                        buildMenuRow(
+                            icon: "assets/images/plane_icon.svg",
+                            title: "Travel Preferences",
+                            deviceInfo: deviceInfo),
+                        buildMenuRow(
+                          icon: "assets/images/Navigation3.svg",
+                          title: "Payment Methods",
+                          deviceInfo: deviceInfo,
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PaymentScreen())),
+                        ),
+                        buildMenuRow(
+                          icon: "assets/images/Lock.svg",
+                          title: "Security",
+                          deviceInfo: deviceInfo,
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SecurityPage())),
+                        ),
+                        buildMenuRow(
+                          icon: "assets/images/Lock.svg",
+                          title: "Passenger Info",
+                          deviceInfo: deviceInfo,
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyProfileSignup())),
+                        ),
+                        buildMenuRow(
+                            icon: "assets/images/Help circle.svg",
+                            title: "Help",
+                            deviceInfo: deviceInfo),
+                        buildMenuRow(
+                            icon: "assets/images/icon_about.svg",
+                            title: "About",
+                            deviceInfo: deviceInfo),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 25),
+                          child: Row(
+                            children: [
+                              Icon(Icons.logout_outlined, color: Colors.red),
+                              SizedBox(width: 10),
+                              Text(
+                                "Log Out",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              const Spacer(),
+                              InkWell(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginScreen())),
+                                child: SvgPicture.asset(
+                                    "assets/images/Shevron right.svg"),
                               ),
                             ],
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  );
-                },
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Column(
-                  children: [
-                    SizedBox(height: deviceInfo.screenHeight * .04),
-                    Container(
-                      width: deviceInfo.screenWidth,
-                      height: deviceInfo.screenHeight * .11,
-                      decoration: ShapeDecoration(
-                        color: const Color(0xFFF3F9FF),
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                              width: 1, color: const Color(0xFF0084FF)),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        shadows: [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0,
-                          )
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Complete your profile',
-                                    style: TextStyle(
-                                      color: const Color(0xFF0084FF),
-                                      fontSize: 20,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(
-                                    'you have remaining 2 steps',
-                                    style: TextStyle(
-                                      color: const Color(0xFF0084FF),
-                                      fontSize: 12,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  SizedBox(height: 5),
-                                  Stack(
-                                    children: [
-                                      Container(
-                                        width: 127,
-                                        height: 6,
-                                        decoration: ShapeDecoration(
-                                          color: const Color(0xFFFFC727),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(22),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 230,
-                                        height: 6,
-                                        decoration: ShapeDecoration(
-                                          shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                              width: 1,
-                                              color: const Color(0xFF0084FF),
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(22),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Image.asset(
-                              "assets/images/check_1.png",
-                              width: 80,
-                              height: 80,
-                              //   fit: BoxFit.cover,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: deviceInfo.screenHeight * .04),
-                    buildMenuRow(
-                        icon: "assets/images/Heart.svg",
-                        title: "Favorites",
-                        deviceInfo: deviceInfo),
-                    buildMenuRow(
-                        icon: "assets/images/msg.svg",
-                        title: "Notifications",
-                        deviceInfo: deviceInfo),
-                    buildMenuRow(
-                        icon: "assets/images/plane_icon.svg",
-                        title: "Travel Preferences",
-                        deviceInfo: deviceInfo),
-                    buildMenuRow(
-                        icon: "assets/images/Navigation3.svg",
-                        title: "Payment Methods",
-                        deviceInfo: deviceInfo),
-                    buildMenuRow(
-                      icon: "assets/images/Lock.svg",
-                      title: "Security",
-                      deviceInfo: deviceInfo,
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SecurityPage())),
-                    ),
-                    buildMenuRow(
-                      icon: "assets/images/Lock.svg",
-                      title: "Passenger Info",
-                      deviceInfo: deviceInfo,
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyProfileSignup())),
-                    ),
-                    buildMenuRow(
-                        icon: "assets/images/Help circle.svg",
-                        title: "Help",
-                        deviceInfo: deviceInfo),
-                    buildMenuRow(
-                        icon: "assets/images/icon_about.svg",
-                        title: "About",
-                        deviceInfo: deviceInfo),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 25),
-                      child: Row(
-                        children: [
-                          Icon(Icons.logout_outlined, color: Colors.red),
-                          SizedBox(width: 10),
-                          Text(
-                            "Log Out",
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          const Spacer(),
-                          InkWell(
-                            child: SvgPicture.asset(
-                                "assets/images/Shevron right.svg"),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      );
-    });
+          );
+        }));
   }
 }

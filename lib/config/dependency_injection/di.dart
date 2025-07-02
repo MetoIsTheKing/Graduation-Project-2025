@@ -19,6 +19,9 @@ import 'package:graduation_project_2025/features/home/explore/flights/data/repos
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
+import 'package:graduation_project_2025/features/home/profile/presentation/data/profile_repo.dart';
+import 'package:graduation_project_2025/features/home/profile/presentation/data/user_profile_remote.dart';
+import 'package:graduation_project_2025/features/home/profile/presentation/manager/profile_cubit.dart';
 
 import '../../features/booking/data/datasources/booking_remote.dart';
 import '../../features/booking/data/models/booking_sub_models.dart';
@@ -87,6 +90,12 @@ Future<void> initDependencies() async {
           getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient),
     ),
   );
+  // ProfileRemote
+  getIt.registerLazySingleton<ProfileRemote>(
+    () => ProfileRemoteImpl(
+      getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient),
+    ),
+  );
 
   //------------ repositories ------------
 
@@ -94,6 +103,10 @@ Future<void> initDependencies() async {
   getIt.registerLazySingleton<UserRepo>(
     () => UserRepoImpl(getIt<UsersRemote>()),
   );
+  getIt.registerLazySingleton<ProfileRepo>(
+    () => ProfileRepoImpl(getIt<ProfileRemote>()),
+  );
+
   // SearchAirportsRepo
   getIt.registerLazySingleton<SearchFlightsRepo>(
     () => SearchFlightsRepo(
@@ -122,6 +135,8 @@ Future<void> initDependencies() async {
   getIt.registerLazySingleton<BookingCubit>(
     () => BookingCubit(getIt<BookingRepo>()),
   );
+  // UserCubit
+  getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt<ProfileRepo>()));
 
   ////////////////// Booking Models ///////////////////////////////////////////////
 

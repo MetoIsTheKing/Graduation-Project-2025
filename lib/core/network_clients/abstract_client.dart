@@ -192,6 +192,30 @@ class DioNetworkClient {
     }
   }
 
+  // Generic PATCH request with token and data
+  Future<Response> patch(
+    String path, {
+    Map<String, dynamic>? data,
+    bool isProtected = false,
+  }) async {
+    try {
+      final response = await dio.patch(
+        path,
+        data: data,
+        options: Options(
+          headers: {
+            if (isProtected)
+              'Authorization': 'Bearer ${await TokenManager.getAccessToken()}',
+          },
+        ),
+      );
+      return response;
+    } catch (e) {
+      handleError(e);
+      rethrow;
+    }
+  }
+
   // Generic DELETE request with token
   Future<Response> delete(
     String path,

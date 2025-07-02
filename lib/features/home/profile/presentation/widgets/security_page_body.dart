@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:graduation_project_2025/config/routing/app_router.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
+import 'package:graduation_project_2025/features/auth/presentation/pages/change_password_screen.dart';
+import 'package:graduation_project_2025/features/home/profile/presentation/pages/security_page.dart';
 
 import 'my_profile_rows.dart';
 
@@ -55,6 +58,10 @@ class SecurityPageBody extends StatelessWidget {
           child: Column(children: [
             buildMenuRow(
                 icon: "assets/images/Lock.svg",
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ChangePasswordScreen())),
                 title: "   Change Password",
                 deviceInfo: deviceInfo),
             buildMenuRow(
