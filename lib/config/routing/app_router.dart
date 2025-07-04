@@ -4,6 +4,7 @@ import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/routing/arguments.dart';
 import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/features/booking/presentation/pages/payment_screen.dart';
+import 'package:graduation_project_2025/features/chat_bot/presentation/cubit/chat_bot_cubit.dart';
 import 'package:graduation_project_2025/features/chat_bot/presentation/pages/chat_bot_screen.dart';
 
 import 'package:graduation_project_2025/features/auth/presentation/pages/change_password_screen.dart';
@@ -55,7 +56,11 @@ class AppRouter {
       case Routes.explore:
         return MaterialPageRoute(builder: (context) => ExploreScreen());
       case Routes.chatBot:
-        return MaterialPageRoute(builder: (context) => ChatBotScreen());
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                  create: (context) => getIt<ChatBotCubit>(),
+                  child: ChatBotScreen(),
+                ));
       // case Routes.flightReview:
       //   return MaterialPageRoute(builder: (context) => FlightReviewScreen());
       case Routes.flights:

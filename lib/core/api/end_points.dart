@@ -9,4 +9,5 @@ class EndPoints {
   static String get bookFlight => "booking/book-flight";
   static String get createPaymentIntent => "payment/create-payment-intent";
   static String get checkPaymentStatus => "payment/status/";
+  static String get chatBot => dotenv.env['CHAT_BOT'] ?? "https://chatbot-api.com";
 }
