@@ -41,7 +41,12 @@ class TokenManager {
 
   // Retrieve user ID
   static Future<String?> getUserId() async {
-    return await _storage.read(key: _userId);
+    
+    final userId = await _storage.read(key: _userId);
+    if (userId == null || userId.isEmpty) {
+      return "guest";
+    }
+    return userId;
   }
 
   // Clear tokens (e.g., on logout)

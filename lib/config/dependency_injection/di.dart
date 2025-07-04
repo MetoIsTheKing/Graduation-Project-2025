@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di_instances.dart';
 import 'package:graduation_project_2025/config/routing/arguments.dart';
 import 'package:graduation_project_2025/core/network_clients/abstract_client.dart';
+import 'package:graduation_project_2025/core/network_clients/clients/chat_bot_client.dart';
 import 'package:graduation_project_2025/core/network_clients/clients/fake_users_client.dart';
 import 'package:graduation_project_2025/core/network_clients/clients/search_airports_client.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart'
@@ -14,6 +15,8 @@ import 'package:graduation_project_2025/features/auth/data/repositories/user_rep
 import 'package:graduation_project_2025/features/auth/domain/repositories/user_repo.dart';
 import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:graduation_project_2025/features/booking/data/models/one_way_booking_model.dart';
+import 'package:graduation_project_2025/features/chat_bot/data/data_source/chat_bot_remote.dart';
+import 'package:graduation_project_2025/features/chat_bot/presentation/cubit/chat_bot_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/data_sources/search_flights_remote.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/repository/search_airports_repo.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
@@ -67,6 +70,10 @@ Future<void> initDependencies() async {
             apiSecret: dotenv.env['AMADEUS_API_SECRET'] ?? 'your_api_secret',
           ),
       instanceName: DiInstances.amadeusClient);
+  getIt.registerLazySingleton<DioNetworkClient>(
+    () => ChatBotClient(),
+    instanceName: DiInstances.chatBotClient,
+  );
 
   //------------ data sources ------------
 
@@ -94,6 +101,12 @@ Future<void> initDependencies() async {
   getIt.registerLazySingleton<ProfileRemote>(
     () => ProfileRemoteImpl(
       getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient),
+    ),
+  );
+
+  getIt.registerLazySingleton<ChatBotRemoteDataSource>(
+    () => ChatBotRemoteDataSource(
+      getIt<DioNetworkClient>(instanceName: DiInstances.chatBotClient),
     ),
   );
 
@@ -214,5 +227,9 @@ Future<void> initDependencies() async {
 
   getIt.registerLazySingleton<AuthNavigationState>(
     () => AuthNavigationState(),
+  );
+
+  getIt.registerFactory<ChatBotCubit>(
+    () => ChatBotCubit(getIt<ChatBotRemoteDataSource>()),
   );
 }
