@@ -29,7 +29,7 @@ class AuthCubit extends Cubit<AuthState> {
         print('state now is : $state');
       } else if (response['statusCode'] == 409) {
         emit(SignUpEmailAlreadyExists(
-          message: 'Email Already Exists',
+          message: 'Email or phone Already Exists',
         ));
         print('state now is : $state');
       } else {
