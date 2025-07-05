@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
+import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/shared_components/custom_rounded_button.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 
+import '../../../../../config/routing/routes.dart';
+
 class EmptyListWidget extends StatelessWidget {
   final DeviceInfo deviceInfo;
-  final int selected;
   final String sectionName;
 
   const EmptyListWidget({
     super.key,
     required this.deviceInfo,
-    required this.selected,
     required this.sectionName,
   });
 
@@ -29,17 +30,16 @@ class EmptyListWidget extends StatelessWidget {
           Image.asset('assets/images/empty_list.png',
               height: deviceInfo.screenHeight * 0.4),
           SizedBox(
-            height: deviceInfo.screenHeight * 0.05,
             width: deviceInfo.screenWidth * 0.6,
             child: CustomRoundedButton(
               deviceInfo: deviceInfo,
               label: 'Book It',
               backgroundColor: AppColors.appYellow,
-              onPressed: () {},
+              onPressed: () {
+                context.pushNamed(Routes.flights);
+              },
               textColor: AppColors.appDarkBlue,
-              assetIcon: (selected == 0)
-                  ? 'assets/images/flight_icon.png'
-                  : 'assets/images/hotel_icon.png',
+              assetIcon: 'assets/images/flight_icon.png',
               imageColor: AppColors.appDarkBlue,
             ),
           )

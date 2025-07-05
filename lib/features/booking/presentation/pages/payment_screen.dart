@@ -13,7 +13,7 @@ import 'package:graduation_project_2025/features/home/main_home_screen.dart';
 import '../../../../config/routing/auth_navigation_state.dart';
 import '../../../../config/routing/routes.dart';
 import '../../../../config/theming/text_styles.dart';
-import '../../../auth/presentation/widgets/shared_widgets/error_toast.dart';
+import '../../../../core/shared_components/error_toast.dart';
 import '../cubit/booking_cubit/booking_cubit.dart';
 import '../cubit/booking_cubit/booking_state.dart';
 

@@ -325,7 +325,7 @@ class _SearchFlightsScreenState extends State<SearchFlightsScreen> {
                   size: deviceInfo.screenWidth * 0.04,
                 ),
                 onPressed: () {
-                  context.pushReplacementNamed(Routes.explore);
+                  context.pop();
                 },
               ),
               title: Text(

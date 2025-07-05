@@ -21,10 +21,12 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_airport.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/pages/explore_screen.dart';
 import 'package:graduation_project_2025/features/home/main_home_screen.dart';
+import 'package:graduation_project_2025/features/home/my_bookings/presentation/cubit/my_bookings_cubit.dart';
 import 'package:graduation_project_2025/features/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:graduation_project_2025/features/on_boarding/presentation/pages/onboarding_screen.dart';
 
 import '../../features/home/explore/flights/data/models/flight_model.dart';
+import '../../features/home/my_bookings/presentation/pages/my_bookings_screen.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -124,6 +126,14 @@ class AppRouter {
             child: PaymentScreen(),
           ),
         );
+      // case Routes.myBookings:
+      //   return MaterialPageRoute(
+      //     settings: settings,
+      //     builder: (context) => BlocProvider(
+      //       create: (context) => MyBookingsCubit(),
+      //       child: MyBookingsScreen(),
+      //     ),
+      //   );
 
       default:
         return undefinedRoute();

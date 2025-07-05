@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:dot_curved_bottom_nav/dot_curved_bottom_nav.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/chat_bot.dart';
+import 'package:graduation_project_2025/features/home/my_bookings/presentation/cubit/my_bookings_cubit.dart';
 
-import 'package:graduation_project_2025/features/home/my_bookings/presentation/pages/my_bookings.dart';
+import 'package:graduation_project_2025/features/home/my_bookings/presentation/pages/my_bookings_screen.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/pages/explore_screen.dart';
 
 import 'profile/presentation/pages/my_profile.dart';
@@ -104,7 +107,12 @@ class MainHomeScreenState extends State<MainHomeScreen> {
                 },
                 children: [
                   ExploreScreen(scrollController: _scrollControllers[0]),
-                  MyBookings(scrollController: _scrollControllers[1]),
+                  BlocProvider(
+                    create: (context) =>
+                        getIt<MyBookingsCubit>()..loadBookings(),
+                    child: MyBookingsScreen(
+                        scrollController: _scrollControllers[1]),
+                  ),
                   ChatBot(scrollController: _scrollControllers[2]),
                   MyProfile(scrollController: _scrollControllers[3]),
                 ],

@@ -14,7 +14,7 @@ import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cu
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_header.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/cod_balls.dart';
-import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/error_toast.dart';
+import 'package:graduation_project_2025/core/shared_components/error_toast.dart';
 import 'package:otp_resend_timer/otp_resend_timer.dart';
 
 class CodeVerification extends StatefulWidget {

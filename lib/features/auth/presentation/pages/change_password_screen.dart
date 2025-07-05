@@ -10,7 +10,7 @@ import 'package:graduation_project_2025/features/auth/presentation/widgets/share
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_textfield.dart';
 import 'package:graduation_project_2025/features/home/profile/presentation/manager/profile_cubit.dart';
 import 'package:graduation_project_2025/features/home/profile/presentation/manager/profile_state.dart';
-import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/error_toast.dart';
+import 'package:graduation_project_2025/core/shared_components/error_toast.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   final bool isReset;

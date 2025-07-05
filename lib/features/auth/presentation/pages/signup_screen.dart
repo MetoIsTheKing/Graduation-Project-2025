@@ -18,7 +18,7 @@ import 'package:graduation_project_2025/features/auth/presentation/widgets/share
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_textfield.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/divider.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_header.dart';
-import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/error_toast.dart';
+import 'package:graduation_project_2025/core/shared_components/error_toast.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/auth_phone_widget.dart';
 import 'package:intl_phone_field/countries.dart';
 

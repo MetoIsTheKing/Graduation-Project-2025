@@ -65,7 +65,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         icon: 'assets/images/flight_icon.png',
                         dimension: deviceInfo.screenHeight * 0.14,
                         onPressed: () {
-                          context.pushReplacementNamed(Routes.flights);
+                          context.pushNamed(Routes.flights);
                           print('flight clicked');
                         }),
                     QuickActionButton(

@@ -22,6 +22,7 @@ import 'package:graduation_project_2025/features/home/explore/flights/data/repos
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
+import 'package:graduation_project_2025/features/home/my_bookings/data/datasources/my_bookings_remote.dart';
 import 'package:graduation_project_2025/features/home/profile/presentation/data/profile_repo.dart';
 import 'package:graduation_project_2025/features/home/profile/presentation/data/user_profile_remote.dart';
 import 'package:graduation_project_2025/features/home/profile/presentation/manager/profile_cubit.dart';
@@ -32,6 +33,9 @@ import '../../features/booking/data/models/round_trip_booking_model.dart';
 import '../../features/booking/data/repositories/booking_repo_impl.dart';
 import '../../features/booking/domain/repositories/booking_repo.dart';
 import '../../features/booking/presentation/cubit/booking_cubit/booking_cubit.dart';
+import '../../features/home/my_bookings/data/repositories/my_bookings_repo_impl.dart';
+import '../../features/home/my_bookings/domain/repositories/my_bookings_repo.dart';
+import '../../features/home/my_bookings/presentation/cubit/my_bookings_cubit.dart';
 import '../routing/auth_navigation_state.dart';
 
 final getIt = GetIt.instance;
@@ -97,6 +101,13 @@ Future<void> initDependencies() async {
           getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient),
     ),
   );
+  // MyBookingsRemote
+  getIt.registerLazySingleton<MyBookingsRemote>(
+    () => MyBookingsRemoteImpl(
+      myBookingsClient:
+          getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient),
+    ),
+  );
   // ProfileRemote
   getIt.registerLazySingleton<ProfileRemote>(
     () => ProfileRemoteImpl(
@@ -129,6 +140,11 @@ Future<void> initDependencies() async {
   getIt.registerLazySingleton<BookingRepo>(
     () => BookingRepoImpl(getIt<BookingRemote>()),
   );
+
+  // MyBookingsRepo
+  getIt.registerLazySingleton<MyBookingsRepo>(
+    () => MyBookingsRepoImpl(myBookingsRemote: getIt<MyBookingsRemote>()),
+  );
   //------------ cubits ------------
 
   // SearchFlightsCubits
@@ -150,6 +166,11 @@ Future<void> initDependencies() async {
   );
   // UserCubit
   getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt<ProfileRepo>()));
+
+  // MyBookingsCubit
+  getIt.registerFactory<MyBookingsCubit>(
+    () => MyBookingsCubit(getIt<MyBookingsRepo>()),
+  );
 
   ////////////////// Booking Models ///////////////////////////////////////////////
 
