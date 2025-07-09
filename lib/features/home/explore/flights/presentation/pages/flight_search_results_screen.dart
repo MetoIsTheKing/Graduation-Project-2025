@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
@@ -58,8 +57,7 @@ class _FlightSearchResultsScreenState extends State<FlightSearchResultsScreen> {
       value: widget.searchFlightsCubit,
       child: InfoWidget(
         builder: (context, deviceInfo, constraints) {
-          double scaleFactor =
-              deviceInfo.deviceType == DeviceType.tablet ? 0.9 : 1.0;
+          double scaleFactor = 1.0;
           return Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: AppColors.appBlue,

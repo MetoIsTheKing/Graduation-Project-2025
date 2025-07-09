@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -25,16 +24,7 @@ void main() async {
   // This is for advanced settings, good to have
   await Stripe.instance.applySettings();
 
-  runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) {
-        getIt<my_device_info.DeviceInfo>()
-            .updateFromContext(context); // Update singleton here
-        return MyApp();
-      },
-    ),
-  );
+  runApp(MyApp());
 }
 
 // WITHOUT DEVICE PREVIEW (Don't touch this)

@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
@@ -46,7 +45,6 @@ Future<void> initDependencies() async {
     getIt.registerSingleton<my_device_info.DeviceInfo>(
       my_device_info.DeviceInfo(
         orientation: Orientation.portrait,
-        deviceType: DeviceType.phone, // Changed to match your enum
         screenWidth: 0.0,
         screenHeight: 0.0,
       ),

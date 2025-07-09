@@ -1,8 +1,8 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
+import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/base_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/error_toast.dart';
@@ -11,9 +11,8 @@ import 'package:graduation_project_2025/features/home/my_bookings/presentation/w
 import 'package:graduation_project_2025/core/shared_components/map_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/home/my_bookings/presentation/widgets/my_booking_container.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
-import '../../../explore/flights/presentation/widgets/flight_search_results/ticket_tile.dart';
+import '../../../../../config/routing/routes.dart';
 
 class MyBookingsScreen extends StatelessWidget {
   final ScrollController scrollController;
@@ -50,6 +49,12 @@ class MyBookingsScreen extends StatelessWidget {
                   } else if (state is MyBookingsError) {
                     errorToast(title: 'Error', description: state.message)
                         .show(context);
+                  } else if (state is MyBookingsNotLoggedIn) {
+                    errorToast(
+                      title: 'Not Logged In',
+                      description: state.message,
+                    ).show(context);
+                    context.pushNamed(Routes.logIn);
                   }
                 },
                 builder: (context, state) {

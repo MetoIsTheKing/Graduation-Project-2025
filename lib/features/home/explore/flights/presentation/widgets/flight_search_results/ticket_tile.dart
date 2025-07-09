@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_functions/mapping_airlines_codes.dart';
@@ -31,7 +30,7 @@ class TicketTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InfoWidget(
       builder: (context, deviceInfo, constraints) {
-        bool isTablet = deviceInfo.deviceType == DeviceType.tablet;
+        bool isTablet = false;
         return InkWell(
           onTap: () => onTap!(flight),
           child: Padding(

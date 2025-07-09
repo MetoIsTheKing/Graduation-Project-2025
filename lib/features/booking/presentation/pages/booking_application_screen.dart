@@ -244,7 +244,7 @@ class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
                       } else if (state is RefreshTokenExpired) {
                         errorToast(
                           title: 'Session Expired',
-                          description: 'Please log in again.',
+                          description: 'Please log in to continue.',
                         ).show(context);
                         getIt<AuthNavigationState>()
                             .setRedirectRoute(Routes.bookingScreen);

@@ -20,3 +20,8 @@ class UserProfileLoaded extends UserState {
   final UserProfileModel profile;
   UserProfileLoaded(this.profile);
 }
+
+class UserNotLoggedIn extends UserState {
+  final String message;
+  UserNotLoggedIn(this.message);
+}

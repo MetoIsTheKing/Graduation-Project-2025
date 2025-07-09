@@ -53,6 +53,7 @@ class DioNetworkClient {
       onError: (DioException error, ErrorInterceptorHandler handler) async {
         if (error.response?.statusCode == 401) {
           // Token expired, attempt to refresh
+          MyLogger.red('Token expired, attempting to refresh...');
           final refreshed = await refreshToken();
           if (refreshed) {
             // Retry the original request with the new token

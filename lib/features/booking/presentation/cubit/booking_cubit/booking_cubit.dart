@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/core/api/end_points.dart';
 import 'package:graduation_project_2025/core/network_clients/abstract_client.dart';
+import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:graduation_project_2025/features/booking/data/models/one_way_booking_model.dart';
 import 'package:graduation_project_2025/features/booking/data/models/round_trip_booking_model.dart';
 import 'package:graduation_project_2025/features/booking/domain/repositories/booking_repo.dart';
@@ -42,7 +43,7 @@ class BookingCubit extends Cubit<BookingState> {
     // await getIt<DioNetworkClient>(instanceName: DiInstances.dioUserClient)
     //     .refreshToken();
 
-    if (RefreshFailed.value) {
+    if (RefreshFailed.value || !(await getIt<AuthCubit>().isLoggedIn())) {
       emit(RefreshTokenExpired());
       return;
     }

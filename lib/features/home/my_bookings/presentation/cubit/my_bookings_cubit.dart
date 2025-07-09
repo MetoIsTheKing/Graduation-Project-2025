@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
+import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cubit.dart';
 
 import '../../../../../core/helpers/my_logger.dart';
+import '../../../../../core/network_clients/abstract_client.dart';
 import '../../data/models/my_booking_model.dart';
 import '../../domain/repositories/my_bookings_repo.dart';
 
@@ -13,8 +15,12 @@ class MyBookingsCubit extends Cubit<MyBookingsState> {
 
   static MyBookingsCubit get(context) => BlocProvider.of(context);
 
-  void loadBookings() {
+  void loadBookings() async {
     emit(MyBookingsLoading());
+    if (RefreshFailed.value || !(await getIt<AuthCubit>().isLoggedIn())) {
+      emit(MyBookingsNotLoggedIn('Please log in to view your bookings'));
+      return;
+    }
     myBookingsRepo.getMyBookings().then((bookings) {
       for (var booking in bookings) {
         if (booking.status == 'confirmed') {

@@ -86,7 +86,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           backgroundColor: AppColors.appBlue,
                           onPressed: () {
                             if (indexNotifier.value == 2) {
-                              context.pushReplacementNamed(Routes.logIn);
+                              context.pushReplacementNamed(Routes.mainHome);
                               return;
                             }
                             context.read<OnBoardingCubit>().nextOnboarding();
@@ -112,7 +112,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               // Navigator.of(context).push(MaterialPageRoute(
                               //     builder: (context) =>
                               //         CodeVerification(email: 'ana we7sh')));
-                              context.pushReplacementNamed(Routes.logIn);
+                              context.pushReplacementNamed(Routes.mainHome);
                             },
                           ),
                         ),

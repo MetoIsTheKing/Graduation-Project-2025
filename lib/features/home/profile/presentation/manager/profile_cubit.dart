@@ -2,6 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:graduation_project_2025/features/home/profile/presentation/data/profile_repo.dart';
 import 'package:graduation_project_2025/features/home/profile/presentation/manager/profile_state.dart';
 
+import '../../../../../config/dependency_injection/di.dart';
+import '../../../../../core/network_clients/abstract_client.dart';
+import '../../../../auth/presentation/cubit/auth_cubit.dart';
+
 class ProfileCubit extends Cubit<UserState> {
   final ProfileRepo repo;
   ProfileCubit(this.repo) : super(UserInitial());
@@ -22,6 +26,10 @@ class ProfileCubit extends Cubit<UserState> {
 
   Future<void> getUserProfile() async {
     emit(UserLoading());
+    if (RefreshFailed.value || !(await getIt<AuthCubit>().isLoggedIn())) {
+      emit(UserNotLoggedIn('Please log in to view your profile'));
+      return;
+    }
     final result = await repo.getUserProfile();
     result.fold((l) => emit(UserError(l)), (r) => emit(UserProfileLoaded(r)));
   }

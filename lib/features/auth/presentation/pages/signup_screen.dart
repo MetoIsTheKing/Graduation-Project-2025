@@ -178,18 +178,18 @@ class _SignupScreenState extends State<SignupScreen> {
                             isConfirmPassword: true,
                             passwordController: passwordController,
                           ),
-                          SizedBox(height: fieldsSpacing),
+                          // SizedBox(height: fieldsSpacing),
 
-                          AuthTextField(
-                            prefix: 'Birth Date',
-                            hint: 'Enter your birth date',
-                            keyboardType: TextInputType.text,
-                            needValidation: true,
-                            focusNode: birthFocus,
-                            nextFocusNode: phoneFocus,
-                            controller: birthController,
-                            isConfirmPassword: false,
-                          ),
+                          // AuthTextField(
+                          //   prefix: 'Birth Date',
+                          //   hint: 'Enter your birth date',
+                          //   keyboardType: TextInputType.text,
+                          //   needValidation: true,
+                          //   focusNode: birthFocus,
+                          //   nextFocusNode: phoneFocus,
+                          //   controller: birthController,
+                          //   isConfirmPassword: false,
+                          // ),
                           SizedBox(height: fieldsSpacing),
                           // CustomCountryPickerField(
                           //   deviceInfo: deviceInfo,
@@ -239,8 +239,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                             'your account has been registered')
                                     .show(context);
                                 Future.delayed(const Duration(seconds: 1));
-                                Navigator.of(context)
-                                    .pushReplacement(MaterialPageRoute(
+                                Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => CodeVerification(
                                     email: emailController.text,
                                   ),
@@ -255,25 +254,26 @@ class _SignupScreenState extends State<SignupScreen> {
                                 backgroundColor: AppColors.appBlue,
                                 onPressed: () {
                                   //context.pushReplacementNamed(Routes.mainHome);
-                                  print(
-                                      'first name : ${firstNameController.text}');
-                                  print(
-                                      'last name : ${lastNameController.text}');
-                                  print('email : ${emailController.text}');
-                                  print(
-                                      'password : ${passwordController.text}');
-                                  print(
-                                      'confirm password : ${confirmPasswordController.text}');
-                                  print(
-                                      'Phone : +${selectedCountry.dialCode}${phoneController.text}');
-                                  print('Country : ${selectedCountry.name}');
+                                  // print(
+                                  //     'first name : ${firstNameController.text}');
+                                  // print(
+                                  //     'last name : ${lastNameController.text}');
+                                  // print('email : ${emailController.text}');
+                                  // print(
+                                  //     'password : ${passwordController.text}');
+                                  // print(
+                                  //     'confirm password : ${confirmPasswordController.text}');
+                                  // print(
+                                  //     'Phone : +${selectedCountry.dialCode}${phoneController.text}');
+                                  // print('Country : ${selectedCountry.name}');
+                                  //TODO: Remember to add date of birth back
                                   final requestBody = {
                                     'firstName': firstNameController.text,
                                     'lastName': lastNameController.text,
                                     'email': emailController.text,
                                     'password': passwordController.text,
                                     'country': selectedCountry.name,
-                                    'birthdate': birthController.text,
+                                    'birthdate': '1990-01-01',
                                     'phoneNumber':
                                         "+${selectedCountry.dialCode}${phoneController.text}",
                                   };
@@ -315,27 +315,27 @@ class _SignupScreenState extends State<SignupScreen> {
                             height: deviceInfo.screenHeight * 0.005,
                           ),
                           CustomDivider(),
-                          CustomRoundedButton(
-                            deviceInfo: deviceInfo,
-                            label: 'Sign Up with Google',
-                            backgroundColor: AppColors.appBlue,
-                            onPressed: () {
-                              dev.log(selectedCountry.name);
-                            },
-                            textColor: Colors.white,
-                            assetIcon: 'assets/images/google_icon.png',
-                          ),
-                          SizedBox(
-                            height: deviceInfo.screenHeight * 0.005,
-                          ),
-                          CustomRoundedButton(
-                            deviceInfo: deviceInfo,
-                            label: 'Sign Up with Facebook',
-                            backgroundColor: AppColors.appBlue,
-                            onPressed: () {},
-                            textColor: Colors.white,
-                            assetIcon: 'assets/images/facebook_icon.png',
-                          ),
+                          // CustomRoundedButton(
+                          //   deviceInfo: deviceInfo,
+                          //   label: 'Sign Up with Google',
+                          //   backgroundColor: AppColors.appBlue,
+                          //   onPressed: () {
+                          //     dev.log(selectedCountry.name);
+                          //   },
+                          //   textColor: Colors.white,
+                          //   assetIcon: 'assets/images/google_icon.png',
+                          // ),
+                          // SizedBox(
+                          //   height: deviceInfo.screenHeight * 0.005,
+                          // ),
+                          // CustomRoundedButton(
+                          //   deviceInfo: deviceInfo,
+                          //   label: 'Sign Up with Facebook',
+                          //   backgroundColor: AppColors.appBlue,
+                          //   onPressed: () {},
+                          //   textColor: Colors.white,
+                          //   assetIcon: 'assets/images/facebook_icon.png',
+                          // ),
                         ],
                       ),
                     ),

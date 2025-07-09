@@ -48,6 +48,7 @@ class UsersRemoteImpl implements UsersRemote {
         final accessToken = response.data['data']['accessToken'];
         final refreshToken = response.data['data']['refreshToken'];
         final userId = response.data['data']['userId'];
+        RefreshFailed.value = false; // Reset the refresh token failure flag
         // this is the token caching
         await TokenManager.saveAccessTokens(accessToken);
         await TokenManager.saveRefreshTokens(refreshToken);
