@@ -39,7 +39,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
           children: [
             Padding(
               padding: EdgeInsets.only(bottom: deviceInfo.screenHeight * 0.02),
-              child: ProfileHeader(
+              child: ChatbotHeader(
                 userFirstName: 'John',
                 profileImage: 'assets/images/profile_img.png',
                 onTap: () {},

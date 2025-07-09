@@ -17,8 +17,12 @@ class MyBookingsCubit extends Cubit<MyBookingsState> {
 
   void loadBookings() async {
     emit(MyBookingsLoading());
-    if (RefreshFailed.value || !(await getIt<AuthCubit>().isLoggedIn())) {
-      emit(MyBookingsNotLoggedIn('Please log in to view your bookings'));
+    if (RefreshFailed.value) {
+      emit(MyBookingsRefreshFailed('Please log in to view your bookings'));
+      return;
+    }
+    if (!(await getIt<AuthCubit>().isLoggedIn())) {
+      emit(MyBookingsNotLoggedIn());
       return;
     }
     myBookingsRepo.getMyBookings().then((bookings) {

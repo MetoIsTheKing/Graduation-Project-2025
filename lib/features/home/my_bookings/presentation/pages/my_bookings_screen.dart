@@ -38,6 +38,9 @@ class MyBookingsScreen extends StatelessWidget {
                 'Bookings',
                 style: TextStyles.bold24(deviceInfo, Colors.white),
               ),
+              SizedBox(
+                height: deviceInfo.screenHeight * 0.02,
+              ),
               BlocConsumer<MyBookingsCubit, MyBookingsState>(
                 listener: (context, state) {
                   if (state is MyBookingCancelled) {
@@ -49,7 +52,7 @@ class MyBookingsScreen extends StatelessWidget {
                   } else if (state is MyBookingsError) {
                     errorToast(title: 'Error', description: state.message)
                         .show(context);
-                  } else if (state is MyBookingsNotLoggedIn) {
+                  } else if (state is MyBookingsRefreshFailed) {
                     errorToast(
                       title: 'Not Logged In',
                       description: state.message,
@@ -61,6 +64,7 @@ class MyBookingsScreen extends StatelessWidget {
                   var cubit = MyBookingsCubit.get(context);
                   return Container(
                     padding: EdgeInsets.symmetric(
+                      vertical: deviceInfo.screenHeight * 0.03,
                       horizontal: deviceInfo.screenWidth * 0.04,
                     ),
                     width: double.infinity,
@@ -87,107 +91,109 @@ class MyBookingsScreen extends StatelessWidget {
                                   return Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Padding(
-                                        padding: EdgeInsets.fromLTRB(
-                                          deviceInfo.screenWidth * 0.02,
-                                          0,
-                                          deviceInfo.screenWidth * 0.02,
-                                          deviceInfo.screenHeight * 0.01,
-                                        ),
-                                        child:
-                                            state.bookings[index].status ==
-                                                    'confirmed'
-                                                ? MyBookingContainer(
-                                                    booking:
-                                                        state.bookings[index],
-                                                    cancelBooking: () {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            var id = state
-                                                                .bookings[index]
-                                                                .id;
-                                                            return BlocProvider<
-                                                                    MyBookingsCubit>.value(
-                                                                value: cubit,
-                                                                child: BlocBuilder<
-                                                                    MyBookingsCubit,
-                                                                    MyBookingsState>(
-                                                                  builder:
-                                                                      (context,
-                                                                          state) {
-                                                                    return AlertDialog(
-                                                                      title:
+                                      state.bookings[index].status ==
+                                              'confirmed'
+                                          ? Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                deviceInfo.screenWidth * 0.02,
+                                                0,
+                                                deviceInfo.screenWidth * 0.02,
+                                                deviceInfo.screenHeight * 0.04,
+                                              ),
+                                              child: MyBookingContainer(
+                                                booking: state.bookings[index],
+                                                cancelBooking: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        var id = state
+                                                            .bookings[index].id;
+                                                        return BlocProvider<
+                                                                MyBookingsCubit>.value(
+                                                            value: cubit,
+                                                            child: BlocBuilder<
+                                                                MyBookingsCubit,
+                                                                MyBookingsState>(
+                                                              builder: (context,
+                                                                  state) {
+                                                                return AlertDialog(
+                                                                  title: Text(
+                                                                    'Cancel Booking',
+                                                                    style: TextStyles.medium16(
+                                                                        deviceInfo,
+                                                                        AppColors
+                                                                            .appBlack),
+                                                                  ),
+                                                                  content:
+                                                                      Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    children: [
+                                                                      Icon(
+                                                                        Icons
+                                                                            .warning_amber_outlined,
+                                                                        color: AppColors
+                                                                            .appRed,
+                                                                        size: deviceInfo.screenWidth *
+                                                                            0.1,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height: deviceInfo.screenHeight *
+                                                                            0.01,
+                                                                      ),
+                                                                      Text(
+                                                                        'Are you sure you want to cancel this booking?',
+                                                                        style: TextStyles.regular14(
+                                                                            deviceInfo,
+                                                                            AppColors.appBlack),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                  actions: [
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                      child:
                                                                           Text(
-                                                                        'Cancel Booking',
-                                                                        style: TextStyles.medium16(
+                                                                        'No',
+                                                                        style: TextStyles.regular14(
                                                                             deviceInfo,
                                                                             AppColors.appBlack),
                                                                       ),
-                                                                      content:
-                                                                          Column(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.min,
-                                                                        children: [
-                                                                          Icon(
-                                                                            Icons.warning_amber_outlined,
-                                                                            color:
-                                                                                AppColors.appRed,
-                                                                            size:
-                                                                                deviceInfo.screenWidth * 0.1,
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                deviceInfo.screenHeight * 0.01,
-                                                                          ),
-                                                                          Text(
-                                                                            'Are you sure you want to cancel this booking?',
-                                                                            style:
-                                                                                TextStyles.regular14(deviceInfo, AppColors.appBlack),
-                                                                          )
-                                                                        ],
-                                                                      ),
-                                                                      actions: [
-                                                                        TextButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.of(context).pop();
-                                                                          },
-                                                                          child:
-                                                                              Text(
-                                                                            'No',
-                                                                            style:
-                                                                                TextStyles.regular14(deviceInfo, AppColors.appBlack),
-                                                                          ),
-                                                                        ),
-                                                                        TextButton(
-                                                                          onPressed: state is MyBookingsLoading
-                                                                              ? null
-                                                                              : () async {
-                                                                                  await cubit.cancelBooking(id);
-                                                                                  if (!context.mounted) {
-                                                                                    return;
-                                                                                  }
-                                                                                  Navigator.of(context).pop();
-                                                                                },
-                                                                          child: state is MyBookingsLoading
-                                                                              ? CircularProgressIndicator(
-                                                                                  color: AppColors.appBlue,
-                                                                                )
-                                                                              : Text(
-                                                                                  'Yes',
-                                                                                  style: TextStyles.regular14(deviceInfo, AppColors.appRed),
-                                                                                ),
-                                                                        ),
-                                                                      ],
-                                                                    );
-                                                                  },
-                                                                ));
-                                                          });
-                                                    },
-                                                  )
-                                                : null,
-                                      ),
+                                                                    ),
+                                                                    TextButton(
+                                                                      onPressed: state
+                                                                              is MyBookingsLoading
+                                                                          ? null
+                                                                          : () async {
+                                                                              await cubit.cancelBooking(id);
+                                                                              if (!context.mounted) {
+                                                                                return;
+                                                                              }
+                                                                              Navigator.of(context).pop();
+                                                                            },
+                                                                      child: state
+                                                                              is MyBookingsLoading
+                                                                          ? CircularProgressIndicator(
+                                                                              color: AppColors.appBlue,
+                                                                            )
+                                                                          : Text(
+                                                                              'Yes',
+                                                                              style: TextStyles.regular14(deviceInfo, AppColors.appRed),
+                                                                            ),
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              },
+                                                            ));
+                                                      });
+                                                },
+                                              ))
+                                          : SizedBox(),
                                     ],
                                   );
                                 },

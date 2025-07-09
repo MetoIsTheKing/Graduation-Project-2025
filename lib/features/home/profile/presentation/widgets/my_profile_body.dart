@@ -156,17 +156,13 @@ class _MyProfileBodyState extends State<MyProfileBody> {
                                           fontSize: 25),
                                     ),
                                     SizedBox(
-                                        height: deviceInfo.screenHeight * .01),
+                                        height: deviceInfo.screenHeight * .005),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Image.asset(
-                                          "assets/images/Ellipse 54 .png",
-                                          width: deviceInfo.screenWidth * .12,
-                                        ),
                                         SizedBox(
                                             width:
                                                 deviceInfo.screenWidth * .03),
@@ -292,10 +288,6 @@ class _MyProfileBodyState extends State<MyProfileBody> {
                         children: [
                           SizedBox(height: deviceInfo.screenHeight * .04),
                           buildMenuRow(
-                              icon: "assets/images/Heart.svg",
-                              title: "Favorites",
-                              deviceInfo: deviceInfo),
-                          buildMenuRow(
                             icon: "assets/images/msg.svg",
                             title: "Notifications",
                             deviceInfo: deviceInfo,
@@ -304,19 +296,10 @@ class _MyProfileBodyState extends State<MyProfileBody> {
                                 MaterialPageRoute(
                                     builder: (context) => MainHomeScreen())),
                           ),
-                          buildMenuRow(
-                              icon: "assets/images/plane_icon.svg",
-                              title: "Travel Preferences",
-                              deviceInfo: deviceInfo),
-                          buildMenuRow(
-                            icon: "assets/images/Navigation3.svg",
-                            title: "Payment Methods",
-                            deviceInfo: deviceInfo,
-                            onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PaymentScreen())),
-                          ),
+                          // buildMenuRow(
+                          //     icon: "assets/images/plane_icon.svg",
+                          //     title: "Travel Preferences",
+                          //     deviceInfo: deviceInfo),
                           buildMenuRow(
                             icon: "assets/images/Lock.svg",
                             title: "Security",
@@ -326,15 +309,15 @@ class _MyProfileBodyState extends State<MyProfileBody> {
                                 MaterialPageRoute(
                                     builder: (context) => SecurityPage())),
                           ),
-                          buildMenuRow(
-                            icon: "assets/images/Lock.svg",
-                            title: "Passenger Info",
-                            deviceInfo: deviceInfo,
-                            onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MyProfileSignup())),
-                          ),
+                          // buildMenuRow(
+                          //   icon: "assets/images/Lock.svg",
+                          //   title: "Passenger Info",
+                          //   deviceInfo: deviceInfo,
+                          //   onTap: () => Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           builder: (context) => MyProfileSignup())),
+                          // ),
                           buildMenuRow(
                               icon: "assets/images/Help circle.svg",
                               title: "Help",

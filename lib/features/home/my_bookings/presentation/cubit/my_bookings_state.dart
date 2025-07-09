@@ -28,8 +28,10 @@ class MyBookingsError extends MyBookingsState {
   MyBookingsError(this.message);
 }
 
-class MyBookingsNotLoggedIn extends MyBookingsState {
+class MyBookingsRefreshFailed extends MyBookingsState {
   final String message;
 
-  MyBookingsNotLoggedIn(this.message);
+  MyBookingsRefreshFailed(this.message);
 }
+
+class MyBookingsNotLoggedIn extends MyBookingsState {}

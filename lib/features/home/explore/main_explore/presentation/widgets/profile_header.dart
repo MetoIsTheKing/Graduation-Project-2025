@@ -4,11 +4,11 @@ import 'package:graduation_project_2025/core/responsive/ui_component/info_widget
 import '../../../../../../config/theming/text_styles.dart';
 
 // user id is passed from the explore screen inside onTap
-class ProfileHeader extends StatelessWidget {
+class ChatbotHeader extends StatelessWidget {
   final String userFirstName;
   final String profileImage;
   final void Function()? onTap;
-  const ProfileHeader(
+  const ChatbotHeader(
       {super.key,
       required this.userFirstName,
       required this.profileImage,
@@ -29,31 +29,29 @@ class ProfileHeader extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Text(
-                      'Hello, $userFirstName',
-                      style: TextStyles.semiBold24(deviceInfo, Colors.white),
-                    ),
-                  ],
-                ),
                 Text(
-                  'Sky is the limit. Explore the world with us.',
-                  style: TextStyles.regular14(deviceInfo, Colors.white),
+                  'Feeling lost?\nGet help from taier ai',
+                  style: TextStyles.semiBold18(deviceInfo, Colors.white),
                 ),
               ],
             ),
-            SizedBox(width: deviceInfo.screenWidth * 0.022),
             InkWell(
               onTap: onTap,
               child: ClipRRect(
                 borderRadius:
                     BorderRadius.circular(deviceInfo.screenWidth * 0.12),
-                child: Image.asset(
-                  profileImage,
-                  width: deviceInfo.screenWidth * 0.11,
-                  height: deviceInfo.screenWidth * 0.11,
-                  fit: BoxFit.cover,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.circular(deviceInfo.screenWidth * 0.12),
+                  ),
+                  child: Image.asset(
+                    profileImage,
+                    width: deviceInfo.screenWidth * 0.2,
+                    height: deviceInfo.screenWidth * 0.2,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),

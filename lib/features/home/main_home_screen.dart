@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
-import 'package:graduation_project_2025/features/home/chat_bot.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
+import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_flights_screen.dart';
 import 'package:graduation_project_2025/features/home/my_bookings/presentation/cubit/my_bookings_cubit.dart';
 
 import 'package:graduation_project_2025/features/home/my_bookings/presentation/pages/my_bookings_screen.dart';
@@ -106,14 +108,17 @@ class MainHomeScreenState extends State<MainHomeScreen> {
                   });
                 },
                 children: [
-                  ExploreScreen(scrollController: _scrollControllers[0]),
+                  BlocProvider(
+                    create: (context) => FlightsDataCubit(),
+                    child: SearchFlightsScreen(
+                        scrollController: _scrollControllers[0]),
+                  ),
                   BlocProvider(
                     create: (context) =>
                         getIt<MyBookingsCubit>()..loadBookings(),
                     child: MyBookingsScreen(
                         scrollController: _scrollControllers[1]),
                   ),
-                  ChatBot(scrollController: _scrollControllers[2]),
                   MyProfile(scrollController: _scrollControllers[3]),
                 ],
               ),
@@ -178,13 +183,6 @@ class MainHomeScreenState extends State<MainHomeScreen> {
                           size: 30,
                           Icons.bookmark_outlined,
                           color: _currentPage == 1
-                              ? AppColors.appYellow
-                              : AppColors.appDarkGrey,
-                        ),
-                        Icon(
-                          size: 30,
-                          Icons.child_care_outlined,
-                          color: _currentPage == 2
                               ? AppColors.appYellow
                               : AppColors.appDarkGrey,
                         ),

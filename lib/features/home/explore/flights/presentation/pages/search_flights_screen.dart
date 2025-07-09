@@ -18,9 +18,13 @@ import 'package:graduation_project_2025/features/home/explore/flights/presentati
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_flights/flights_travellers_card_widget.dart';
 import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_flights/radio_tiles_row.dart';
 
+import '../../../main_explore/presentation/widgets/profile_header.dart';
+
 class SearchFlightsScreen extends StatefulWidget {
   final AirportsDetails? airportsDetails;
-  const SearchFlightsScreen({super.key, this.airportsDetails});
+  final ScrollController? scrollController;
+  const SearchFlightsScreen(
+      {super.key, this.airportsDetails, this.scrollController});
 
   @override
   State<SearchFlightsScreen> createState() => _SearchFlightsScreenState();
@@ -314,25 +318,6 @@ class _SearchFlightsScreenState extends State<SearchFlightsScreen> {
         return InfoWidget(builder: (context, deviceInfo, constrains) {
           return Scaffold(
             backgroundColor: AppColors.appBlue,
-            appBar: AppBar(
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.transparent,
-              centerTitle: true,
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.white,
-                  size: deviceInfo.screenWidth * 0.04,
-                ),
-                onPressed: () {
-                  context.pop();
-                },
-              ),
-              title: Text(
-                'Search Flights',
-                style: TextStyles.semiBold18(deviceInfo, Colors.white),
-              ),
-            ),
             body: SafeArea(
               bottom: false,
               child: SingleChildScrollView(
@@ -349,6 +334,17 @@ class _SearchFlightsScreenState extends State<SearchFlightsScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            bottom: deviceInfo.screenHeight * 0.02),
+                        child: ChatbotHeader(
+                          userFirstName: 'Traveller',
+                          profileImage: 'assets/images/chatbot_icon.png',
+                          onTap: () {
+                            context.pushNamed(Routes.chatBot);
+                          },
+                        ),
+                      ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(
                             deviceInfo.screenWidth * 0.05,

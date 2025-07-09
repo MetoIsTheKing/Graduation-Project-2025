@@ -201,9 +201,6 @@ class FlightsFormWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(
-          height: deviceInfo.screenHeight * 0.01,
-        ),
         CustomRoundedButton(
           deviceInfo: deviceInfo,
           label: 'Search Flights',
