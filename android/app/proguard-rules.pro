@@ -1,16 +1,14 @@
-# flutter_stripe rules
--keep class com.stripe.android.** { *; }
--keep interface com.stripe.android.** { *; }
--keep class com.stripe.android.model.** { *; }
--keep class com.stripe.android.view.** { *; }
--keep class com.stripe.android.networking.** { *; }
--keep class com.stripe.android.payments.** { *; }
--keep class com.stripe.android.paymentsheet.** { *; }
--keep class com.stripe.android.link.** { *; }
--keep class com.stripe.android.financialconnections.** { *; }
+# Keep all classes related to the core Stripe SDK and its interfaces
+-keep class com.stripe.** { *; }
+-keep interface com.stripe.** { *; }
 
-# Rule for the react-native dependency referenced in your error log
+# Keep all classes related to the react-native-stripe SDK wrapper and its interfaces
 -keep class com.reactnativestripesdk.** { *; }
+-keep interface com.reactnativestripesdk.** { *; }
 
-# Required for Google Pay support
+# Required for Google Pay
 -keep class com.google.android.gms.wallet.** { *; }
+
+# New rules to suppress the specific warnings
+-dontwarn com.reactnativestripesdk.**
+-dontwarn com.stripe.android.pushProvisioning.**
