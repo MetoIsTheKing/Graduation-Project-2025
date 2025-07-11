@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/airport_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_result_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/repository/search_airports_repo.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
+import 'package:graduation_project_2025/features/home/flights/data/models/airport_model.dart';
+import 'package:graduation_project_2025/features/home/flights/data/models/flight_result_model.dart';
+import 'package:graduation_project_2025/features/home/flights/data/repository/search_airports_repo.dart';
+import 'package:graduation_project_2025/features/home/flights/data/models/flight_model.dart';
 
 part 'search_flights_state.dart';
 

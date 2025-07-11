@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_details_data_model.dart';
+import 'package:graduation_project_2025/features/home/flights/data/models/flight_details_data_model.dart';
 
-import '../../../../../../../config/theming/text_styles.dart';
-import '../../../../../../../core/utils/app_colors.dart';
+import '../../../../../../config/theming/text_styles.dart';
+import '../../../../../../core/utils/app_colors.dart';
 
 class AmenitiesContainer extends StatelessWidget {
   const AmenitiesContainer({super.key, required this.flight});

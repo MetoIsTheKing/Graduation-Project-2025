@@ -16,11 +16,11 @@ import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cu
 import 'package:graduation_project_2025/features/booking/data/models/one_way_booking_model.dart';
 import 'package:graduation_project_2025/features/chat_bot/data/data_source/chat_bot_remote.dart';
 import 'package:graduation_project_2025/features/chat_bot/presentation/cubit/chat_bot_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/data_sources/search_flights_remote.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/repository/search_airports_repo.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
+import 'package:graduation_project_2025/features/home/flights/data/data_sources/search_flights_remote.dart';
+import 'package:graduation_project_2025/features/home/flights/data/repository/search_airports_repo.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/cubits/flights_data_cubit.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
+import 'package:graduation_project_2025/features/home/flights/data/models/flight_model.dart';
 import 'package:graduation_project_2025/features/home/my_bookings/data/datasources/my_bookings_remote.dart';
 import 'package:graduation_project_2025/features/home/profile/presentation/data/profile_repo.dart';
 import 'package:graduation_project_2025/features/home/profile/presentation/data/user_profile_remote.dart';

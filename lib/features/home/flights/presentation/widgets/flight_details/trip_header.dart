@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/shared_widgets/auth_app_bar.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_details_data_model.dart';
+import 'package:graduation_project_2025/features/home/flights/data/models/flight_details_data_model.dart';
 
 class TripHeader extends StatelessWidget {
   const TripHeader({super.key, this.oneWay = true, required this.flight});

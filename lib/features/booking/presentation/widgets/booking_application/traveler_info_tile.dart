@@ -8,7 +8,7 @@ import 'package:graduation_project_2025/features/auth/presentation/widgets/share
 import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/country_picker.dart';
 import 'package:graduation_project_2025/features/auth/presentation/widgets/signup_widgets/date_picker.dart';
 import 'package:graduation_project_2025/features/booking/data/models/traveler_info_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_airport/airport_text_input.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/widgets/search_airport/airport_text_input.dart';
 import 'package:country_picker/country_picker.dart';
 
 class TravelerInfoTile extends StatefulWidget {
@@ -204,6 +204,7 @@ class _TravelerInfoTileState extends State<TravelerInfoTile> {
             ),
             child: CustomDatePickerField(
                 deviceInfo: deviceInfo,
+                isBirthDate: true,
                 prefix: 'Birth Date',
                 hint: 'Choose date',
                 selectedDate: selectedBirthDate,

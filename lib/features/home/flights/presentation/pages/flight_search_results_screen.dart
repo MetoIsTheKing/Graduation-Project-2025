@@ -13,12 +13,12 @@ import 'package:graduation_project_2025/features/auth/presentation/cubit/auth_cu
 import 'package:graduation_project_2025/features/booking/data/models/booking_sub_models.dart';
 import 'package:graduation_project_2025/features/booking/data/models/one_way_booking_model.dart';
 import 'package:graduation_project_2025/features/booking/presentation/pages/booking_application_screen.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
+import 'package:graduation_project_2025/features/home/flights/data/models/flight_model.dart';
 import 'package:graduation_project_2025/core/shared_components/curved_appbar.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_search_results/ticket_tile.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/widgets/flight_search_results/ticket_tile.dart';
 
-import '../../../../../booking/data/models/round_trip_booking_model.dart';
+import '../../../../booking/data/models/round_trip_booking_model.dart';
 import '../../data/models/flight_result_model.dart';
 import 'flight_details_screen.dart';
 

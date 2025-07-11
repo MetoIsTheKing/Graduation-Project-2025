@@ -1,6 +1,6 @@
 //? this is the entity used in the ui
 import 'package:graduation_project_2025/core/helpers/my_logger.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_result_model.dart';
+import 'package:graduation_project_2025/features/home/flights/data/models/flight_result_model.dart';
 
 class MessageModel {
   bool isUserMessage;

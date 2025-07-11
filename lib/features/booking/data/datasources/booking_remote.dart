@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:graduation_project_2025/core/api/end_points.dart';
 import 'package:graduation_project_2025/core/helpers/my_logger.dart';
 
@@ -30,6 +31,20 @@ class BookingRemoteImpl implements BookingRemote {
         'statusCode': response.statusCode,
         'data': response.data,
       };
+    } on DioException catch (e, stackTrace) {
+      // Catch DioException specifically
+      // Check if the error type is a timeout
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.sendTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        MyLogger.red('This is a connection timeout error: ${e.message}');
+        // You can handle the timeout specifically here
+      } else {
+        // Handle other Dio exceptions (e.g., 404, 500)
+        MyLogger.red('A non-timeout Dio error occurred: ${e.message}');
+      }
+      MyLogger.red(stackTrace.toString());
+      return Future.error('Please try again later');
     } catch (e, stackTrace) {
       MyLogger.red(stackTrace.toString());
       return Future.error(e);

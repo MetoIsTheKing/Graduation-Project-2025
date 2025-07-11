@@ -6,12 +6,12 @@ import 'package:graduation_project_2025/core/responsive/ui_component/info_widget
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/features/booking/data/models/booking_sub_models.dart';
 import 'package:graduation_project_2025/features/booking/data/models/one_way_booking_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_details_data_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flight_details/flight_details_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_details/baggage_slider.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_details/floating_button.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_details/trip_header.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/flight_details/trip_timeline.dart';
+import 'package:graduation_project_2025/features/home/flights/data/models/flight_details_data_model.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/cubits/flight_details/flight_details_cubit.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/widgets/flight_details/baggage_slider.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/widgets/flight_details/floating_button.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/widgets/flight_details/trip_header.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/widgets/flight_details/trip_timeline.dart';
 
 import '../../data/models/flight_result_model.dart';
 import '../widgets/flight_details/amenities_container.dart';

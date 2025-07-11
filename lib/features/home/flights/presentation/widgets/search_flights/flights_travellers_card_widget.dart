@@ -3,7 +3,7 @@ import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_flights/flights_travellers_field_widget.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/widgets/search_flights/flights_travellers_field_widget.dart';
 
 class FlightsTravellersCardWidget extends StatelessWidget {
   final Map<String, int> travellers;

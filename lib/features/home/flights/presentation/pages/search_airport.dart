@@ -6,9 +6,9 @@ import 'package:graduation_project_2025/config/theming/text_styles.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_airport/airport_text_input.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_airport/search_custom_tile.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/widgets/search_airport/airport_text_input.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/widgets/search_airport/search_custom_tile.dart';
 import 'package:graduation_project_2025/core/shared_components/curved_appbar.dart';
 
 class SearchAirport extends StatelessWidget {

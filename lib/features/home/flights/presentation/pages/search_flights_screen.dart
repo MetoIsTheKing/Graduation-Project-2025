@@ -9,16 +9,16 @@ import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart'
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_airport.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_flights/flights_class_card_widget.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_flights/flights_form_widget.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_flights/flights_travellers_card_widget.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/widgets/search_flights/radio_tiles_row.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/cubits/flights_data_cubit.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
+import 'package:graduation_project_2025/features/home/flights/data/models/flight_model.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/pages/search_airport.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/widgets/search_flights/flights_class_card_widget.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/widgets/search_flights/flights_form_widget.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/widgets/search_flights/flights_travellers_card_widget.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/widgets/search_flights/radio_tiles_row.dart';
 
-import '../../../main_explore/presentation/widgets/profile_header.dart';
+import '../../../explore/main_explore/presentation/widgets/profile_header.dart';
 
 class SearchFlightsScreen extends StatefulWidget {
   final AirportsDetails? airportsDetails;

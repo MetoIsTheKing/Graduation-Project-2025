@@ -68,8 +68,9 @@ class MyBookingsScreen extends StatelessWidget {
                       horizontal: deviceInfo.screenWidth * 0.04,
                     ),
                     width: double.infinity,
+                    // height: double.infinity,
                     constraints: BoxConstraints(
-                      minHeight: deviceInfo.screenHeight * 0.8,
+                      minHeight: deviceInfo.screenHeight * 0.9,
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white,

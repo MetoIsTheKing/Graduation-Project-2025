@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:graduation_project_2025/features/home/explore/flights/data/data_sources/search_flights_remote.dart';
+import 'package:graduation_project_2025/features/home/flights/data/data_sources/search_flights_remote.dart';
 
 class SearchFlightsRepo {
   final SearchFlightssRemoteDataSource remoteDataSource;

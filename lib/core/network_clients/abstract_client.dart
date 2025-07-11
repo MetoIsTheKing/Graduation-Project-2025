@@ -12,9 +12,9 @@ class DioNetworkClient {
     dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
-        connectTimeout: Duration(seconds: 20),
-        sendTimeout: Duration(seconds: 20),
-        receiveTimeout: Duration(seconds: 20),
+        connectTimeout: Duration(seconds: 30),
+        sendTimeout: Duration(seconds: 30),
+        receiveTimeout: Duration(seconds: 30),
         headers: {
           'Content-Type': 'application/json',
           //authriztion header

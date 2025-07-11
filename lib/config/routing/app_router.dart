@@ -13,19 +13,19 @@ import 'package:graduation_project_2025/features/auth/presentation/pages/login_s
 import 'package:graduation_project_2025/features/auth/presentation/pages/signup_screen.dart';
 import 'package:graduation_project_2025/features/booking/presentation/cubit/booking_cubit/booking_cubit.dart';
 
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/cubits/flights_data_cubit.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
 import 'package:graduation_project_2025/features/booking/presentation/pages/booking_application_screen.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/flight_search_results_screen.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_flights_screen.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_airport.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/pages/flight_search_results_screen.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/pages/search_flights_screen.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/pages/search_airport.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/pages/explore_screen.dart';
 import 'package:graduation_project_2025/features/home/main_home_screen.dart';
 import 'package:graduation_project_2025/features/home/my_bookings/presentation/cubit/my_bookings_cubit.dart';
 import 'package:graduation_project_2025/features/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:graduation_project_2025/features/on_boarding/presentation/pages/onboarding_screen.dart';
 
-import '../../features/home/explore/flights/data/models/flight_model.dart';
+import '../../features/home/flights/data/models/flight_model.dart';
 import '../../features/home/my_bookings/presentation/pages/my_bookings_screen.dart';
 
 class AppRouter {

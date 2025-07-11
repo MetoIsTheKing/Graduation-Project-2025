@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/flights_data_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/presentation/pages/search_flights_screen.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/cubits/flights_data_cubit.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/cubits/search_flights/search_flights_cubit.dart';
+import 'package:graduation_project_2025/features/home/flights/presentation/pages/search_flights_screen.dart';
 import 'package:graduation_project_2025/features/home/my_bookings/presentation/cubit/my_bookings_cubit.dart';
 
 import 'package:graduation_project_2025/features/home/my_bookings/presentation/pages/my_bookings_screen.dart';

@@ -9,7 +9,7 @@ import 'package:graduation_project_2025/features/booking/data/models/one_way_boo
 import 'package:graduation_project_2025/features/booking/data/models/round_trip_booking_model.dart';
 import 'package:graduation_project_2025/features/booking/domain/repositories/booking_repo.dart';
 import 'package:graduation_project_2025/features/booking/presentation/cubit/booking_cubit/booking_state.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
+import 'package:graduation_project_2025/features/home/flights/data/models/flight_model.dart';
 
 import '../../../../../config/dependency_injection/di.dart';
 import '../../../../../config/dependency_injection/di_instances.dart';

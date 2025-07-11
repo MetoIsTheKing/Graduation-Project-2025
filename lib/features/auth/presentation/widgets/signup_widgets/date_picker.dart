@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:graduation_project_2025/config/theming/text_styles.dart';
+import 'package:graduation_project_2025/core/shared_components/curved_appbar.dart';
 import 'package:graduation_project_2025/core/utils/app_colors.dart';
 import 'package:graduation_project_2025/core/responsive/Models/device_info.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -11,6 +12,7 @@ class CustomDatePickerField extends StatefulWidget {
   final String hint;
   final DateTime? selectedDate;
   final Function(DateTime) onDateSelected;
+  final bool isBirthDate;
 
   const CustomDatePickerField({
     super.key,
@@ -19,6 +21,7 @@ class CustomDatePickerField extends StatefulWidget {
     required this.hint,
     required this.selectedDate,
     required this.onDateSelected,
+    this.isBirthDate = false,
   });
 
   @override
@@ -39,7 +42,7 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
       builder: (context) {
         return StatefulBuilder(builder: (context, setState) {
           return Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(deviceInfo.screenWidth * 0.04),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -48,7 +51,7 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
-                  height: widget.deviceInfo.screenHeight * 0.5,
+                  height: widget.deviceInfo.screenHeight * 0.55,
                   child: TableCalendar(
                     pageAnimationCurve: Curves.easeInOut,
                     pageAnimationDuration: const Duration(milliseconds: 500),
@@ -56,7 +59,8 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
                     weekNumbersVisible: false,
                     headerStyle: HeaderStyle(formatButtonVisible: false),
                     sixWeekMonthsEnforced: false,
-                    lastDay: DateTime(2100),
+                    lastDay:
+                        widget.isBirthDate ? DateTime.now() : DateTime(2100),
                     focusedDay: tempFocusedDate,
                     selectedDayPredicate: (day) {
                       return isSameDay(tempSelectedDate, day);

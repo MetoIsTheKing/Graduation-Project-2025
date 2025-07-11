@@ -4,7 +4,7 @@ import 'package:graduation_project_2025/config/dependency_injection/di.dart';
 import 'package:graduation_project_2025/core/shared_functions/mapping_airports_codes.dart';
 
 import '../../../../core/helpers/my_logger.dart';
-import '../../../home/explore/flights/data/models/flight_result_model.dart';
+import '../../../home/flights/data/models/flight_result_model.dart';
 import 'booking_sub_models.dart';
 
 /// Helper function to decode the JSON string and create a oneWayBookingModel object.

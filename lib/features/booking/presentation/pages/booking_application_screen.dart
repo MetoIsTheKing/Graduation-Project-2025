@@ -15,7 +15,7 @@ import 'package:graduation_project_2025/features/booking/data/models/one_way_boo
 import 'package:graduation_project_2025/features/booking/data/models/round_trip_booking_model.dart';
 import 'package:graduation_project_2025/features/booking/presentation/cubit/booking_cubit/booking_cubit.dart';
 import 'package:graduation_project_2025/features/booking/presentation/widgets/booking_application/contact_info_tile.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
+import 'package:graduation_project_2025/features/home/flights/data/models/flight_model.dart';
 import 'package:graduation_project_2025/features/booking/data/models/traveler_info_model.dart';
 import 'package:graduation_project_2025/core/shared_components/curved_appbar.dart';
 import 'package:graduation_project_2025/features/booking/presentation/widgets/booking_application/total_price_tag.dart';
@@ -201,8 +201,9 @@ class _BookingApplicationScreenState extends State<BookingApplicationScreen> {
                   TotalPriceTag(
                     deviceInfo: deviceInfo,
                     totalPrice: isRoundTrip
-                        ? totalPriceRoundTrip.toString()
-                        : totalPriceOneWay.toString(),
+                        ? totalPriceRoundTrip
+                            .toStringAsFixed(2) // Format to 2 decimal places
+                        : totalPriceOneWay.toStringAsFixed(2),
                     onTapSummary: () {
                       print('view summary');
                     },

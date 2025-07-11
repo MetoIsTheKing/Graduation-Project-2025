@@ -5,7 +5,7 @@ import 'package:graduation_project_2025/config/routing/routes.dart';
 import 'package:graduation_project_2025/core/helpers/navigation_extentions.dart';
 import 'package:graduation_project_2025/core/responsive/ui_component/info_widget.dart';
 import 'package:graduation_project_2025/core/shared_components/map_widget.dart';
-import 'package:graduation_project_2025/features/home/explore/flights/data/models/flight_model.dart';
+import 'package:graduation_project_2025/features/home/flights/data/models/flight_model.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/widgets/hotel_recomendation_card.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/widgets/profile_header.dart';
 import 'package:graduation_project_2025/features/home/explore/main_explore/presentation/widgets/quick_action_button.dart';
